@@ -19,9 +19,7 @@ import javax.annotation.PostConstruct;
  */
 @Component
 public class ExampleBot extends TelegramLongPollingBot {
-	
 	private static final Logger logger = LoggerFactory.getLogger(ExampleBot.class);
-	
 	@Value("700687388:AAHGmzovGb0LVXKRZAkechWrHBst7BJPMjw")
 	private String token;
 	
