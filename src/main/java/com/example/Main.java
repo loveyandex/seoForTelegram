@@ -53,6 +53,36 @@ public class Main {
     return "index";
   }
 
+  @RequestMapping("/df")
+  String dbd(Map<String, Object> model) {
+    try (Connection connection = dataSource.getConnection()) {
+      Statement stmt = connection.createStatement();
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS  bia2music" +
+              "(" +
+              "  name           varchar(100) null," +
+              "  src_url        varchar(500) null," +
+              "  tags           varchar(500) null," +
+              "  artist         varchar(200) null," +
+              "  album          varchar(100) null," +
+              "  name_persian   varchar(100) null," +
+              "  artist_persian varchar(100) null" +
+              ")");
+
+      stmt.executeUpdate("INSERT INTO bia2music VALUES ('amin','sd','sd0','sd0','hj','j','j')");
+
+
+      ResultSet rs = stmt.executeQuery("SELECT * FROM bia2music");
+
+      while (rs.next()) {
+        return rs.getString(1);
+      }
+    }catch (SQLException e){
+      return e.getMessage();
+    }
+    return null;
+  }
+      
+      
   @RequestMapping("/db")
   String db(Map<String, Object> model) {
     try (Connection connection = dataSource.getConnection()) {
