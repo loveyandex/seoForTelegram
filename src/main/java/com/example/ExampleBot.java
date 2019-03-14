@@ -20,7 +20,7 @@ import javax.annotation.PostConstruct;
 @Component
 public class ExampleBot extends TelegramLongPollingBot {
 	private static final Logger logger = LoggerFactory.getLogger(ExampleBot.class);
-	@Value("700687388:AAHGmzovGb0LVXKRZAkechWrHBst7BJPMjw")
+	@Value("700687388:AAHagXfLRpcRV0U8bnoH91Ig3mB2boMXqh4")
 	private String token;
 	
 	@Value("codeTakhfif_bot")
@@ -28,7 +28,7 @@ public class ExampleBot extends TelegramLongPollingBot {
 	
 	@Override
 	public String getBotToken() {
-		return "700687388:AAHGmzovGb0LVXKRZAkechWrHBst7BJPMjw";
+		return token;
 	}
 	
 	@Override

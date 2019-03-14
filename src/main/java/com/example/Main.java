@@ -33,88 +33,92 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @SpringBootApplication
 public class Main {
 
-  @Value("${spring.datasource.url}")
-  private String dbUrl;
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
 
-  @Autowired
-  private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
-  public static void main(String[] args) throws Exception {
-    SpringApplication.run(Main.class, args);
-  }
-
-  @RequestMapping("/")
-  String index() {
-    return "index";
-  }
-
-  @RequestMapping("/df")
-  @ResponseBody
-  String dbd(Map<String, Object> model) {
-    try (Connection connection = dataSource.getConnection()) {
-      Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS  bia2music" +
-              "(" +
-              "  name           varchar(100) null," +
-              "  src_url        varchar(500) null," +
-              "  tags           varchar(500) null," +
-              "  artist         varchar(200) null," +
-              "  album          varchar(100) null," +
-              "  name_persian   varchar(100) null," +
-              "  artist_persian varchar(100) null" +
-              ")");
-
-      stmt.executeUpdate("INSERT INTO bia2music VALUES ('amin','sd','sd0','sd0','hj','j','j')");
-
-
-      ResultSet rs = stmt.executeQuery("SELECT * FROM bia2music");
-
-      while (rs.next()) {
-        return rs.getString(1);
-      }
-    }catch (SQLException e){
-      return e.getMessage();
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Main.class, args);
     }
-    return null;
-  }
-      
-      
-  @RequestMapping("/db")
-  String db(Map<String, Object> model) {
-    try (Connection connection = dataSource.getConnection()) {
-      Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-      stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-      ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
 
-      ArrayList<String> output = new ArrayList<String>();
-      while (rs.next()) {
-        output.add("Read from DB: " + rs.getTimestamp("tick"));
-      }
-
-      model.put("records", output);
-      return "db";
-    } catch (Exception e) {
-      model.put("message", e.getMessage());
-      return "error";
+    @RequestMapping("/")
+    String index() {
+        return "index";
     }
-  }
 
-  @Bean
-  public DataSource dataSource() throws SQLException {
-    if (dbUrl == null || dbUrl.isEmpty()) {
-      return new HikariDataSource();
-    } else {
-      HikariConfig config = new HikariConfig();
-      config.setJdbcUrl(dbUrl);
-      return new HikariDataSource(config);
+    @RequestMapping("/df")
+    @ResponseBody
+    List<String> dbd(Map<String, Object> model) {
+        ArrayList<String> strings = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection()) {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS  bia2music" +
+                    "(" +
+                    "  name           varchar(100) null," +
+                    "  src_url        varchar(500) null," +
+                    "  tags           varchar(500) null," +
+                    "  artist         varchar(200) null," +
+                    "  album          varchar(100) null," +
+                    "  name_persian   varchar(100) null," +
+                    "  artist_persian varchar(100) null" +
+                    ")");
+
+            stmt.executeUpdate("INSERT INTO bia2music VALUES ('amin','sd','sd0','sd0','hj','j','j')");
+
+
+            ResultSet rs = stmt.executeQuery("SELECT * FROM bia2music");
+
+
+            while (rs.next()) {
+                strings.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            return strings;
+        }
+        return strings;
     }
-  }
+
+
+    @RequestMapping("/db")
+    String db(Map<String, Object> model) {
+        try (Connection connection = dataSource.getConnection()) {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
+            stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
+            ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
+
+            ArrayList<String> output = new ArrayList<String>();
+            while (rs.next()) {
+                output.add("Read from DB: " + rs.getTimestamp("tick"));
+            }
+
+            model.put("records", output);
+            return "db";
+        } catch (Exception e) {
+            model.put("message", e.getMessage());
+            return "error";
+        }
+    }
+
+    @Bean
+    public DataSource dataSource() throws SQLException {
+        if (dbUrl == null || dbUrl.isEmpty()) {
+            return new HikariDataSource();
+        } else {
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl(dbUrl);
+            return new HikariDataSource(config);
+        }
+    }
 
 }

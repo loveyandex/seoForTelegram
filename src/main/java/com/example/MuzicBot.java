@@ -8,6 +8,8 @@ import com.example.pojos.MusicForSave;
 import com.example.pojos.Status;
 import com.google.gson.Gson;
 import org.apache.commons.validator.routines.UrlValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.ActionType;
@@ -34,6 +36,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.meta.updateshandlers.SentCallback;
 
+import javax.sql.DataSource;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -54,6 +57,14 @@ public class MuzicBot extends TelegramLongPollingBot {
 
     private Map<Integer, MusicForSave> userMusicForSave = new HashMap<>();
 
+
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
+
+    @Autowired
+    private DataSource dataSource;
+
+
     public void onUpdateReceived(Update update) {
 //        if (update.hasMessage()) {
 //            Message message = update.getMessage();
@@ -70,27 +81,17 @@ public class MuzicBot extends TelegramLongPollingBot {
 //        }
         final Responses responses = new Responses(update);
         responses.inlineQuery(() -> responses
-                        .hasMessagesButNotStart()
-                        .startMsg()
-                        .addupUrl()
-                        .waitForURL()
-                        .addNameOfSong()
-                        .addPersianNameSong()
-                        .addNameOfSinger()
-                        .addPersianNameOFSinger()
-                        .hasCallbackQuery()
-                );
+                .startMsg()
+                .hasMessagesButNotStart()
+                .addupUrl()
+                .waitForURL()
+                .addNameOfSong()
+                .addPersianNameSong()
+                .addNameOfSinger()
+                .addPersianNameOFSinger()
+                .hasCallbackQuery()
+        );
     }
-
-
-    public String getBotUsername() {
-        return "melodyAminBot";
-    }
-
-    public String getBotToken() {
-        return "495402062:AAHqmq2EKK5Zw2WYxs_vrbMvpHCK4BA9qMQ";
-    }
-
 
     private class Responses {
         Update update;
@@ -100,44 +101,44 @@ public class MuzicBot extends TelegramLongPollingBot {
         }
 
         private Responses hasMessagesButNotStart() {
-            System.out.println("in 1");
-
             System.err.println(new Gson().toJson(userMusicForSave));
             if (update.hasMessage()) {
-                final Audio audio = update.getMessage().getAudio();
-                if (audio != null)
-                    try {
-                        execute(new SendAudio().setAudio(audio.getFileId())
-                                        .setCaption(update.getMessage().getCaption())
-                                        .setChatId(update.getMessage().getChatId())
+                if (!update.getMessage().getText().equalsIgnoreCase("/start")) {
+
+                    final Audio audio = update.getMessage().getAudio();
+                    if (audio != null)
+                        try {
+                            execute(new SendAudio().setAudio(audio.getFileId())
+                                            .setCaption(update.getMessage().getCaption())
+                                            .setChatId(update.getMessage().getChatId())
 //                            .setReplyMarkup(setWebsites())
-                        );
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
-
-
-                if (update.getMessage().hasText()) {
-
-                    final String query = update.getMessage().getText();
-                    final MusicForSave musicForSave = userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId()));
-                    if (musicForSave == null)
-                        if (isPersian(query) && query.length() > 1) {
-                            final ArrayList<ArrayList<String>> persiansearchindb = persiansearchindb(query);
-                            if (persiansearchindb.size() == 0) {
-                                System.out.println(persiansearchindb.size());
-                            } else
-                                new Thread(() -> datatoMsg(update, persiansearchindb)).start();
-                        } else if (!isPersian(query) && query.length() > 1) {
-                            final ArrayList<ArrayList<String>> searchindbFingilish = searchindbFingilish(query);
-                            if (searchindbFingilish.size() == 0) {
-                                System.out.println(searchindbFingilish.size());
-                            } else
-                                new Thread(() -> datatoMsg(update, searchindbFingilish)).start();
+                            );
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
                         }
 
 
-                }
+                    if (update.getMessage().hasText()) {
+
+                        final String query = update.getMessage().getText();
+                        final MusicForSave musicForSave = userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId()));
+                        if (musicForSave == null)
+                            if (isPersian(query) && query.length() > 1) {
+                                final ArrayList<ArrayList<String>> persiansearchindb = persiansearchindb(query);
+                                if (persiansearchindb.size() == 0) {
+                                    System.out.println(persiansearchindb.size());
+                                } else
+                                    new Thread(() -> datatoMsg(update, persiansearchindb)).start();
+                            } else if (!isPersian(query) && query.length() > 1) {
+                                final ArrayList<ArrayList<String>> searchindbFingilish = searchindbFingilish(query);
+                                if (searchindbFingilish.size() == 0) {
+                                    System.out.println(searchindbFingilish.size());
+                                } else
+                                    new Thread(() -> datatoMsg(update, searchindbFingilish)).start();
+                            }
+
+
+                    }
 //                Message messagehamid = sendAudio(
 //                        new SendAudio().setChatId("@musicaminbot")
 //                                .setAudio(/*"https://t.me/musicaminbot/9"*/"https://t.me/musicaminbot/54")
@@ -148,7 +149,9 @@ public class MuzicBot extends TelegramLongPollingBot {
 //                System.out.println(sendVoice(new SendVoice().setVoice("https://t.me/musicaminbot/54").
 //                        setChatId("@musicaminbot")).getVoice().getFileId());
 
+                }
             }
+
             return this;
         }
 
@@ -243,7 +246,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 
             if (update.hasMessage())
                 if (update.getMessage().hasText())
-                    if (update.getMessage().getText().equalsIgnoreCase("/start2")
+                    if (update.getMessage().getText().equalsIgnoreCase("/start")
                             && userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId())) == null) {
                         System.out.println("start2");
                         final User from = update.getMessage().getFrom();
@@ -841,4 +844,15 @@ public class MuzicBot extends TelegramLongPollingBot {
         }
         return false;
     }
+
+
+    public String getBotUsername() {
+        return "melodyAminBot";
+    }
+
+    public String getBotToken() {
+        return "495402062:AAFW20xQIExpqkfbZpoDtbP_fflq1WznJIM";
+    }
+
+
 }
