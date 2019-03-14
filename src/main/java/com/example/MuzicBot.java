@@ -73,7 +73,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 
         try (Connection connection = dataSource.getConnection()) {
             try {
-                execute(new SendMessage(update.getMessage().getChatId(),"kiri"));
+                execute(new SendMessage(update.getMessage().getChatId(), "kiri"));
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
@@ -85,7 +85,8 @@ public class MuzicBot extends TelegramLongPollingBot {
                 e.printStackTrace();
             }
             ResultSet rs = stmt.executeQuery("SELECT count(*) FROM music4");
-            execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(rs.getInt(1))));
+            while (rs.next())
+                execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(rs.getInt(1))));
             return;
 //
 //            while (rs.next()) {
@@ -120,7 +121,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 
         } catch (Exception e) {
             try {
-                execute(new SendMessage(update.getMessage().getChatId(),"error amin: "+ e.getMessage()));
+                execute(new SendMessage(update.getMessage().getChatId(), "error amin: " + e.getMessage()));
             } catch (TelegramApiException e1) {
                 e1.printStackTrace();
             }
