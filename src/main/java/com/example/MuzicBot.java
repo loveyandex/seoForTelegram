@@ -163,7 +163,11 @@ public class MuzicBot extends TelegramLongPollingBot {
                             if (isPersian(query) && query.length() > 1) {
                                 final ArrayList<ArrayList<String>> persiansearchindb = persiansearchindb(query);
                                 if (persiansearchindb.size() == 0) {
-                                    System.out.println(persiansearchindb.size());
+                                    try {
+                                        execute(new SendMessage(update.getMessage().getChatId(), "persian res sizze:" + persiansearchindb.size()));
+                                    } catch (TelegramApiException e) {
+                                        e.printStackTrace();
+                                    }
                                 } else
                                     new Thread(() -> datatoMsg(update, persiansearchindb)).start();
                             } else if (!isPersian(query) && query.length() > 1) {
