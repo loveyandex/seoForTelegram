@@ -43,9 +43,23 @@ public class ConfigContrller {
                     "fileId         varchar(256)    null," +
                     "howmuchsent    int default '0' not null" +
                     ")");
+
+            String sql = "select * from music4 where fileId=" + music3.getFileId();
+            ResultSet execute = connection.createStatement().executeQuery(sql);
+            if (execute.next()){
+                String token = "700687388:AAHagXfLRpcRV0U8bnoH91Ig3mB2boMXqh4";
+                String url = "https://api.telegram.org/bot"
+                        + token
+                        + "/sendMessage?chat_id=145464749&text="
+                        + new Gson().toJson("before added: " + music3.getFileId());
+                return run(url);
+            }
+
+
+
             PreparedStatement rs = connection.prepareStatement("insert into music4 " +
                     "(name, src_url, tags, artist, album, name_persian, artist_persian, tags_persian, channelUrl, fileId,howmuchsent)" +
-                    " values (?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE fileId="+music3.getFileId()
+                    " values (?,?,?,?,?,?,?,?,?,?,?)"
             );
 
             rs.setString(1,music3.getName());
