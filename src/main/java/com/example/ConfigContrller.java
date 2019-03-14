@@ -25,7 +25,7 @@ public class ConfigContrller {
 
 
     @PostMapping("/addmusic")
-    String index(@RequestBody Music3 music3) {
+    String index(@RequestBody Music3 music3) throws IOException {
 
         try (Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
@@ -69,10 +69,13 @@ public class ConfigContrller {
             return run(url);
 
 
-        } catch (SQLException e) {
-            return "[SQLException]";
-        } catch (IOException e) {
-            return "[IOException]";
+        } catch (Exception e) {
+            String token = "700687388:AAHagXfLRpcRV0U8bnoH91Ig3mB2boMXqh4";
+            String url = "https://api.telegram.org/bot"
+                    + token
+                    + "/sendMessage?chat_id=145464749&text="
+                    + new Gson().toJson(e.getLocalizedMessage());
+            return run(url);
         }
     }
 
