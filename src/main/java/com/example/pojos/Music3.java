@@ -20,7 +20,7 @@ public class Music3 {
     private String name_persian;
     private String artist_persian;
     private String tags_persian;
-    private String FileID;
+    private String fileId;
     private String channelUrl;
     private int howmuchsent;
 }
