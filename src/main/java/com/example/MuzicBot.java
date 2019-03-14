@@ -108,7 +108,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 
         } catch (Exception e) {
             try {
-                execute(new SendMessage(update.getMessage().getChatId(), e.getMessage()));
+                execute(new SendMessage(update.getMessage().getChatId(),"error amin: "+ e.getMessage()));
             } catch (TelegramApiException e1) {
                 e1.printStackTrace();
             }
