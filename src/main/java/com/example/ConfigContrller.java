@@ -18,9 +18,7 @@ public class ConfigContrller {
     @Autowired
     private DataSource dataSource;
 
-
-
-
+    
     @RequestMapping("/addmusic")
     String index() {
         return "index";

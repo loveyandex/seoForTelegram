@@ -246,7 +246,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 
             if (update.hasMessage())
                 if (update.getMessage().hasText())
-                    if (update.getMessage().getText().equalsIgnoreCase("/start")
+                    if (update.getMessage().getText().equalsIgnoreCase("/start2")
                             && userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId())) == null) {
                         System.out.println("start2");
                         final User from = update.getMessage().getFrom();
@@ -276,6 +276,10 @@ public class MuzicBot extends TelegramLongPollingBot {
 
                     } else if (update.getMessage().getText().equalsIgnoreCase("/start")
                             && userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId())) == null) {
+                        final SendAudio sung = new SendAudio()
+                                .setAudio("https://d2uqwoe9jzxxtn.cloudfront.net/music/medium/0111_Happy-Time_1386550966.mp3")
+                                .setChatId(update.getMessage().getChatId());
+
 
                         System.out.println("start");
                         final User from = update.getMessage().getFrom();
