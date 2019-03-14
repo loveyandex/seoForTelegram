@@ -76,7 +76,6 @@ public class MuzicBot extends TelegramLongPollingBot {
             ResultSet rs = stmt.executeQuery("SELECT count(*) FROM music4");
             while (rs.next())
                 execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(rs.getInt(1))));
-            return;
 //
 //            while (rs.next()) {
 //                try {
