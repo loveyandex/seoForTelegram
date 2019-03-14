@@ -55,31 +55,31 @@ public class MuzicBot extends TelegramLongPollingBot {
     private Map<Integer, MusicForSave> userMusicForSave = new HashMap<>();
 
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage()) {
-            Message message = update.getMessage();
-            SendMessage response = new SendMessage();
-            Long chatId = message.getChatId();
-            response.setChatId(chatId);
-            String text = message.getText();
-            response.setText("loard " + text);
-            try {
-                execute(response);
-
-            } catch (TelegramApiException e) {
-            }
-        }
-//        final Responses responses = new Responses(update);
-//        responses.inlineQuery(() -> responses
-//                        .hasMessagesButNotStart()
-//                        .startMsg()
-//                        .addupUrl()
-//                        .waitForURL()
-//                        .addNameOfSong()
-//                        .addPersianNameSong()
-//                        .addNameOfSinger()
-//                        .addPersianNameOFSinger()
-//                        .hasCallbackQuery()
-//                );
+//        if (update.hasMessage()) {
+//            Message message = update.getMessage();
+//            SendMessage response = new SendMessage();
+//            Long chatId = message.getChatId();
+//            response.setChatId(chatId);
+//            String text = message.getText();
+//            response.setText("loard " + text);
+//            try {
+//                execute(response);
+//
+//            } catch (TelegramApiException e) {
+//            }
+//        }
+        final Responses responses = new Responses(update);
+        responses.inlineQuery(() -> responses
+                        .hasMessagesButNotStart()
+                        .startMsg()
+                        .addupUrl()
+                        .waitForURL()
+                        .addNameOfSong()
+                        .addPersianNameSong()
+                        .addNameOfSinger()
+                        .addPersianNameOFSinger()
+                        .hasCallbackQuery()
+                );
     }
 
 
