@@ -51,7 +51,7 @@ public class ConfigContrller {
 
             String token = "700687388:AAHagXfLRpcRV0U8bnoH91Ig3mB2boMXqh4";
 
-            String url = "https://api.telegram.org/"
+            String url = "https://api.telegram.org/bot"
                     + token
                     + "/sendMessage?chat_id=145464749&text="
                     + new Gson().toJson(music3);
