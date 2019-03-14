@@ -83,9 +83,18 @@ public class MuzicBot extends TelegramLongPollingBot {
 
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            try {
+                execute(new SendMessage(update.getMessage().getChatId(), e.getMessage()));
+            } catch (TelegramApiException e1) {
+                e1.printStackTrace();
+            }
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            try {
+                execute(new SendMessage(update.getMessage().getChatId(), e.getMessage()));
+            } catch (TelegramApiException e1) {
+                e1.printStackTrace();
+            }
+
         }
 
 
