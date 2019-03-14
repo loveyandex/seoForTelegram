@@ -76,7 +76,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 
             while (rs.next()) {
                 final SendAudio sung = new SendAudio()
-                        .setAudio(rs.getString(10))
+                        .setAudio(rs.getString(11))
                         .setChatId(update.getMessage().getChatId());
                 execute(sung);
                 break;
