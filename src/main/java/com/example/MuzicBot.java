@@ -78,7 +78,6 @@ public class MuzicBot extends TelegramLongPollingBot {
                 e.printStackTrace();
             }
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT channelUrl FROM music3");
 
             ResultSet rs2 = stmt.executeQuery("SELECT tick FROM ticks");
 
@@ -92,6 +91,7 @@ public class MuzicBot extends TelegramLongPollingBot {
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
+            ResultSet rs = stmt.executeQuery("SELECT * FROM music3");
             while (rs.next()) {
                 try {
                     execute(new SendMessage(update.getMessage().getChatId(),"in wile"));
@@ -100,7 +100,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                 }
 
                 final SendAudio sung = new SendAudio()
-                        .setAudio(rs.getString(1))
+                        .setAudio(rs.getString(11))
                         .setChatId(update.getMessage().getChatId());
                 execute(sung);
             }
