@@ -24,7 +24,7 @@ public class ResApi {
     @RequestMapping(value = "/send/{text}"
             , method = RequestMethod.GET)
     public String gett(@PathVariable String text, HttpServletRequest request,
-                     HttpServletResponse response) throws IOException {
+                       HttpServletResponse response) throws IOException {
         String token = "bot700687388:AAHGmzovGb0LVXKRZAkechWrHBst7BJPMjw";
 
         String url = "https://api.telegram.org/"
@@ -39,7 +39,7 @@ public class ResApi {
     }
 
 
-    String run(String url) throws IOException {
+    public static String run(String url) throws IOException {
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
