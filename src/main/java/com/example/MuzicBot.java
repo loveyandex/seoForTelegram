@@ -889,14 +889,4 @@ public class MuzicBot extends TelegramLongPollingBot {
         return "495402062:AAFW20xQIExpqkfbZpoDtbP_fflq1WznJIM";
     }
 
-    @Bean
-    public DataSource dataSource() throws SQLException {
-        if (dbUrl == null || dbUrl.isEmpty()) {
-            return new HikariDataSource();
-        } else {
-            HikariConfig config = new HikariConfig();
-            config.setJdbcUrl(dbUrl);
-            return new HikariDataSource(config);
-        }
-    }
 }
