@@ -72,14 +72,13 @@ public class MuzicBot extends TelegramLongPollingBot {
         try (Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT FileID FROM music3");
+            ResultSet rs = stmt.executeQuery("SELECT channelUrl FROM music3");
 
             while (rs.next()) {
                 final SendAudio sung = new SendAudio()
-                        .setAudio(rs.getString(11))
+                        .setAudio(rs.getString(1))
                         .setChatId(update.getMessage().getChatId());
                 execute(sung);
-                break;
             }
 
 
