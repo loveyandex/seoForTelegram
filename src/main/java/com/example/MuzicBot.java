@@ -66,6 +66,27 @@ public class MuzicBot extends TelegramLongPollingBot {
 
 
     public void onUpdateReceived(Update update) {
+        try (Connection connection = dataSource.getConnection()) {
+            Statement stmt = connection.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT FileID FROM music3");
+
+            while (rs.next()) {
+                final SendAudio sung = new SendAudio()
+                        .setAudio(rs.getString(10))
+                        .setChatId(update.getMessage().getChatId());
+                execute(sung);
+                break;
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+
+
 //        if (update.hasMessage()) {
 //            Message message = update.getMessage();
 //            SendMessage response = new SendMessage();
@@ -276,6 +297,8 @@ public class MuzicBot extends TelegramLongPollingBot {
 
                     } else if (update.getMessage().getText().equalsIgnoreCase("/start")
                             && userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId())) == null) {
+
+
                         final SendAudio sung = new SendAudio()
                                 .setAudio("https://d2uqwoe9jzxxtn.cloudfront.net/music/medium/0111_Happy-Time_1386550966.mp3")
                                 .setChatId(update.getMessage().getChatId());
