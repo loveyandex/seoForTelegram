@@ -177,8 +177,11 @@ public class MuzicBot extends TelegramLongPollingBot {
                             } else if (!isPersian(query) && query.length() > 1) {
                                 final ArrayList<ArrayList<String>> searchindbFingilish = searchindbFingilish(query);
                                 if (searchindbFingilish.size() == 0) {
-                                    System.out.println(searchindbFingilish.size());
-                                } else
+                                    try {
+                                        execute(new SendMessage(update.getMessage().getChatId(), "eng res sizze:" + searchindbFingilish.size()));
+                                    } catch (TelegramApiException e) {
+                                        e.printStackTrace();
+                                    }                                } else
                                     new Thread(() -> datatoMsg(update, searchindbFingilish)).start();
                             }
 
@@ -776,30 +779,36 @@ public class MuzicBot extends TelegramLongPollingBot {
     }
 
     private ArrayList<ArrayList<String>> searchindbFingilish(String query) {
-        final Connection connection = QDB.getInstance().connection;
-        Statement statement;
         ArrayList<ArrayList<String>> results = new ArrayList<>();
+        Connection connection = null;
         try {
-            statement = connection.createStatement();
+            connection = dataSource.getConnection();
+            Statement statement = null;
+            try {
+                statement = connection.createStatement();
 
-            String q = "select distinct * from bia2music WHERE " + "tags like '%" + query + "%' order by tags desc limit 50;";
-            ResultSet resultSet = statement.executeQuery(q);
-            while (resultSet.next()) {
-                final ArrayList<String> row = new ArrayList<>();
-                final String name = resultSet.getString(1);
-                final String src_url = resultSet.getString(2);
-                final String tags = resultSet.getString(3);
-                row.add(name);
-                row.add(src_url);
-                row.add(tags);
-                results.add(row);
+                String q = "select  * from music4 WHERE " + "tags like '%" + query + "%' order by tags desc limit 50;";
+                ResultSet resultSet = statement.executeQuery(q);
+                while (resultSet.next()) {
+                    final ArrayList<String> row = new ArrayList<>();
+                    final String name = resultSet.getString(1);
+                    final String src_url = resultSet.getString(10);
+                    final String tags = resultSet.getString(3);
+                    row.add(name);
+                    row.add(src_url);
+                    row.add(tags);
+                    results.add(row);
+                }
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-
-
+            return results;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(results.size());
+
         return results;
     }
 
