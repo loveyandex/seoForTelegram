@@ -84,34 +84,38 @@ public class MuzicBot extends TelegramLongPollingBot {
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
-            ResultSet rs = stmt.executeQuery("SELECT * FROM music4");
-            while (rs.next()) {
-                try {
-                    execute(new SendMessage(update.getMessage().getChatId(),
-                            rs.getString(1)+"\n"+
-                            rs.getString(2)+"\n"+
-                            rs.getString(3)+"\n"+
-                            rs.getString(4)+"\n"+
-                            rs.getString(5)+"\n"+
-                            rs.getString(6)+"\n"+
-                            rs.getString(7)+"\n"+
-                            rs.getString(8)+"\n"+
-                            rs.getString(9)+"\n"+
-                            rs.getString(10)+"\n"+
-                            rs.getInt(11)
-
-
-                            )
-                    );
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
-
-                final SendAudio sung = new SendAudio()
-                        .setAudio(rs.getString(9))
-                        .setChatId(update.getMessage().getChatId());
-                execute(sung);
-            }
+            ResultSet rs = stmt.executeQuery("SELECT count(*) FROM music4");
+            execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(rs.getInt(1))));
+            return;
+//
+//            while (rs.next()) {
+//                try {
+//                    execute(new SendMessage(update.getMessage().getChatId(),
+//                            rs.getString(1)+"\n"+
+//                            rs.getString(2)+"\n"+
+//                            rs.getString(3)+"\n"+
+//                            rs.getString(4)+"\n"+
+//                            rs.getString(5)+"\n"+
+//                            rs.getString(6)+"\n"+
+//                            rs.getString(7)+"\n"+
+//                            rs.getString(8)+"\n"+
+//                            rs.getString(9)+"\n"+
+//                            rs.getString(10)+"\n"+
+//                            rs.getInt(11)
+//
+//
+//                            )
+//                    );
+//                } catch (TelegramApiException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                final SendAudio sung = new SendAudio()
+//                        .setAudio(rs.getString(9))
+//                        .setChatId(update.getMessage().getChatId());
+//                execute(sung);
+//                break;
+//            }
 
 
         } catch (Exception e) {
@@ -122,20 +126,6 @@ public class MuzicBot extends TelegramLongPollingBot {
             }
         }
 
-
-//        if (update.hasMessage()) {
-//            Message message = update.getMessage();
-//            SendMessage response = new SendMessage();
-//            Long chatId = message.getChatId();
-//            response.setChatId(chatId);
-//            String text = message.getText();
-//            response.setText("loard " + text);
-//            try {
-//                execute(response);
-//
-//            } catch (TelegramApiException e) {
-//            }
-//        }
         final Responses responses = new Responses(update);
         responses.inlineQuery(() -> responses
                 .startMsg()
