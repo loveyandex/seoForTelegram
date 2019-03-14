@@ -181,7 +181,8 @@ public class MuzicBot extends TelegramLongPollingBot {
                                         execute(new SendMessage(update.getMessage().getChatId(), "eng res sizze:" + searchindbFingilish.size()));
                                     } catch (TelegramApiException e) {
                                         e.printStackTrace();
-                                    }                                } else
+                                    }
+                                } else
                                     new Thread(() -> datatoMsg(update, searchindbFingilish)).start();
                             }
 
@@ -764,7 +765,9 @@ public class MuzicBot extends TelegramLongPollingBot {
 
             final SendAudio sendAudio = new SendAudio().setChatId(update.getMessage().getChatId())
                     .setAudio(audioUrl)
-                    .setCaption(list.get(2));
+                    .setCaption(list.get(2))
+                    .setReplyMarkup(cancelupingInlineBtn());
+
             try {
                 execute(sendAudio);
             } catch (TelegramApiException e) {
