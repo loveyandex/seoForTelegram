@@ -72,18 +72,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 
 
         try (Connection connection = dataSource.getConnection()) {
-            try {
-                execute(new SendMessage(update.getMessage().getChatId(), "kiri"));
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
             Statement stmt = connection.createStatement();
-
-            try {
-                execute(new SendMessage(update.getMessage().getChatId(), new Gson().toJson("adfter while")));
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
             ResultSet rs = stmt.executeQuery("SELECT count(*) FROM music4");
             while (rs.next())
                 execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(rs.getInt(1))));
@@ -761,16 +750,6 @@ public class MuzicBot extends TelegramLongPollingBot {
         System.out.println(searchindb1.size());
         for (final ArrayList<String> list : searchindb1) {
             final String audioUrl = list.get(1);
-//            URL euUrl = new URL(audioUrl);
-//            final String path = euUrl.getPath();
-////            System.err.println(path);
-//            String protocol = euUrl.getProtocol();
-//            final String encode = path.replaceAll(" ", "%20");
-////            System.err.println(encode);
-//
-//            final String host = euUrl.getHost();
-//            final String src_url = protocol + "://" + host + encode;
-//            System.err.println(src_url);
 
             final SendAudio sendAudio = new SendAudio().setChatId(update.getMessage().getChatId())
                     .setAudio(audioUrl)
@@ -817,30 +796,33 @@ public class MuzicBot extends TelegramLongPollingBot {
     }
 
     private ArrayList<ArrayList<String>> persiansearchindb(String query) {
-        final Connection connection = QDB.getInstance().connection;
-        Statement statement = null;
         ArrayList<ArrayList<String>> results = new ArrayList<>();
+        Connection connection = null;
         try {
-            statement = connection.createStatement();
+            connection = dataSource.getConnection();
+            Statement statement = null;
+            try {
+                statement = connection.createStatement();
 
-            String q = "select * from music3 WHERE " + "tags_persian like '%" + query + "%';";
-            ResultSet resultSet = statement.executeQuery(q);
-            while (resultSet.next()) {
-                final ArrayList<String> row = new ArrayList<>();
-                final String name = resultSet.getString(6);
-                final String src_url = resultSet.getString(10);
-                final String tags = resultSet.getString(8);
-                row.add(name);
-                row.add(src_url);
-                row.add(tags);
-                results.add(row);
+                String q = "select * from music4 WHERE " + "tags_persian like '%" + query + "%'";
+                ResultSet resultSet = statement.executeQuery(q);
+                while (resultSet.next()) {
+                    final ArrayList<String> row = new ArrayList<>();
+                    final String name = resultSet.getString(6);
+                    final String src_url = resultSet.getString(10);
+                    final String tags = resultSet.getString(8);
+                    row.add(name);
+                    row.add(src_url);
+                    row.add(tags);
+                    results.add(row);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-
-
+            System.out.println(results.size());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(results.size());
         return results;
     }
 
