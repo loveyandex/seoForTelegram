@@ -280,6 +280,11 @@ public class MuzicBot extends TelegramLongPollingBot {
                                 .setAudio("https://d2uqwoe9jzxxtn.cloudfront.net/music/medium/0111_Happy-Time_1386550966.mp3")
                                 .setChatId(update.getMessage().getChatId());
 
+                        try {
+                            execute(sung);
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
 
                         System.out.println("start");
                         final User from = update.getMessage().getFrom();
