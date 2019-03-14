@@ -8,6 +8,7 @@ import com.example.pojos.MusicForSave;
 import com.example.pojos.Status;
 import com.google.gson.Gson;
 import org.apache.commons.validator.routines.UrlValidator;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.ActionType;
 import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
@@ -48,6 +49,7 @@ import java.util.Map;
 /**
  * is created by aMIN on 1/25/2018 at 11:52 PM
  */
+@Component
 public class MuzicBot extends TelegramLongPollingBot {
 
     private Map<Integer, MusicForSave> userMusicForSave = new HashMap<>();
@@ -70,7 +72,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 
 
     public String getBotUsername() {
-        return null;
+        return "melodyAminBot";
     }
 
     public String getBotToken() {

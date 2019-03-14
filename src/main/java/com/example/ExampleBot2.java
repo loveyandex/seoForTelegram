@@ -17,13 +17,13 @@ import javax.annotation.PostConstruct;
  * This example bot is an echo bot that just repeats the messages sent to him
  *
  */
-@Component
+
 public class ExampleBot2 extends TelegramLongPollingBot {
 	private static final Logger logger = LoggerFactory.getLogger(ExampleBot2.class);
 	@Value("495402062:AAHqmq2EKK5Zw2WYxs_vrbMvpHCK4BA9qMQ")
 	private String token;
 	
-	@Value("@melodyAminBot")
+	@Value("melodyAminBot")
 	private String username;
 	
 	@Override
