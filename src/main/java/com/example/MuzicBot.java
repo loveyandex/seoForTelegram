@@ -69,14 +69,14 @@ public class MuzicBot extends TelegramLongPollingBot {
 
 
     public void onUpdateReceived(Update update) {
-        try {
-            execute(new SendMessage(update.getMessage().getChatId(),"kiri"));
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
 
 
         try (Connection connection = dataSource.getConnection()) {
+            try {
+                execute(new SendMessage(update.getMessage().getChatId(),"kiri"));
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
             Statement stmt = connection.createStatement();
 
             ResultSet rs = stmt.executeQuery("SELECT channelUrl FROM music3");
