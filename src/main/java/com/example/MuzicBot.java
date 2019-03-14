@@ -156,6 +156,11 @@ public class MuzicBot extends TelegramLongPollingBot {
 
 
                     if (update.getMessage().hasText()) {
+                        try {
+                            execute(new SendMessage(update.getMessage().getChatId(), "update.getMessage().hasText()"));
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
 
                         final String query = update.getMessage().getText();
                         final MusicForSave musicForSave = userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId()));
