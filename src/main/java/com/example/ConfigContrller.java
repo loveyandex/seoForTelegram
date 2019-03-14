@@ -58,7 +58,7 @@ public class ConfigContrller {
             rs.setString(8,music3.getTags_persian());
             rs.setString(9,music3.getChannelUrl());
             rs.setString(10,music3.getFileID());
-            rs.setString(11,music3.getHowmuchsent());
+            rs.setInt(11,music3.getHowmuchsent());
             rs.execute();
             String token = "700687388:AAHagXfLRpcRV0U8bnoH91Ig3mB2boMXqh4";
             String url = "https://api.telegram.org/bot"

@@ -22,5 +22,5 @@ public class Music3 {
     private String tags_persian;
     private String FileID;
     private String channelUrl;
-    private String howmuchsent;
+    private int howmuchsent;
 }
