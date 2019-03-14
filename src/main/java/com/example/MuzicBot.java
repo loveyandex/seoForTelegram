@@ -83,7 +83,7 @@ public class MuzicBot extends TelegramLongPollingBot {
             ResultSet rs2 = stmt.executeQuery("SELECT tick FROM ticks");
 
             ArrayList<String> output = new ArrayList<String>();
-            while (rs.next()) {
+            while (rs2.next()) {
                 output.add("Read from DB: " + rs2.getTimestamp("tick"));
             }
 
