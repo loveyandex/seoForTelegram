@@ -787,7 +787,7 @@ public class MuzicBot extends TelegramLongPollingBot {
             try {
                 statement = connection.createStatement();
 
-                String q = "select  * from music4 WHERE " + "tags like '%" + query + "%' order by tags desc limit 50;";
+                String q = "select  * from music4 WHERE " + "LOWER(tags) like '%" + query.toLowerCase() + "%' order by tags desc limit 50;";
                 ResultSet resultSet = statement.executeQuery(q);
                 while (resultSet.next()) {
                     final ArrayList<String> row = new ArrayList<>();
