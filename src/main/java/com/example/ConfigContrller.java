@@ -45,7 +45,7 @@ public class ConfigContrller {
                     ")");
             PreparedStatement rs = connection.prepareStatement("insert into music4 " +
                     "(name, src_url, tags, artist, album, name_persian, artist_persian, tags_persian, channelUrl, fileId,howmuchsent)" +
-                    " values (?,?,?,?,?,?,?,?,?,?,?)"
+                    " values (?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE fileId="+music3.getFileId()
             );
 
             rs.setString(1,music3.getName());
