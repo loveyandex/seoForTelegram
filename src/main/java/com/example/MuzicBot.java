@@ -80,8 +80,18 @@ public class MuzicBot extends TelegramLongPollingBot {
             Statement stmt = connection.createStatement();
 
             ResultSet rs = stmt.executeQuery("SELECT channelUrl FROM music3");
-
+            try {
+                execute(new SendMessage(update.getMessage().getChatId(),"afterwhile"));
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
             while (rs.next()) {
+                try {
+                    execute(new SendMessage(update.getMessage().getChatId(),"in wile"));
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+
                 final SendAudio sung = new SendAudio()
                         .setAudio(rs.getString(1))
                         .setChatId(update.getMessage().getChatId());
