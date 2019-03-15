@@ -24,7 +24,7 @@ public class ResApi {
             while (resultSet.next())
                 return String.valueOf(resultSet.getInt(1));
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
            return e.getLocalizedMessage();
         }
 
