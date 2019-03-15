@@ -342,7 +342,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                         System.err.println(new Gson().toJson(from));
                         final SendMessage sendMessage = new SendMessage();
                         sendMessage
-                                .setText("write song or singer name farsi ya fingilish")
+                                .setText("اسم اهنگ یا خواننده یا هردوشو میتونی بنویسی")
                                 .setChatId(update.getMessage().getChatId());
                         sendApiMethodAsync(sendMessage, new SentCallback<Message>() {
                             @Override
