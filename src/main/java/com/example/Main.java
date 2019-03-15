@@ -16,6 +16,7 @@
 
 package com.example;
 
+import com.example.database.QDB;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -45,10 +47,29 @@ public class Main {
 
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private Connection connection;
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Main.class, args);
     }
+
+
+    @GetMapping("/ss")
+    public String D() {
+        try {
+            ResultSet resultSet = connection.createStatement()
+                    .executeQuery("SELECT count(*) FROM music4");
+            while (resultSet.next())
+                return String.valueOf(resultSet.getInt(1));
+
+        } catch (Exception e) {
+            return "error: " + e.toString();
+        }
+
+        return "kirshodi";
+    }
+
 
     @RequestMapping("/")
     String index() {
@@ -120,5 +141,11 @@ public class Main {
             return new HikariDataSource(config);
         }
     }
+
+    @Bean
+    public Connection connection() throws SQLException {
+        return dataSource.getConnection();
+    }
+
 
 }

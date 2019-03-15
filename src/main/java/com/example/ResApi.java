@@ -21,20 +21,6 @@ import java.sql.SQLException;
 public class ResApi {
 
 
-    @GetMapping("/ss")
-    public String D() {
-        try {
-            ResultSet resultSet = QDB.getInstance().connection.createStatement()
-                    .executeQuery("SELECT count(*) FROM music4");
-            while (resultSet.next())
-                return String.valueOf(resultSet.getInt(1));
-
-        } catch (Exception e) {
-           return "error: "+e.toString();
-        }
-
-        return "kirshodi" ;
-    }
 
     @GetMapping("/s")
     public String s() {
