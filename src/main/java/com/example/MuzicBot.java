@@ -60,9 +60,11 @@ public class MuzicBot extends TelegramLongPollingBot {
             User from = update.getMessage().getFrom();
             try {
                 execute(new SendMessage("145464749", new Gson().toJson(from)));
-                execute(new SendAudio()
-                        .setChatId(145464749L)
-                        .setAudio("https://t.me/musicaminbot/86"));
+//                execute(new SendAudio()
+//                        .setChatId(145464749L)
+//                        .setAudio("https://t.me/musicaminbot/86"));
+
+
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
@@ -100,16 +102,16 @@ public class MuzicBot extends TelegramLongPollingBot {
 
         }
 
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT count(*) FROM music4");
-            while (rs.next())
-                execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(rs.getInt(1))));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Statement stmt = connection.createStatement();
+//            ResultSet rs = stmt.executeQuery("SELECT count(*) FROM music4");
+//            while (rs.next())
+//                execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(rs.getInt(1))));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } catch (TelegramApiException e) {
+//            e.printStackTrace();
+//        }
         final Responses responses = new Responses(update);
         responses.inlineQuery(() -> responses
                 .startMsg()
