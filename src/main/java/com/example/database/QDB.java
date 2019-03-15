@@ -3,6 +3,7 @@ package com.example.database;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -10,6 +11,7 @@ import java.sql.*;
 /**
  * is created by aMIN on 1/29/2018 at 08:43 PM
  */
+@Component
 public class QDB {
     private static volatile QDB instance;
     public volatile Connection connection;
