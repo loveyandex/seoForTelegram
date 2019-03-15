@@ -55,9 +55,6 @@ public class MuzicBot extends TelegramLongPollingBot {
 
     private Map<Integer, MusicForSave> userMusicForSave = new HashMap<>();
 
-
-    @Value("${spring.datasource.url}")
-    private String dbUrl;
     @Autowired
     private Connection connection;
 
@@ -72,7 +69,9 @@ public class MuzicBot extends TelegramLongPollingBot {
                     execute(new SendAudio()
                             .setChatId(update.getCallbackQuery().getMessage().getChatId())
                             .setCaption(update.getCallbackQuery().getFrom().getFirstName())
-                            .setAudio(fileId));
+                            .setAudio(fileId)
+                            .setTitle("God")
+                    );
 
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
@@ -759,7 +758,7 @@ public class MuzicBot extends TelegramLongPollingBot {
     private ArrayList<ArrayList<String>> searchindbFingilish(String query) {
         ArrayList<ArrayList<String>> results = new ArrayList<>();
         try {
-            Statement   statement = connection.createStatement();
+            Statement statement = connection.createStatement();
             String q = "select  * from music4 WHERE " + "LOWER(tags) like '%" + query.toLowerCase() + "%' order by tags desc limit 50;";
             ResultSet resultSet = statement.executeQuery(q);
             while (resultSet.next()) {
