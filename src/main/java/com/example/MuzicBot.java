@@ -758,11 +758,8 @@ public class MuzicBot extends TelegramLongPollingBot {
 
     private ArrayList<ArrayList<String>> searchindbFingilish(String query) {
         ArrayList<ArrayList<String>> results = new ArrayList<>();
-        Connection connection = null;
-        Statement statement;
         try {
-            statement = connection.createStatement();
-
+            Statement   statement = connection.createStatement();
             String q = "select  * from music4 WHERE " + "LOWER(tags) like '%" + query.toLowerCase() + "%' order by tags desc limit 50;";
             ResultSet resultSet = statement.executeQuery(q);
             while (resultSet.next()) {
@@ -786,7 +783,6 @@ public class MuzicBot extends TelegramLongPollingBot {
 
     private ArrayList<ArrayList<String>> persiansearchindb(String query) {
         ArrayList<ArrayList<String>> results = new ArrayList<>();
-        Connection connection = null;
         Statement statement;
         try {
             statement = connection.createStatement();
