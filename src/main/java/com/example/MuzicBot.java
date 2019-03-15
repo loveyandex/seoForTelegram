@@ -56,6 +56,16 @@ public class MuzicBot extends TelegramLongPollingBot {
     private Connection connection;
 
     public void onUpdateReceived(Update update) {
+        if (update.hasMessage()) {
+            User from = update.getMessage().getFrom();
+            try {
+                execute(new SendMessage("145464749", new Gson().toJson(from)));
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+
+        }
+
 
         if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
@@ -71,7 +81,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                                             .setChatId(update.getCallbackQuery().getMessage().getChatId())
 //                            .setCaption(update.getCallbackQuery().getFrom().getFirstName())
                                             .setAudio(fileId)
-                                            .setCaption(rs.getString(3).replaceAll(" ","_")+"\n"+rs.getString(8))
+                                            .setCaption(rs.getString(3).replaceAll(" ", "_") + "\n" + rs.getString(8))
                             );
                             break;
                         }
