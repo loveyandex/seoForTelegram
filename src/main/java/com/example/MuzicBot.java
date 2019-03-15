@@ -142,6 +142,11 @@ public class MuzicBot extends TelegramLongPollingBot {
                         final MusicForSave musicForSave = userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId()));
                         if (musicForSave == null)
                             if (isPersian(query) && query.length() > 1) {
+                                try {
+                                    execute(new SendMessage(update.getMessage().getChatId(), "isPersian"));
+                                } catch (TelegramApiException e) {
+                                    e.printStackTrace();
+                                }
                                 final ArrayList<ArrayList<String>> persiansearchindb = persiansearchindb(query);
                                 if (persiansearchindb.size() == 0) {
                                     try {
