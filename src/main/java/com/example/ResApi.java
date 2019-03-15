@@ -26,10 +26,10 @@ public class ResApi {
                 return String.valueOf(resultSet.getInt(1));
 
         } catch (SQLException e) {
-            e.printStackTrace();
+           return e.getLocalizedMessage();
         }
 
-        return null ;
+        return "kirshodi" ;
     }
 
 

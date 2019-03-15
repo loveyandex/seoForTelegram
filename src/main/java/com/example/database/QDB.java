@@ -12,7 +12,7 @@ import java.sql.*;
  */
 public class QDB {
     private static volatile QDB instance;
-    public Connection connection;
+    public volatile Connection connection;
 
     @Value("${spring.datasource.url}")
     private String dbUrl;
