@@ -1,6 +1,10 @@
 package com.example.database;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import javax.sql.DataSource;
 import java.sql.*;
 
 /**
@@ -8,15 +12,24 @@ import java.sql.*;
  */
 public class QDB {
     private static volatile QDB instance;
-    public  volatile Connection connection;
+    public Connection connection;
+
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
+
+    @Autowired
+    private DataSource dataSource;
+
     private QDB() {
+
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/musicsbot?useUnicode=true&characterEncoding=utf-8"
-                    , "root", "");
+            connection = dataSource.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
+
     /**
      * Get Singleton instance
      *
@@ -33,12 +46,12 @@ public class QDB {
     public boolean insertTOmusicTable(String name, String src, String artist, String album, String name_persian, String artist_persian) {
         try {
             Statement statement = connection.createStatement();
-            String query="insert into music (name, src_url,tags, artist, album,name_persian,artist_persian) values (?,?,?,?,?,?,?);";
+            String query = "insert into music (name, src_url,tags, artist, album,name_persian,artist_persian) values (?,?,?,?,?,?,?);";
             PreparedStatement preparedStmt = connection.prepareStatement(query);
             preparedStmt.setString(1, name);
             preparedStmt.setString(2, src);
-            preparedStmt.setString(3, String.format("%s %s %s",name, artist,album));
-            preparedStmt.setString(4,artist);
+            preparedStmt.setString(3, String.format("%s %s %s", name, artist, album));
+            preparedStmt.setString(4, artist);
             preparedStmt.setString(5, album);
             preparedStmt.setString(6, name_persian);
             preparedStmt.setString(7, artist_persian);
@@ -55,12 +68,12 @@ public class QDB {
     public boolean insertTOBia2musicTable(String name, String src, String artist, String album, String name_persian, String artist_persian) {
         try {
             Statement statement = connection.createStatement();
-            String query="insert into bia2music (name, src_url,tags, artist, album,name_persian,artist_persian) values (?,?,?,?,?,?,?);";
+            String query = "insert into bia2music (name, src_url,tags, artist, album,name_persian,artist_persian) values (?,?,?,?,?,?,?);";
             PreparedStatement preparedStmt = connection.prepareStatement(query);
             preparedStmt.setString(1, name);
             preparedStmt.setString(2, src);
-            preparedStmt.setString(3, String.format("%s %s %s",name, artist,album));
-            preparedStmt.setString(4,artist);
+            preparedStmt.setString(3, String.format("%s %s %s", name, artist, album));
+            preparedStmt.setString(4, artist);
             preparedStmt.setString(5, album);
             preparedStmt.setString(6, name_persian);
             preparedStmt.setString(7, artist_persian);
@@ -119,10 +132,10 @@ public class QDB {
         throw new RuntimeException("not execute query");
     }
 
-    public boolean insertTOhrefsTable(String href){
+    public boolean insertTOhrefsTable(String href) {
         try {
             Statement statement = connection.createStatement();
-            String query="insert into hrefs (href) values (?);";
+            String query = "insert into hrefs (href) values (?);";
             PreparedStatement preparedStmt = connection.prepareStatement(query);
             preparedStmt.setString(1, href);
             boolean execute = preparedStmt.execute();
@@ -174,8 +187,8 @@ public class QDB {
 
 
     public static void main(String[] args) {
-        QDB.getInstance().insertTOmusicTable("Del Nakan","http://dl.nex1music.ir/1397/08/04/Behnam%20Bani%20-%20Del%20Nakan.mp3?time=1545322590&filename=/1397/08/04/Behnam%20Bani%20-%20Del%20Nakan.mp3"
-                ,"Behnam Bani","nun","","");
+        QDB.getInstance().insertTOmusicTable("Del Nakan", "http://dl.nex1music.ir/1397/08/04/Behnam%20Bani%20-%20Del%20Nakan.mp3?time=1545322590&filename=/1397/08/04/Behnam%20Bani%20-%20Del%20Nakan.mp3"
+                , "Behnam Bani", "nun", "", "");
     }
 
 }

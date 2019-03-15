@@ -91,36 +91,6 @@ public class MuzicBot extends TelegramLongPollingBot {
             ResultSet rs = stmt.executeQuery("SELECT count(*) FROM music4");
             while (rs.next())
                 execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(rs.getInt(1))));
-//
-//            while (rs.next()) {
-//                try {
-//                    execute(new SendMessage(update.getMessage().getChatId(),
-//                            rs.getString(1)+"\n"+
-//                            rs.getString(2)+"\n"+
-//                            rs.getString(3)+"\n"+
-//                            rs.getString(4)+"\n"+
-//                            rs.getString(5)+"\n"+
-//                            rs.getString(6)+"\n"+
-//                            rs.getString(7)+"\n"+
-//                            rs.getString(8)+"\n"+
-//                            rs.getString(9)+"\n"+
-//                            rs.getString(10)+"\n"+
-//                            rs.getInt(11)
-//
-//
-//                            )
-//                    );
-//                } catch (TelegramApiException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                final SendAudio sung = new SendAudio()
-//                        .setAudio(rs.getString(9))
-//                        .setChatId(update.getMessage().getChatId());
-//                execute(sung);
-//                break;
-//            }
-
 
         } catch (Exception e) {
             try {
@@ -351,17 +321,6 @@ public class MuzicBot extends TelegramLongPollingBot {
 
                     } else if (update.getMessage().getText().equalsIgnoreCase("/start")
                             && userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId())) == null) {
-
-
-                        final SendAudio sung = new SendAudio()
-                                .setAudio("https://d2uqwoe9jzxxtn.cloudfront.net/music/medium/0111_Happy-Time_1386550966.mp3")
-                                .setChatId(update.getMessage().getChatId());
-
-                        try {
-                            execute(sung);
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
 
                         System.out.println("start");
                         final User from = update.getMessage().getFrom();
@@ -908,7 +867,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 
         for (int i = 0; i < songs.size(); i++) {
             List<InlineKeyboardButton> list = new ArrayList<>();
-            for (int j = 0; j < 2 && i<songs.size(); j++) {
+            for (int j = 0; j < 2 && i < songs.size(); j++) {
                 InlineKeyboardButton button = new InlineKeyboardButton("⭕️" + songs.get(i).get(2))
                         .setCallbackData("song" + songs.get(i++).get(1));
                 list.add(button);

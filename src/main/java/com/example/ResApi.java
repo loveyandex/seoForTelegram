@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.database.QDB;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/api")
@@ -17,7 +20,16 @@ public class ResApi {
 
     @GetMapping("/div")
     public String D() {
-        return "king";
+        try {
+            ResultSet resultSet = QDB.getInstance().connection.createStatement().executeQuery("select count (*) from music4;");
+            while (resultSet.next())
+                return String.valueOf(resultSet.getInt(1));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null ;
     }
 
 
