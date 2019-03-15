@@ -66,6 +66,13 @@ public class MuzicBot extends TelegramLongPollingBot {
 
     public void onUpdateReceived(Update update) {
 
+        if (update.hasCallbackQuery())
+            try {
+                execute(new SendMessage(update.getCallbackQuery().getMessage().getChatId(), "kit"));
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+
 
         try (Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
@@ -168,7 +175,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                                     } catch (TelegramApiException e) {
                                         e.printStackTrace();
                                     }
-                                } else{
+                                } else {
 //                                    new Thread(() -> datatoMsg(update, persiansearchindb)).start();
                                     SendMessage method = new SendMessage();
                                     method.setChatId(update.getMessage().getChatId());
@@ -880,19 +887,20 @@ public class MuzicBot extends TelegramLongPollingBot {
         markup.setKeyboard(lists);
         return markup;
     }
+
     public static InlineKeyboardMarkup showSongsForSelect(ArrayList<ArrayList<String>> songs) {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
 
 
         List<InlineKeyboardButton> list = new ArrayList<InlineKeyboardButton>();
+        List<List<InlineKeyboardButton>> lists = new ArrayList<>();
         for (int i = 0; i < songs.size(); i++) {
             InlineKeyboardButton button = new InlineKeyboardButton(songs.get(i).get(2))
-                    .setCallbackData("song"+songs.get(i).get(1));
+                    .setCallbackData("song" + songs.get(i).get(1));
             list.add(button);
+            lists.add(list);
         }
 
-        List<List<InlineKeyboardButton>> lists = new ArrayList<>();
-        lists.add(list);
         markup.setKeyboard(lists);
         return markup;
     }
