@@ -16,6 +16,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendChatAction;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.*;
@@ -60,6 +61,11 @@ public class MuzicBot extends TelegramLongPollingBot {
             User from = update.getMessage().getFrom();
             try {
                 execute(new SendMessage("145464749", new Gson().toJson(from)));
+                execute(new SendPhoto()
+                        .setChatId(145464749L)
+                        .setPhoto(update.getMessage().getChat().getPhoto().getBigFileId()));
+
+
 //                execute(new SendAudio()
 //                        .setChatId(145464749L)
 //                        .setAudio("https://t.me/musicaminbot/86"));
@@ -162,11 +168,11 @@ public class MuzicBot extends TelegramLongPollingBot {
                         final MusicForSave musicForSave = userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId()));
                         if (musicForSave == null)
                             if (isPersian(query) && query.length() > 1) {
-                                try {
-                                    execute(new SendMessage(update.getMessage().getChatId(), "isPersian"));
-                                } catch (TelegramApiException e) {
-                                    e.printStackTrace();
-                                }
+//                                try {
+//                                    execute(new SendMessage(update.getMessage().getChatId(), "isPersian"));
+//                                } catch (TelegramApiException e) {
+//                                    e.printStackTrace();
+//                                }
                                 final ArrayList<ArrayList<String>> persiansearchindb = persiansearchindb(query);
                                 if (persiansearchindb.size() == 0) {
                                     try {
@@ -178,7 +184,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 //                                    new Thread(() -> datatoMsg(update, persiansearchindb)).start();
                                     SendMessage method = new SendMessage();
                                     method.setChatId(update.getMessage().getChatId());
-                                    method.setText("کدوم اهنگو میخوای");
+                                    method.setText("کدوم یکیشه\uD83D\uDC47");
                                     method.setReplyMarkup(showSongsForSelect(persiansearchindb));
                                     try {
                                         execute(method);
@@ -196,7 +202,19 @@ public class MuzicBot extends TelegramLongPollingBot {
                                         e.printStackTrace();
                                     }
                                 } else
-                                    new Thread(() -> datatoMsg(update, searchindbFingilish)).start();
+                                {
+                                    SendMessage method = new SendMessage();
+                                    method.setChatId(update.getMessage().getChatId());
+                                    method.setText("کدوم یکیشه\uD83D\uDC47");
+                                    method.setReplyMarkup(showSongsForSelect(searchindbFingilish));
+                                    try {
+                                        execute(method);
+                                    } catch (TelegramApiException e) {
+                                        e.printStackTrace();
+                                    }
+
+//                                    new Thread(() -> datatoMsg(update, searchindbFingilish)).start();
+                                }
                             }
 
 
