@@ -59,22 +59,31 @@ public class MuzicBot extends TelegramLongPollingBot {
 
         if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
-            String substring = data.substring(0, 4);
-            if (substring.equalsIgnoreCase("song")) {
-                try {
-                    String fileId = data.substring(4);
-                    execute(new SendAudio()
-                            .setChatId(update.getCallbackQuery().getMessage().getChatId())
-//                            .setCaption(update.getCallbackQuery().getFrom().getFirstName())
-                            .setAudio(fileId)
-                            .setTitle("God")
-                    );
+            if (data.length() > 4) {
+                String substring = data.substring(0, 4);
+                if (substring.equalsIgnoreCase("song")) {
+                    try {
+                        String fileId = data.substring(4);
 
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
+                        ResultSet rs = connection.createStatement().executeQuery("SELECT distinct * FROM music4 where fileId='" + fileId + "'");
+                        while (rs.next()) {
+                            execute(new SendAudio()
+                                            .setChatId(update.getCallbackQuery().getMessage().getChatId())
+//                            .setCaption(update.getCallbackQuery().getFrom().getFirstName())
+                                            .setAudio(fileId)
+                                            .setCaption(rs.getString(3))
+                            );
+                            break;
+                        }
+
+
+                    } catch (TelegramApiException e) {
+                        e.printStackTrace();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-
 
         }
 
