@@ -344,7 +344,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                         System.err.println(new Gson().toJson(from));
                         final SendMessage sendMessage = new SendMessage();
                         sendMessage
-                                .setText("اسم اهنگ یا خواننده یا هردوشو میتونی بنویسی مثه \n تو در مسافت بارانی محسن چاوشی")
+                                .setText("اسم اهنگ یا خواننده یا هردوشو میتونی بنویسی مثه\uD83D\uDC47 \n  تو در مسافت بارانی محسن چاوشی")
                                 .setChatId(update.getMessage().getChatId());
                         sendApiMethodAsync(sendMessage, new SentCallback<Message>() {
                             @Override
