@@ -56,6 +56,7 @@ public class Main {
 
 
     @GetMapping("/ss")
+    @ResponseBody
     public String D() {
         try {
             ResultSet resultSet = connection.createStatement()
