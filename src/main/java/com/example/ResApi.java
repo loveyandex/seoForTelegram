@@ -32,6 +32,11 @@ public class ResApi {
         return "kirshodi" ;
     }
 
+    @GetMapping("/s")
+    public String s() {
+        return "kirshodi" ;
+    }
+
 
     @RequestMapping(value = "/send/{text}"
             , method = RequestMethod.GET)
