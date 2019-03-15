@@ -172,8 +172,19 @@ public class MuzicBot extends TelegramLongPollingBot {
                                     } catch (TelegramApiException e) {
                                         e.printStackTrace();
                                     }
-                                } else
-                                    new Thread(() -> datatoMsg(update, persiansearchindb)).start();
+                                } else{
+//                                    new Thread(() -> datatoMsg(update, persiansearchindb)).start();
+                                    SendMessage method = new SendMessage();
+                                    method.setChatId(update.getMessage().getChatId());
+                                    method.setText("کدوم اهنگو میخوای");
+                                    method.setReplyMarkup(showSongsForSelect(persiansearchindb));
+                                    try {
+                                        execute(method);
+                                    } catch (TelegramApiException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
                             } else if (!isPersian(query) && query.length() > 1) {
                                 final ArrayList<ArrayList<String>> searchindbFingilish = searchindbFingilish(query);
                                 if (searchindbFingilish.size() == 0) {
@@ -856,6 +867,22 @@ public class MuzicBot extends TelegramLongPollingBot {
         for (int i = 0; i < items.length; i++) {
             InlineKeyboardButton button = new InlineKeyboardButton(items[i])
                     .setCallbackData(hostNamesItems[i]);
+            list.add(button);
+        }
+
+        List<List<InlineKeyboardButton>> lists = new ArrayList<>();
+        lists.add(list);
+        markup.setKeyboard(lists);
+        return markup;
+    }
+    public static InlineKeyboardMarkup showSongsForSelect(ArrayList<ArrayList<String>> songs) {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+
+
+        List<InlineKeyboardButton> list = new ArrayList<InlineKeyboardButton>();
+        for (int i = 0; i < songs.size(); i++) {
+            InlineKeyboardButton button = new InlineKeyboardButton(songs.get(i).get(2))
+                    .setCallbackData("song"+songs.get(i).get(1));
             list.add(button);
         }
 
