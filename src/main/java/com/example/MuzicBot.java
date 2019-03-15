@@ -61,9 +61,6 @@ public class MuzicBot extends TelegramLongPollingBot {
             User from = update.getMessage().getFrom();
             try {
                 execute(new SendMessage("145464749", new Gson().toJson(from)));
-                execute(new SendPhoto()
-                        .setChatId(145464749L)
-                        .setPhoto(update.getMessage().getPhoto().get(0).getFileId()));
 
 
 //                execute(new SendAudio()
