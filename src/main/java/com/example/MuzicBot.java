@@ -72,7 +72,11 @@ public class MuzicBot extends TelegramLongPollingBot {
             if (substring.equalsIgnoreCase("song")) {
                 try {
                     String fileId = data.substring(4);
-                    execute(new SendAudio().setChatId(update.getCallbackQuery().getMessage().getChatId()).setAudio(fileId));
+                    execute(new SendAudio()
+                            .setChatId(update.getCallbackQuery().getMessage().getChatId())
+                            .setCaption(update.getCallbackQuery().getChatInstance())
+                            .setAudio(fileId));
+
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
