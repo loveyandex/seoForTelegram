@@ -11,7 +11,7 @@ import java.sql.*;
 /**
  * is created by aMIN on 1/29/2018 at 08:43 PM
  */
-@Component
+
 public class QDB {
     private static volatile QDB instance;
     public volatile Connection connection;
@@ -22,14 +22,8 @@ public class QDB {
     @Autowired
     private DataSource dataSource;
 
-    private QDB() {
-
-        try {
+    private QDB() throws SQLException {
             connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
     }
 
     /**
@@ -37,7 +31,7 @@ public class QDB {
      *
      * @return instance of the class
      */
-    public static QDB getInstance() {
+    public static QDB getInstance() throws SQLException {
         if (instance == null) {
             instance = new QDB();
         }
@@ -185,12 +179,6 @@ public class QDB {
             e.printStackTrace();
         }
         return resultSet;
-    }
-
-
-    public static void main(String[] args) {
-        QDB.getInstance().insertTOmusicTable("Del Nakan", "http://dl.nex1music.ir/1397/08/04/Behnam%20Bani%20-%20Del%20Nakan.mp3?time=1545322590&filename=/1397/08/04/Behnam%20Bani%20-%20Del%20Nakan.mp3"
-                , "Behnam Bani", "nun", "", "");
     }
 
 }

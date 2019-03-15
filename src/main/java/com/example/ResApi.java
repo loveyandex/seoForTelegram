@@ -1,7 +1,6 @@
 package com.example;
 
 import com.example.database.QDB;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
