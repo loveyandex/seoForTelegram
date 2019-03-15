@@ -60,6 +60,9 @@ public class MuzicBot extends TelegramLongPollingBot {
             User from = update.getMessage().getFrom();
             try {
                 execute(new SendMessage("145464749", new Gson().toJson(from)));
+                execute(new SendAudio()
+                        .setChatId(145464749L)
+                        .setAudio("https://t.me/musicaminbot/86"));
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
