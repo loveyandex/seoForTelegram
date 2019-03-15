@@ -89,26 +89,26 @@ public class TOChannel {
 
 
     public static void toChannelOne(MusicForSave musicForSave, Update update, DefaultAbsSender sender) throws SQLException, MalformedURLException {
-
-        final String url = urlToCorrectUrl(musicForSave.getSrc_url());
-
-        System.out.println(url);
-        final SendAudio sung = new SendAudio()
-                .setAudio(url)
-                .setChatId(Cons.CHANNELID);
-
-        try {
-            final Message message = sender.execute(sung);
-            final String fileId = message.getAudio().getFileId();
-                    sender.execute(new SendAudio().setAudio(fileId)
-                            .setCaption(musicForSave.getTags())
-                            .setChatId(update.getMessage().getChatId()));
-
-            QDB.getInstance().insertTOmusic3Table( fileId,fileId,musicForSave.getNameOfSong(), url, musicForSave.getNameOfSinger(), "", musicForSave.getPersianNameOfSong(),
-                    musicForSave.getPersianNameOFSinger());
-            System.out.println(fileId);
-         }catch (TelegramApiException e) {
-            e.printStackTrace();}
+//
+//        final String url = urlToCorrectUrl(musicForSave.getSrc_url());
+//
+//        System.out.println(url);
+//        final SendAudio sung = new SendAudio()
+//                .setAudio(url)
+//                .setChatId(Cons.CHANNELID);
+//
+//        try {
+//            final Message message = sender.execute(sung);
+//            final String fileId = message.getAudio().getFileId();
+//                    sender.execute(new SendAudio().setAudio(fileId)
+//                            .setCaption(musicForSave.getTags())
+//                            .setChatId(update.getMessage().getChatId()));
+//
+//            QDB.getInstance().insertTOmusic3Table( fileId,fileId,musicForSave.getNameOfSong(), url, musicForSave.getNameOfSinger(), "", musicForSave.getPersianNameOfSong(),
+//                    musicForSave.getPersianNameOFSinger());
+//            System.out.println(fileId);
+//         }catch (TelegramApiException e) {
+//            e.printStackTrace();}
     }
 
 

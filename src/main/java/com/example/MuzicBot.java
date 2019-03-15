@@ -1,18 +1,14 @@
 package com.example;
 
 
-import com.example.database.QDB;
 import com.example.once.TOChannel;
 import com.example.pojos.Cons;
 import com.example.pojos.MusicForSave;
 import com.example.pojos.Status;
 import com.google.gson.Gson;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.ActionType;
@@ -674,9 +670,18 @@ public class MuzicBot extends TelegramLongPollingBot {
                     System.err.println(update.getMessage().getText());
             if (update.hasCallbackQuery()) {
                 final boolean cancel = update.getCallbackQuery().getData().equalsIgnoreCase("cancel");
+
+                try {
+                    execute(new SendMessage(update.getCallbackQuery().getMessage().getChatId(), "kit"));
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+
+
                 if (cancel) {
                     final Message message = update.getCallbackQuery().getMessage();
                     final Integer id = Math.toIntExact(message.getChat().getId());
+
 
 //
 //                    new EditMessageReplyMarkup()
