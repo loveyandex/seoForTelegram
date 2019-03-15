@@ -58,10 +58,8 @@ public class MuzicBot extends TelegramLongPollingBot {
 
     @Value("${spring.datasource.url}")
     private String dbUrl;
-
     @Autowired
-    private DataSource dataSource;
-
+    private Connection connection;
 
     public void onUpdateReceived(Update update) {
 
@@ -84,21 +82,16 @@ public class MuzicBot extends TelegramLongPollingBot {
 
         }
 
-
-        try (Connection connection = dataSource.getConnection()) {
+        try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT count(*) FROM music4");
             while (rs.next())
                 execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(rs.getInt(1))));
-
-        } catch (Exception e) {
-            try {
-                execute(new SendMessage(update.getMessage().getChatId(), "error amin: " + e.getMessage()));
-            } catch (TelegramApiException e1) {
-                e1.printStackTrace();
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
-
         final Responses responses = new Responses(update);
         responses.inlineQuery(() -> responses
                 .startMsg()
@@ -761,65 +754,54 @@ public class MuzicBot extends TelegramLongPollingBot {
     private ArrayList<ArrayList<String>> searchindbFingilish(String query) {
         ArrayList<ArrayList<String>> results = new ArrayList<>();
         Connection connection = null;
+        Statement statement;
         try {
-            connection = dataSource.getConnection();
-            Statement statement = null;
-            try {
-                statement = connection.createStatement();
+            statement = connection.createStatement();
 
-                String q = "select  * from music4 WHERE " + "LOWER(tags) like '%" + query.toLowerCase() + "%' order by tags desc limit 50;";
-                ResultSet resultSet = statement.executeQuery(q);
-                while (resultSet.next()) {
-                    final ArrayList<String> row = new ArrayList<>();
-                    final String name = resultSet.getString(1);
-                    final String src_url = resultSet.getString(10);
-                    final String tags = resultSet.getString(3);
-                    row.add(name);
-                    row.add(src_url);
-                    row.add(tags);
-                    results.add(row);
-                }
-
-
-            } catch (SQLException e) {
-                e.printStackTrace();
+            String q = "select  * from music4 WHERE " + "LOWER(tags) like '%" + query.toLowerCase() + "%' order by tags desc limit 50;";
+            ResultSet resultSet = statement.executeQuery(q);
+            while (resultSet.next()) {
+                final ArrayList<String> row = new ArrayList<>();
+                final String name = resultSet.getString(1);
+                final String src_url = resultSet.getString(10);
+                final String tags = resultSet.getString(3);
+                row.add(name);
+                row.add(src_url);
+                row.add(tags);
+                results.add(row);
             }
-            return results;
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return results;
+
     }
 
     private ArrayList<ArrayList<String>> persiansearchindb(String query) {
         ArrayList<ArrayList<String>> results = new ArrayList<>();
         Connection connection = null;
+        Statement statement;
         try {
-            connection = dataSource.getConnection();
-            Statement statement = null;
-            try {
-                statement = connection.createStatement();
+            statement = connection.createStatement();
 
-                String q = "select * from music4 WHERE " + "tags_persian like '%" + query + "%'";
-                ResultSet resultSet = statement.executeQuery(q);
-                while (resultSet.next()) {
-                    final ArrayList<String> row = new ArrayList<>();
-                    final String name = resultSet.getString(6);
-                    final String src_url = resultSet.getString(10);
-                    final String tags = resultSet.getString(8);
-                    row.add(name);
-                    row.add(src_url);
-                    row.add(tags);
-                    results.add(row);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            String q = "select * from music4 WHERE " + "tags_persian like '%" + query + "%'";
+            ResultSet resultSet = statement.executeQuery(q);
+            while (resultSet.next()) {
+                final ArrayList<String> row = new ArrayList<>();
+                final String name = resultSet.getString(6);
+                final String src_url = resultSet.getString(10);
+                final String tags = resultSet.getString(8);
+                row.add(name);
+                row.add(src_url);
+                row.add(tags);
+                results.add(row);
             }
-            System.out.println(results.size());
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println(results.size());
         return results;
     }
 
