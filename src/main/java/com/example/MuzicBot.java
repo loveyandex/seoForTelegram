@@ -66,12 +66,20 @@ public class MuzicBot extends TelegramLongPollingBot {
 
     public void onUpdateReceived(Update update) {
 
-        if (update.hasCallbackQuery())
-            try {
-                execute(new SendMessage(update.getCallbackQuery().getMessage().getChatId(), "kit"));
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
+        if (update.hasCallbackQuery()) {
+            String data = update.getCallbackQuery().getData();
+            String substring = data.substring(0, 4);
+            if (substring.equalsIgnoreCase("song")) {
+                try {
+                    String fileId = data.substring(4);
+                    execute(new SendAudio().setChatId(update.getCallbackQuery().getMessage().getChatId()).setAudio(fileId));
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             }
+
+
+        }
 
 
         try (Connection connection = dataSource.getConnection()) {
@@ -892,9 +900,10 @@ public class MuzicBot extends TelegramLongPollingBot {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
 
 
-        List<InlineKeyboardButton> list = new ArrayList<InlineKeyboardButton>();
         List<List<InlineKeyboardButton>> lists = new ArrayList<>();
+
         for (int i = 0; i < songs.size(); i++) {
+            List<InlineKeyboardButton> list = new ArrayList<>();
             InlineKeyboardButton button = new InlineKeyboardButton(songs.get(i).get(2))
                     .setCallbackData("song" + songs.get(i).get(1));
             list.add(button);
