@@ -1,13 +1,17 @@
 package com.example;
 
 import com.example.database.QDB;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +24,8 @@ public class ResApi {
     @GetMapping("/ss")
     public String D() {
         try {
-            ResultSet resultSet = QDB.getInstance().connection.createStatement().executeQuery("select count (*) from music4;");
+            ResultSet resultSet = QDB.getInstance().connection.createStatement()
+                    .executeQuery("SELECT count(*) FROM music4");
             while (resultSet.next())
                 return String.valueOf(resultSet.getInt(1));
 
@@ -66,5 +71,7 @@ public class ResApi {
             return response.body().string();
         }
     }
+
+
 
 }
