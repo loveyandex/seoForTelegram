@@ -65,10 +65,9 @@ public class MuzicBot extends TelegramLongPollingBot {
                     String fileId = data.substring(4);
                     execute(new SendAudio()
                             .setChatId(update.getCallbackQuery().getMessage().getChatId())
-                            .setCaption(update.getCallbackQuery().getFrom().getFirstName())
+//                            .setCaption(update.getCallbackQuery().getFrom().getFirstName())
                             .setAudio(fileId)
                             .setTitle("God")
-                            .setThumb(new InputFile())
                     );
 
                 } catch (TelegramApiException e) {
