@@ -1,7 +1,6 @@
 package com.example;
 
 
-import com.example.once.TOChannel;
 import com.example.pojos.Cons;
 import com.example.pojos.MusicForSave;
 import com.example.pojos.Status;
@@ -617,22 +616,6 @@ public class MuzicBot extends TelegramLongPollingBot {
                     final MusicForSave musicForSave1 = userMusicForSave.get(key);
                     if (musicForSave1 != null)
                         if (musicForSave1.getStatus() == Status.Six) {
-                            try {
-                                System.out.println(musicForSave1.getStatus());
-
-                                musicForSave1.setTags(musicForSave1.getNameOfSong() + "->" + musicForSave1.getNameOfSinger());
-                                musicForSave1.setPersian_tags(musicForSave1.getPersianNameOfSong() + "->" + musicForSave1.getPersianNameOFSinger());
-
-                                TOChannel.toChannelOne(musicForSave1, update, MuzicBot.this);
-                                userMusicForSave.remove(key);
-
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            } catch (MalformedURLException e) {
-                                e.printStackTrace();
-                            }
-
-
                         }
 
                 }
