@@ -25,7 +25,7 @@ public class ResApi {
                 return String.valueOf(resultSet.getInt(1));
 
         } catch (Exception e) {
-           return e.getLocalizedMessage();
+           return "error: "+e.getLocalizedMessage();
         }
 
         return "kirshodi" ;
