@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class ResApi {
 
 
-    @GetMapping("/div")
+    @GetMapping("/ss")
     public String D() {
         try {
             ResultSet resultSet = QDB.getInstance().connection.createStatement().executeQuery("select count (*) from music4;");
