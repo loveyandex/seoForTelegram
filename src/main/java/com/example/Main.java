@@ -28,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.telegram.telegrambots.ApiContextInitializer;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -51,6 +52,8 @@ public class Main {
     private Connection connection;
 
     public static void main(String[] args) throws Exception {
+        //Add this line to initialize bots context
+        ApiContextInitializer.init();
         SpringApplication.run(Main.class, args);
     }
 
