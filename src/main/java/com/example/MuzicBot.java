@@ -71,7 +71,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                                             .setChatId(update.getCallbackQuery().getMessage().getChatId())
 //                            .setCaption(update.getCallbackQuery().getFrom().getFirstName())
                                             .setAudio(fileId)
-                                            .setCaption(rs.getString(3)+"\n"+rs.getString(8))
+                                            .setCaption(rs.getString(3).replaceAll(" ","_")+"\n"+rs.getString(8))
                             );
                             break;
                         }
