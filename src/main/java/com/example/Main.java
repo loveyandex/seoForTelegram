@@ -167,7 +167,7 @@ public class Main {
                 try {
 
                     String post = post(client, "https://still-waters-40834.herokuapp.com/");
-                    post(client, d + post.substring(0, 64));
+                    post(client, d + post.substring(0, 164));
                     Thread.sleep(60000);
 
                 } catch (InterruptedException e) {

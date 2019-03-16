@@ -1011,15 +1011,6 @@ public class MuzicBot extends TelegramLongPollingBot {
     }
 
 
-    private static MuzicBot muzicBot = new MuzicBot();
-
-    public static MuzicBot getMuzicBot() {
-        return muzicBot;
-    }
-
-    private MuzicBot() {
-    }
-
     private boolean isPersian(String query) {
         String xx = new String(new char[]{query.charAt(0)});
         final byte[] bytes = xx.getBytes();
