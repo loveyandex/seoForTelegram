@@ -1,4 +1,4 @@
-package com.example;
+package com.example.bot;
 
 
 import com.example.pojos.Cons;
@@ -7,7 +7,6 @@ import com.example.pojos.Status;
 import com.google.gson.Gson;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.ActionType;
@@ -16,7 +15,6 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendChatAction;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -25,7 +23,6 @@ import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessageconten
 import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResultArticle;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResultAudio;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -34,7 +31,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.meta.updateshandlers.SentCallback;
 
-import javax.sql.DataSource;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -79,9 +75,9 @@ public class MuzicBot extends TelegramLongPollingBot {
 
         if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
-            if (data.length() > 4) {
-                String substring = data.substring(0, 4);
-                if (substring.equalsIgnoreCase("song")) {
+            String substring = data.substring(0, 4);
+            if (substring.equalsIgnoreCase("song")) {
+                if (data.length() > 4) {
                     try {
                         String fileId = data.substring(4);
 
@@ -108,12 +104,15 @@ public class MuzicBot extends TelegramLongPollingBot {
             if (data.equalsIgnoreCase("deletethissong")) {
                 Message message = update.getCallbackQuery().getMessage();
                 try {
-                    sendApiMethod(new EditMessageReplyMarkup()
+                    execute(new EditMessageReplyMarkup()
                             .setMessageId(message.getMessageId())
                             .setReplyMarkup(ConfirmAndDeleteSongReply()));
                 } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
+                    try {
+                        execute(new SendMessage(update.getCallbackQuery().getMessage().getChatId(), e.toString()));
+                    } catch (TelegramApiException e1) {
+                        e1.printStackTrace();
+                    }                }
 
 
             } else if (data.equalsIgnoreCase("confirmYes")) {
