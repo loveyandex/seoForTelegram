@@ -108,7 +108,11 @@ public class MuzicBot extends TelegramLongPollingBot {
                 try {
                     execute(new DeleteMessage(update.getCallbackQuery().getMessage().getChatId(), message.getMessageId()));
                 } catch (TelegramApiException e) {
-                    e.printStackTrace();
+                    try {
+                        execute(new SendMessage(update.getCallbackQuery().getMessage().getChatId(), e.toString()));
+                    } catch (TelegramApiException e1) {
+                        e1.printStackTrace();
+                    }
                 }
 
             }
