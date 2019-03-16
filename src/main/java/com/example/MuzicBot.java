@@ -90,6 +90,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                                             .setChatId(update.getCallbackQuery().getMessage().getChatId())
 //                            .setCaption(update.getCallbackQuery().getFrom().getFirstName())
                                             .setAudio(fileId)
+                                            .setReplyMarkup(deleteSongReply())
                                             .setCaption(rs.getString(3).replaceAll(" ", "_") + "\n" + rs.getString(8))
                             );
                             break;
@@ -102,6 +103,14 @@ public class MuzicBot extends TelegramLongPollingBot {
                         e.printStackTrace();
                     }
                 }
+            }else if (data.equalsIgnoreCase("deletethissong")){
+                Message message = update.getCallbackQuery().getMessage();
+                try {
+                    execute(new DeleteMessage(update.getCallbackQuery().getMessage().getChatId(), message.getMessageId()));
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+
             }
 
         }
@@ -904,6 +913,21 @@ public class MuzicBot extends TelegramLongPollingBot {
         lists.add(row1);
 
 
+        markup.setKeyboard(lists);
+        return markup;
+
+    }
+    private InlineKeyboardMarkup deleteSongReply() {
+
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+
+
+        List<List<InlineKeyboardButton>> lists = new ArrayList<>();
+        List<InlineKeyboardButton> row1 = new ArrayList<>();
+        InlineKeyboardButton button = new InlineKeyboardButton("دیلیت کن خوشم نیومد")
+                .setCallbackData("deletethissong");
+        row1.add(button);
+        lists.add(row1);
         markup.setKeyboard(lists);
         return markup;
 
