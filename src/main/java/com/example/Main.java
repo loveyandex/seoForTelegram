@@ -18,6 +18,7 @@ package com.example;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.telegram.telegrambots.ApiContextInitializer;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -148,6 +150,44 @@ public class Main {
     @Bean
     public Connection connection() throws SQLException {
         return dataSource.getConnection();
+    }
+
+
+    @Bean
+    public void sd() {
+        OkHttpClient client = new OkHttpClient();
+        new Thread(() -> {
+            while (true) {
+                String token = "bot495402062:AAHyqLaAsQS_BeQNwDU9qTG81RVXWEvwP6s";
+
+                String url = "https://api.telegram.org/"
+                        + token
+                        + "/sendMessage?chat_id=145464749&text="
+                        + "timing";
+                try {
+
+                    post(client, url);
+                    Thread.sleep(10000);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+
+    }
+
+
+    public static String post(OkHttpClient client, String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
     }
 
 
