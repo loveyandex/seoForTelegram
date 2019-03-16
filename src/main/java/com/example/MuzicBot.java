@@ -103,7 +103,8 @@ public class MuzicBot extends TelegramLongPollingBot {
                         e.printStackTrace();
                     }
                 }
-            }else if (data.equalsIgnoreCase("deletethissong")){
+            }
+            if (data.equalsIgnoreCase("deletethissong")) {
                 Message message = update.getCallbackQuery().getMessage();
                 try {
                     execute(new DeleteMessage(update.getCallbackQuery().getMessage().getChatId(), message.getMessageId()));
@@ -921,6 +922,7 @@ public class MuzicBot extends TelegramLongPollingBot {
         return markup;
 
     }
+
     private InlineKeyboardMarkup deleteSongReply() {
 
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
@@ -985,7 +987,11 @@ public class MuzicBot extends TelegramLongPollingBot {
     }
 
     public String getBotToken() {
-        return "495402062:AAFW20xQIExpqkfbZpoDtbP_fflq1WznJIM";
+        String token;
+//        token = "886824806:AAFz9W-M2zqNvoM-RhlXfjVvRScJhKdewOw";
+        token = "495402062:AAFW20xQIExpqkfbZpoDtbP_fflq1WznJIM";
+
+        return token;
     }
 
 }
