@@ -133,6 +133,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                 try {
                     sendApiMethod(new EditMessageReplyMarkup()
                             .setMessageId(message.getMessageId())
+                            .setChatId(message.getChatId())
                             .setReplyMarkup(deleteSongReply()));
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
