@@ -1040,9 +1040,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 
     public String getBotToken() {
         String token;
-//        token = "886824806:AAFz9W-M2zqNvoM-RhlXfjVvRScJhKdewOw";
-        token = "495402062:AAFW20xQIExpqkfbZpoDtbP_fflq1WznJIM";
-
+        token = "495402062:AAFdLPIYq3kgYyD1o_hwdMq9rOlc-weq8mQ";
         return token;
     }
 
