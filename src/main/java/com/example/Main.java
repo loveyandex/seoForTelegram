@@ -160,13 +160,14 @@ public class Main {
             while (true) {
                 String token = "bot495402062:AAHyqLaAsQS_BeQNwDU9qTG81RVXWEvwP6s";
 
-                String url = "https://api.telegram.org/"
+                String d = "https://api.telegram.org/"
                         + token
-                        + "/sendMessage?chat_id=145464749&text="
-                        + "timing";
+                        + "/sendMessage?chat_id=145464749&text=";
+                String url = d + "timing";
                 try {
 
-                    post(client, url);
+                    String post = post(client, "https://still-waters-40834.herokuapp.com/");
+                    post(client, d + post.substring(0, 64));
                     Thread.sleep(10000);
 
                 } catch (InterruptedException e) {
