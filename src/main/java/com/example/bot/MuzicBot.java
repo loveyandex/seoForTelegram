@@ -87,7 +87,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                                             .setChatId(update.getCallbackQuery().getMessage().getChatId())
 //                            .setCaption(update.getCallbackQuery().getFrom().getFirstName())
                                             .setAudio(fileId)
-                                            .setReplyMarkup(deleteSongReply())
+                                            .setReplyMarkup(OptionsSongReply())
                                             .setCaption(rs.getString(3).replaceAll(" ", "_") + "\n" + rs.getString(8))
                             );
                             break;
@@ -101,7 +101,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                     }
                 }
             }
-            if (data.equalsIgnoreCase("deletethissong")) {
+            if (data.equalsIgnoreCase(Vals.DELETE_IT)) {
                 Message message = update.getCallbackQuery().getMessage();
                 try {
                     execute(new EditMessageReplyMarkup()
@@ -113,7 +113,8 @@ public class MuzicBot extends TelegramLongPollingBot {
                         execute(new SendMessage(update.getCallbackQuery().getMessage().getChatId(), e.toString()));
                     } catch (TelegramApiException e1) {
                         e1.printStackTrace();
-                    }                }
+                    }
+                }
 
 
             } else if (data.equalsIgnoreCase("confirmYes")) {
@@ -134,7 +135,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                     sendApiMethod(new EditMessageReplyMarkup()
                             .setMessageId(message.getMessageId())
                             .setChatId(message.getChatId())
-                            .setReplyMarkup(deleteSongReply()));
+                            .setReplyMarkup(OptionsSongReply()));
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
@@ -947,16 +948,23 @@ public class MuzicBot extends TelegramLongPollingBot {
 
     }
 
-    private InlineKeyboardMarkup deleteSongReply() {
+    private InlineKeyboardMarkup OptionsSongReply() {
 
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
 
 
         List<List<InlineKeyboardButton>> lists = new ArrayList<>();
         List<InlineKeyboardButton> row1 = new ArrayList<>();
-        InlineKeyboardButton button = new InlineKeyboardButton("دیلیت کن خوشم نیومد")
-                .setCallbackData("deletethissong");
+        InlineKeyboardButton button = new InlineKeyboardButton("del")
+                .setCallbackData(Vals.DELETE_IT);
+        InlineKeyboardButton button2 = new InlineKeyboardButton("\uD83D\uDE3B")
+                .setCallbackData(Vals.LOVE_IT);
+        InlineKeyboardButton button22 = new InlineKeyboardButton("\uD83E\uDD22")
+                .setCallbackData(Vals.RID_OF_IT);
+
         row1.add(button);
+        row1.add(button2);
+        row1.add(button22);
         lists.add(row1);
         markup.setKeyboard(lists);
         return markup;
