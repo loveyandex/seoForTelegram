@@ -281,6 +281,8 @@ public class MuzicBot extends TelegramLongPollingBot {
                                             .setInputMessageContent(new InputContactMessageContent().setFirstName("amin").setPhoneNumber("+989351844321"))
                                     ));
                         else {
+                            execute(new SendMessage("145464749","inline has data"));
+
                             InlineQueryResultAudio[] inlineQueryResults = datatoInline(searchindb1);
                             execute(new AnswerInlineQuery().setInlineQueryId(update.getInlineQuery().getId()).
                                     setResults(inlineQueryResults));
@@ -801,8 +803,7 @@ public class MuzicBot extends TelegramLongPollingBot {
         for (int i = 0; i < jInlineQueryResultAudio.length; i++) {
             final ArrayList<String> list = searchindb1.get(i);
             final String audioUrl = list.get(1);
-            final String src_url = urlToCorrectUrl(audioUrl);
-            System.err.println(src_url);
+
             jInlineQueryResultAudio[i] = new InlineQueryResultAudio()
                     .setAudioUrl(audioUrl)
                     .setCaption(list.get(2))
