@@ -24,6 +24,7 @@ import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessageconten
 import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResultArticle;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResultAudio;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -155,21 +156,10 @@ public class MuzicBot extends TelegramLongPollingBot {
 
 
                     if (update.getMessage().hasText()) {
-                        try {
-                            execute(new SendMessage(update.getMessage().getChatId(), "update.getMessage().hasText()"));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-
                         final String query = update.getMessage().getText();
                         final MusicForSave musicForSave = userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId()));
                         if (musicForSave == null)
                             if (isPersian(query) && query.length() > 1) {
-//                                try {
-//                                    execute(new SendMessage(update.getMessage().getChatId(), "isPersian"));
-//                                } catch (TelegramApiException e) {
-//                                    e.printStackTrace();
-//                                }
                                 final ArrayList<ArrayList<String>> persiansearchindb = persiansearchindb(query);
                                 if (persiansearchindb.size() == 0) {
                                     try {
@@ -194,12 +184,12 @@ public class MuzicBot extends TelegramLongPollingBot {
                                 final ArrayList<ArrayList<String>> searchindbFingilish = searchindbFingilish(query);
                                 if (searchindbFingilish.size() == 0) {
                                     try {
-                                        execute(new SendMessage(update.getMessage().getChatId(), "eng res sizze:" + searchindbFingilish.size()));
+                                        execute(new SendMessage(update.getMessage().getChatId(),
+                                                "متاسفانه چنین چیزی نیست هنوز"));
                                     } catch (TelegramApiException e) {
                                         e.printStackTrace();
                                     }
-                                } else
-                                {
+                                } else {
                                     SendMessage method = new SendMessage();
                                     method.setChatId(update.getMessage().getChatId());
                                     method.setText("کدوم یکیشه\uD83D\uDC47");
@@ -351,7 +341,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                         });
 
 
-                    } else if (update.getMessage().getText().equalsIgnoreCase("/start")
+                    } else if (update.getMessage().getText().equalsIgnoreCase("/search")
                             && userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId())) == null) {
 
                         System.out.println("start");
@@ -361,6 +351,33 @@ public class MuzicBot extends TelegramLongPollingBot {
                         sendMessage
                                 .setText("اسم اهنگ یا خواننده یا هردوشو میتونی بنویسی مثه\uD83D\uDC47 \n  تو در مسافت بارانی محسن چاوشی")
                                 .setChatId(update.getMessage().getChatId());
+                        sendApiMethodAsync(sendMessage, new SentCallback<Message>() {
+                            @Override
+                            public void onResult(BotApiMethod<Message> method, Message response) {
+
+                            }
+
+                            @Override
+                            public void onError(BotApiMethod<Message> method, TelegramApiRequestException apiException) {
+
+                            }
+
+                            @Override
+                            public void onException(BotApiMethod<Message> method, Exception exception) {
+
+                            }
+                        });
+
+                    } else if (update.getMessage().getText().equalsIgnoreCase("/start")
+                            && userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId())) == null) {
+
+                        final User from = update.getMessage().getFrom();
+                        System.err.println(new Gson().toJson(from));
+                        final SendMessage sendMessage = new SendMessage();
+                        sendMessage
+                                .setText("چزاییی که داریم")
+                                .setChatId(update.getMessage().getChatId())
+                                .setReplyMarkup(startReply());
                         sendApiMethodAsync(sendMessage, new SentCallback<Message>() {
                             @Override
                             public void onResult(BotApiMethod<Message> method, Message response) {
@@ -665,22 +682,9 @@ public class MuzicBot extends TelegramLongPollingBot {
             if (update.hasCallbackQuery()) {
                 final boolean cancel = update.getCallbackQuery().getData().equalsIgnoreCase("cancel");
 
-                try {
-                    execute(new SendMessage(update.getCallbackQuery().getMessage().getChatId(), "kit"));
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
-
-
                 if (cancel) {
                     final Message message = update.getCallbackQuery().getMessage();
                     final Integer id = Math.toIntExact(message.getChat().getId());
-
-
-//
-//                    new EditMessageReplyMarkup()
-//                            .setReplyMarkup(ok()).setChatId(String.valueOf(id))
-//                            .setMessageId(message.getMessageId());
 
                     sendApiMethodAsync(
                             new EditMessageText().setText("thanks")
@@ -721,6 +725,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 
 
     }
+
 
     private ReplyKeyboardMarkup fullOptions() {
         final ArrayList<KeyboardRow> keyboard = new ArrayList<KeyboardRow>() {{
@@ -880,6 +885,30 @@ public class MuzicBot extends TelegramLongPollingBot {
         markup.setKeyboard(lists);
         return markup;
     }
+
+    private InlineKeyboardMarkup startReply() {
+
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+
+
+        List<List<InlineKeyboardButton>> lists = new ArrayList<>();
+        List<InlineKeyboardButton> row1 = new ArrayList<>();
+        InlineKeyboardButton button = new InlineKeyboardButton("پیدا کن")
+                .setCallbackData("search");
+
+        InlineKeyboardButton button1 = new InlineKeyboardButton("بهترین های هفته داخلی")
+                .setCallbackData("bestInWeekPersian");
+        row1.add(button);
+        row1.add(button1);
+
+        lists.add(row1);
+
+
+        markup.setKeyboard(lists);
+        return markup;
+
+    }
+
 
     public static InlineKeyboardMarkup tryAgain() {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();

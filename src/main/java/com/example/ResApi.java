@@ -1,27 +1,19 @@
 package com.example;
 
-import com.example.database.QDB;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Date;
+
 
 @RestController
 @RequestMapping("/api")
 public class ResApi {
-
 
 
     @GetMapping("/s")
@@ -59,7 +51,6 @@ public class ResApi {
             return response.body().string();
         }
     }
-
 
 
 }
