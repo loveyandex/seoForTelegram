@@ -106,6 +106,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                 try {
                     execute(new EditMessageReplyMarkup()
                             .setMessageId(message.getMessageId())
+                            .setChatId(message.getChatId())
                             .setReplyMarkup(ConfirmAndDeleteSongReply()));
                 } catch (TelegramApiException e) {
                     try {
