@@ -1,9 +1,9 @@
-package com.example.bot;
+package com.example.bot.bitMelBot;
 
 
-import com.example.pojos.Cons;
-import com.example.pojos.MusicForSave;
-import com.example.pojos.Status;
+import com.example.bot.bitMelBot.pojos.Cons;
+import com.example.bot.bitMelBot.pojos.MusicForSave;
+import com.example.bot.bitMelBot.pojos.Status;
 import com.google.gson.Gson;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +34,7 @@ import org.telegram.telegrambots.meta.updateshandlers.SentCallback;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +54,7 @@ public class MuzicBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
             User from = update.getMessage().getFrom();
+
             try {
                 execute(new SendMessage("145464749", new Gson().toJson(from)));
 

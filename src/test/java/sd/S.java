@@ -1,11 +1,23 @@
 package sd;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+
 public class S {
-    public static void main(String[] args) {
-        String songMONOKNONOKNOKNONOKNSAKLNKA = "dd";
-        String substring = songMONOKNONOKNOKNONOKNSAKLNKA.substring(0, 4);
-        String substring2 = songMONOKNONOKNOKNONOKNSAKLNKA.substring(4);
-        System.out.println(substring);
-        System.out.println(substring2);
+    public static void main(String[] args) throws IOException {
+        Element body = Jsoup.connect("https://www.musixmatch.com/lyrics/Aref/Soltane-Ghalbha")
+                .get().body();
+
+        Elements lyrics__content__ok = body.getElementsByClass("lyrics__content__ok");
+
+        Element element = lyrics__content__ok.get(0);
+        Element elementa = lyrics__content__ok.get(1);
+
+        System.out.println(element.text());
+        System.out.println(elementa.text());
+
     }
 }

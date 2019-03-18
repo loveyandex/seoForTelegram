@@ -1,4 +1,4 @@
-package com.example.pojos;
+package com.example.bot.bitMelBot.pojos;
 
 /**
  * is created by aMIN on 12/23/2018 at 1:27 AM

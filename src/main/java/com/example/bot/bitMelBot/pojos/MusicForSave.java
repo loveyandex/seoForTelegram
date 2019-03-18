@@ -1,4 +1,4 @@
-package com.example.pojos;
+package com.example.bot.bitMelBot.pojos;
 
 import lombok.Getter;
 import lombok.Setter;

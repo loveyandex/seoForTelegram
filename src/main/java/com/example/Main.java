@@ -120,6 +120,15 @@ public class Main {
         try (Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
+            stmt.executeUpdate("create table if not exists usegh(" +
+                    "  id bigint(39) not null primary key ," +
+                    "  firstName varchar(50) not null ," +
+                    "  isBot bool ," +
+                    "  lastName varchar(50)," +
+                    "  userName varchar(50)," +
+                    "  languageCode varchar(2)," +
+                    "  numberMsg int" +
+                    ")");
             stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
             ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
 

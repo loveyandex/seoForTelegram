@@ -1,7 +1,7 @@
 package com.example;
 
 
-import com.example.pojos.Music3;
+import com.example.bot.bitMelBot.pojos.Music3;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
