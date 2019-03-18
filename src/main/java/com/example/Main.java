@@ -120,8 +120,8 @@ public class Main {
         try (Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-            stmt.executeUpdate("create table if not exists usegh(" +
-                    "  id bigint(39) not null primary key ," +
+            stmt.executeUpdate("create table if not exists usegh (" +
+                    "  id INT(39) not null primary key ," +
                     "  firstName varchar(50) not null ," +
                     "  isBot bool ," +
                     "  lastName varchar(50)," +
@@ -140,7 +140,7 @@ public class Main {
             model.put("records", output);
             return "db";
         } catch (Exception e) {
-            model.put("message", e.getMessage());
+            model.put("message", e.toString());
             return "error";
         }
     }

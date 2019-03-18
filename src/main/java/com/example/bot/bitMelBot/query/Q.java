@@ -1,6 +1,5 @@
 package com.example.bot.bitMelBot.query;
 
-import com.example.bot.bitMelBot.pojos.Usegh;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.sql.*;
