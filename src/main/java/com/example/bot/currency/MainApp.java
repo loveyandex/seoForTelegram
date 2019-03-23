@@ -6,6 +6,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class MainApp {
 
+
+
+
+
     static public SendMessage initMessage(Update update) {
         Long chatId = update.getMessage().getChatId();
         boolean isStart = update.getMessage().getText().equalsIgnoreCase("/start");
