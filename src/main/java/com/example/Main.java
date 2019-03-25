@@ -76,6 +76,13 @@ public class Main {
     }
 
 
+    @GetMapping("/ss")
+    @ResponseBody
+    public String dD() {
+     return dbUrl;
+    }
+
+
     @RequestMapping("/")
     String index() {
         return "index";
