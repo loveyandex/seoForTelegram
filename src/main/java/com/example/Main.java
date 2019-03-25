@@ -76,7 +76,7 @@ public class Main {
     }
 
 
-    @GetMapping("/ss")
+    @GetMapping("/dburl")
     @ResponseBody
     public String dD() {
      return dbUrl;
