@@ -81,8 +81,7 @@ public class Main {
     public String dD() {
      return dbUrl;
     }
-
-
+    
     @RequestMapping("/")
     String index() {
         return "index";
