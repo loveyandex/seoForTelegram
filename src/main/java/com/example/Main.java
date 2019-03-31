@@ -16,6 +16,7 @@
 
 package com.example;
 
+import com.example.database.Data;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import okhttp3.*;
@@ -205,6 +206,18 @@ public class Main {
         try (Response response = client.newCall(request).execute()) {
             return response.body().string();
         }
+    }
+
+
+    @Bean
+    public void createdb(){
+        try {
+            boolean execute = connection.createStatement().execute(Data.create_table_seen);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 

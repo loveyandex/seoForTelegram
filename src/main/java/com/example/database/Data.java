@@ -7,5 +7,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Data {
-    
+
+    public static final String create_table_seen = "create table seen(\n" +
+            "  id bigint(12) not null primary key ,\n" +
+            "  msg_id bigint(12) not null ,\n" +
+            "  count bigint(12) not null default 0\n" +
+            ")";
 }

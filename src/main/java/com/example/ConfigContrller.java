@@ -93,7 +93,17 @@ public class ConfigContrller {
         boolean resultSet;
         try {
             resultSet = dataSource.getConnection().createStatement().execute("INSERT INTO ticks VALUES (now())");
+        } catch (SQLException e) {
+            return e.toString();
+        }
 
+        return String.valueOf(resultSet);
+    }
+    @GetMapping("/test2")
+    public String S2() {
+        boolean resultSet;
+        try {
+            resultSet = dataSource.getConnection().createStatement().execute("insert into seen (msg_id, count) values (121212,1)");
         } catch (SQLException e) {
             return e.toString();
         }
