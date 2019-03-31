@@ -210,12 +210,11 @@ public class Main {
     }
 
 
-    @GetMapping("crt")
-    @ResponseBody
+    @Bean
     public String creatdedb() {
         try {
             Statement statement = connection.createStatement();
-            int i = statement.executeUpdate("CREATE TABLE IF NOT EXISTS  seek" +
+            int i = statement.executeUpdate("CREATE TABLE IF NOT EXISTS  seek2" +
                     "(" +
                     "id SERIAL PRIMARY KEY,   " +
                     "amount  integer  NOT NULL" +
