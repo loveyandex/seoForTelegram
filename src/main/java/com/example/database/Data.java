@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 public class Data {
 
     public static final String create_table_seen = "create table seen(\n" +
-            "  id bigint(12) not null primary key ,\n" +
+            "  id bigint(12) not null primary key auto_increment ,\n" +
             "  msg_id bigint(12) not null ,\n" +
-            "  count bigint(12) not null default 0\n" +
+            "  cv bigint(12) not null default 0\n" +
             ")";
 }
