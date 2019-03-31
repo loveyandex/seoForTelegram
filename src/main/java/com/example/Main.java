@@ -211,13 +211,15 @@ public class Main {
 
     @GetMapping("crt")
     @ResponseBody
-    public void createdb(){
+    public Boolean createdb(){
         try {
             ResultSet execute = connection.createStatement()
                     .executeQuery(Data.create_table_seen);
+            return execute.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 
