@@ -105,7 +105,7 @@ public class ConfigContrller {
         boolean resultSet;
         try {
             resultSet = dataSource.getConnection().createStatement()
-                    .execute("INSERT INTO seek2  (amount) VALUES (323232323)");
+                    .execute("INSERT INTO seek3 (amount) VALUES (323232323)");
 
 
         } catch (SQLException e) {
@@ -121,7 +121,7 @@ public class ConfigContrller {
         ResultSet resultSet;
         try {
             resultSet = dataSource.getConnection().createStatement()
-                    .executeQuery("select * from seek;");
+                    .executeQuery("select * from seek3;");
             while (resultSet.next())
                 return String.valueOf(resultSet.getInt("amount"));
 

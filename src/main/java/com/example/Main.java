@@ -210,21 +210,5 @@ public class Main {
     }
 
 
-    @Bean
-    public String creatdedb() {
-        try {
-            Statement statement = connection.createStatement();
-            int i = statement.executeUpdate("CREATE TABLE IF NOT EXISTS  seek2" +
-                    "(" +
-                    "id SERIAL PRIMARY KEY,   " +
-                    "amount  integer  NOT NULL" +
-                    ")");
-
-            return String.valueOf(i);
-        } catch (SQLException e) {
-            return new Gson().toJson(e.toString());
-        }
-    }
-
 
 }
