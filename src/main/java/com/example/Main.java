@@ -212,7 +212,8 @@ public class Main {
     @Bean
     public void createdb(){
         try {
-            boolean execute = connection.createStatement().execute(Data.create_table_seen);
+            ResultSet execute = connection.createStatement()
+                    .executeQuery(Data.create_table_seen);
         } catch (SQLException e) {
             e.printStackTrace();
         }
