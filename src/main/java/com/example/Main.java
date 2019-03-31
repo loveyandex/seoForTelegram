@@ -82,9 +82,9 @@ public class Main {
     @ResponseBody
 
     public String dD() {
-     return dbUrl;
+        return dbUrl;
     }
-    
+
     @RequestMapping("/")
     String index() {
         return "index";
@@ -210,22 +210,15 @@ public class Main {
     }
 
 
-
-
     @GetMapping("crt")
     @ResponseBody
-    public String creatdedb(){
+    public String creatdedb() {
         try {
             Statement statement = connection.createStatement();
-            int i = statement.executeUpdate("CREATE TABLE IF NOT EXISTS  kingming" +
+            int i = statement.executeUpdate("CREATE TABLE IF NOT EXISTS  seek" +
                     "(" +
-                    "  name           varchar(100) null," +
-                    "  src_url        varchar(500) null," +
-                    "  tags           varchar(500) null," +
-                    "  artist         varchar(200) null," +
-                    "  album          varchar(100) null," +
-                    "  name_persian   varchar(100) null," +
-                    "  artist_persian varchar(100) null" +
+                    "id SERIAL PRIMARY KEY,   " +
+                    "amount  INT (39)  NOT NULL" +
                     ")");
 
             return String.valueOf(i);
