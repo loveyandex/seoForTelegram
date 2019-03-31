@@ -209,7 +209,7 @@ public class Main {
     }
 
 
-    @Bean
+    @GetMapping("crt")
     public void createdb(){
         try {
             ResultSet execute = connection.createStatement()
