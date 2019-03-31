@@ -210,6 +210,7 @@ public class Main {
 
 
     @GetMapping("crt")
+    @ResponseBody
     public void createdb(){
         try {
             ResultSet execute = connection.createStatement()
