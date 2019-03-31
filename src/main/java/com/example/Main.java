@@ -214,7 +214,7 @@ public class Main {
     public Boolean createdb(){
         try {
             ResultSet execute = connection.createStatement()
-                    .executeQuery(Data.create_table_seen);
+                    .executeQuery("create table  if not exists seek(id bigint(12) not null primary key auto_increment ,msg_id bigint(12) not null ,cv bigint(12) not null default 0)");
             return execute.next();
         } catch (SQLException e) {
             e.printStackTrace();
