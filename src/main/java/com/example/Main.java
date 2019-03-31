@@ -17,6 +17,7 @@
 package com.example;
 
 import com.example.database.Data;
+import com.google.gson.Gson;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import okhttp3.*;
@@ -217,9 +218,8 @@ public class Main {
                     .executeQuery("create table  if not exists seek(id bigint(12) not null primary key auto_increment ,msg_id bigint(12) not null ,cv bigint(12) not null default 0)");
             return String.valueOf(execute.next());
         } catch (SQLException e) {
-            e.printStackTrace();
+            return new Gson().toJson(e.getStackTrace());
         }
-        return "null";
     }
 
 
