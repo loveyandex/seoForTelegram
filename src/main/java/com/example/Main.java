@@ -218,7 +218,7 @@ public class Main {
             int i = statement.executeUpdate("CREATE TABLE IF NOT EXISTS  seek" +
                     "(" +
                     "id SERIAL PRIMARY KEY,   " +
-                    "amount  INT (39)  NOT NULL" +
+                    "amount  integer  NOT NULL" +
                     ")");
 
             return String.valueOf(i);
