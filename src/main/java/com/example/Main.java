@@ -210,32 +210,25 @@ public class Main {
     }
 
 
+
+
     @GetMapping("crt")
-    @ResponseBody
-    public String createdb(){
-        try {
-            int execute = connection.createStatement()
-                    .executeUpdate("create table  if not exists " +
-                            "seek \n(id bigint(12) not null primary key auto_increment " +
-                            ",msg_id bigint(12) not null " +
-                            ",cv bigint(12) not null default 0)");
-            return String.valueOf(execute);
-        } catch (SQLException e) {
-            return new Gson().toJson(e.toString());
-        }
-    }
-
-
-    @GetMapping("crt2")
     @ResponseBody
     public String creatdedb(){
         try {
-            ResultSet execute = connection.createStatement()
-                    .executeQuery();
+            Statement statement = connection.createStatement();
+            int i = statement.executeUpdate("CREATE TABLE IF NOT EXISTS  kingming" +
+                    "(" +
+                    "  name           varchar(100) null," +
+                    "  src_url        varchar(500) null," +
+                    "  tags           varchar(500) null," +
+                    "  artist         varchar(200) null," +
+                    "  album          varchar(100) null," +
+                    "  name_persian   varchar(100) null," +
+                    "  artist_persian varchar(100) null" +
+                    ")");
 
-
-
-            return String.valueOf(execute.next());
+            return String.valueOf(i);
         } catch (SQLException e) {
             return new Gson().toJson(e.toString());
         }
