@@ -104,7 +104,7 @@ public class ConfigContrller {
         boolean resultSet;
         try {
             resultSet = dataSource.getConnection().createStatement()
-                    .execute("INSERT INTO seek (msg_id, cv) VALUES (121212121212,232323232323)");
+                    .execute("INSERT INTO seek  (amount) VALUES (323232323)");
 
 
         } catch (SQLException e) {
