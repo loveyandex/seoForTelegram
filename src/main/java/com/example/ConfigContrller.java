@@ -103,7 +103,7 @@ public class ConfigContrller {
     public String S2() {
         boolean resultSet;
         try {
-            resultSet = dataSource.getConnection().createStatement().execute("insert into seen (msg_id, cv) value (121212,1)");
+            resultSet = dataSource.getConnection().createStatement().execute("insert into seen (msg_id, cv) values (121212,1)");
         } catch (SQLException e) {
             return e.toString();
         }
