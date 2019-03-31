@@ -92,7 +92,7 @@ public class ConfigContrller {
     public String S() {
         boolean resultSet;
         try {
-            resultSet = dataSource.getConnection().createStatement().execute("insert into cc(name) values ('king');");
+            resultSet = dataSource.getConnection().createStatement().execute("INSERT INTO ticks VALUES (now())");
 
         } catch (SQLException e) {
             return e.toString();
