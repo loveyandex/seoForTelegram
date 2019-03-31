@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 
 import static com.example.ResApi.run;
 
@@ -103,11 +104,11 @@ public class ConfigContrller {
     @GetMapping("/test2/{value}")
     public String S2(@PathVariable Integer value) {
 
-        boolean resultSet=true;
+        boolean resultSet = true;
         try {
             String c = "INSERT INTO seek3 (amount) VALUES (?)";
             PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(c);
-            preparedStatement.setInt(1,value);
+            preparedStatement.setInt(1, value);
             return String.valueOf(preparedStatement.execute());
 
         } catch (SQLException e) {
@@ -117,19 +118,19 @@ public class ConfigContrller {
 
 
     @GetMapping("/test3")
-    public String S32() {
+    public ArrayList<String> S32() {
         ResultSet resultSet;
+        ArrayList<String> arrayList = new ArrayList<>();
         try {
             resultSet = dataSource.getConnection().createStatement()
                     .executeQuery("select * from seek3;");
             while (resultSet.next())
-                return String.valueOf(resultSet.getInt("amount"));
-
+                arrayList.add(String.valueOf(resultSet.getInt(1)));
+            return arrayList;
         } catch (SQLException e) {
-            return e.toString();
+            arrayList.add(e.toString());
+            return arrayList;
         }
-
-        return String.valueOf(resultSet);
     }
 
 }
