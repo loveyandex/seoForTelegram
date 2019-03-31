@@ -215,7 +215,10 @@ public class Main {
     public String createdb(){
         try {
             ResultSet execute = connection.createStatement()
-                    .executeQuery("create table  if not exists seek(id bigint(12) not null primary key auto_increment ,msg_id bigint(12) not null ,cv bigint(12) not null default 0)");
+                    .executeQuery("create table  if not exists " +
+                            "seek \n(id bigint(12) not null primary key auto_increment " +
+                            ",msg_id bigint(12) not null " +
+                            ",cv bigint(12) not null default 0)");
             return String.valueOf(execute.next());
         } catch (SQLException e) {
             return new Gson().toJson(e.toString());
