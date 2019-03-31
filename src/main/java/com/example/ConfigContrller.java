@@ -99,6 +99,7 @@ public class ConfigContrller {
 
         return String.valueOf(resultSet);
     }
+
     @GetMapping("/test2")
     public String S2() {
         boolean resultSet;
@@ -106,6 +107,23 @@ public class ConfigContrller {
             resultSet = dataSource.getConnection().createStatement()
                     .execute("INSERT INTO seek2  (amount) VALUES (323232323)");
 
+
+        } catch (SQLException e) {
+            return e.toString();
+        }
+
+        return String.valueOf(resultSet);
+    }
+
+
+    @GetMapping("/test3")
+    public String S32() {
+        ResultSet resultSet;
+        try {
+            resultSet = dataSource.getConnection().createStatement()
+                    .executeQuery("select * from seek;");
+            while (resultSet.next())
+                return String.valueOf(resultSet.getInt("amount"));
 
         } catch (SQLException e) {
             return e.toString();
