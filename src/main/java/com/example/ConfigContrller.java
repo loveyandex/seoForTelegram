@@ -44,12 +44,11 @@ public class ConfigContrller {
                     "howmuchsent    int default '0' not null" +
                     ")");
 
-            String sql = "select fileId from music4 where fileId='" + music3.getFileId()+"'";
+            String sql = "select fileId from music4 where fileId='" + music3.getFileId() + "'";
             ResultSet execute = connection.createStatement().executeQuery(sql);
-            if (execute.next()){
-                return "bef added:"+ music3.getFileId() ;
+            if (execute.next()) {
+                return "bef added:" + music3.getFileId();
             }
-
 
 
             PreparedStatement rs = connection.prepareStatement("insert into music4 " +
@@ -57,17 +56,17 @@ public class ConfigContrller {
                     " values (?,?,?,?,?,?,?,?,?,?,?)"
             );
 
-            rs.setString(1,music3.getName());
-            rs.setString(2,music3.getSrc_url());
-            rs.setString(3,music3.getTags());
-            rs.setString(4,music3.getArtist());
-            rs.setString(5,music3.getAlbum());
-            rs.setString(6,music3.getName_persian());
-            rs.setString(7,music3.getArtist_persian());
-            rs.setString(8,music3.getTags_persian());
-            rs.setString(9,music3.getChannelUrl());
-            rs.setString(10,music3.getFileId());
-            rs.setInt(11,music3.getHowmuchsent());
+            rs.setString(1, music3.getName());
+            rs.setString(2, music3.getSrc_url());
+            rs.setString(3, music3.getTags());
+            rs.setString(4, music3.getArtist());
+            rs.setString(5, music3.getAlbum());
+            rs.setString(6, music3.getName_persian());
+            rs.setString(7, music3.getArtist_persian());
+            rs.setString(8, music3.getTags_persian());
+            rs.setString(9, music3.getChannelUrl());
+            rs.setString(10, music3.getFileId());
+            rs.setInt(11, music3.getHowmuchsent());
             rs.execute();
             String token = "700687388:AAHagXfLRpcRV0U8bnoH91Ig3mB2boMXqh4";
             String url = "https://api.telegram.org/bot"
@@ -90,9 +89,16 @@ public class ConfigContrller {
 
 
     @GetMapping("/test")
-    public void S(){
+    public String S() {
+        boolean resultSet;
+        try {
+            resultSet = dataSource.getConnection().createStatement().execute("insert into cc(name) values ('king');");
 
+        } catch (SQLException e) {
+            return e.toString();
+        }
 
+        return String.valueOf(resultSet);
     }
 
 }
