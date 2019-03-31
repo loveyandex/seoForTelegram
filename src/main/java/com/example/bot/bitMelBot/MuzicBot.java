@@ -911,7 +911,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 
         for (int i = 0; i < songs.size(); i++) {
             List<InlineKeyboardButton> list = new ArrayList<>();
-            for (int j = 0; j < 2 && i < songs.size(); j++) {
+            for (int j = 0; j < 1 && i < songs.size(); j++) {
                 InlineKeyboardButton button = new InlineKeyboardButton("⭕️" + songs.get(i).get(2))
                         .setCallbackData("song" + songs.get(i++).get(1));
                 list.add(button);

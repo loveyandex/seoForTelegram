@@ -53,7 +53,8 @@ public class ConfigContrller {
 
 
             PreparedStatement rs = connection.prepareStatement("insert into music4 " +
-                    "(name, src_url, tags, artist, album, name_persian, artist_persian, tags_persian, channelUrl, fileId,howmuchsent)" +
+                    "(name, src_url, tags, artist, album, name_persian, artist_persian," +
+                    " tags_persian, channelUrl, fileId,howmuchsent)" +
                     " values (?,?,?,?,?,?,?,?,?,?,?)"
             );
 
@@ -125,7 +126,7 @@ public class ConfigContrller {
             resultSet = dataSource.getConnection().createStatement()
                     .executeQuery("select * from seek3;");
             while (resultSet.next())
-                arrayList.add(String.valueOf(resultSet.getInt(1)));
+                arrayList.add(String.valueOf(resultSet.getInt(2)));
             return arrayList;
         } catch (SQLException e) {
             arrayList.add(e.toString());
