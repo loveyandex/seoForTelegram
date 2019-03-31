@@ -211,15 +211,15 @@ public class Main {
 
     @GetMapping("crt")
     @ResponseBody
-    public Boolean createdb(){
+    public String createdb(){
         try {
             ResultSet execute = connection.createStatement()
                     .executeQuery("create table  if not exists seek(id bigint(12) not null primary key auto_increment ,msg_id bigint(12) not null ,cv bigint(12) not null default 0)");
-            return execute.next();
+            return String.valueOf(execute.next());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return "null";
     }
 
 
