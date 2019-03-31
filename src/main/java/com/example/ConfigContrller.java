@@ -103,18 +103,16 @@ public class ConfigContrller {
     @GetMapping("/test2/{value}")
     public String S2(@PathVariable Integer value) {
 
-        boolean resultSet;
+        boolean resultSet=true;
         try {
             String c = "INSERT INTO seek3 (amount) VALUES (?)";
             PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(c);
             preparedStatement.setInt(1,value);
-            preparedStatement.execute();
+            return String.valueOf(preparedStatement.execute());
 
         } catch (SQLException e) {
             return e.toString();
         }
-
-        return String.valueOf(resultSet);
     }
 
 
