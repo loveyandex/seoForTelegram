@@ -214,11 +214,27 @@ public class Main {
     @ResponseBody
     public String createdb(){
         try {
-            ResultSet execute = connection.createStatement()
-                    .executeQuery("create table  if not exists " +
+            int execute = connection.createStatement()
+                    .executeUpdate("create table  if not exists " +
                             "seek \n(id bigint(12) not null primary key auto_increment " +
                             ",msg_id bigint(12) not null " +
                             ",cv bigint(12) not null default 0)");
+            return String.valueOf(execute);
+        } catch (SQLException e) {
+            return new Gson().toJson(e.toString());
+        }
+    }
+
+
+    @GetMapping("crt2")
+    @ResponseBody
+    public String creatdedb(){
+        try {
+            ResultSet execute = connection.createStatement()
+                    .executeQuery();
+
+
+
             return String.valueOf(execute.next());
         } catch (SQLException e) {
             return new Gson().toJson(e.toString());
