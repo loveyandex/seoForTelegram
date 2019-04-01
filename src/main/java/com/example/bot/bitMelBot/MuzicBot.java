@@ -88,25 +88,26 @@ public class MuzicBot extends TelegramLongPollingBot {
                                         "SELECT distinct * FROM music4 where fileId='"
                                                 + fileId + "'");
                         while (rs.next()) {
-                            InputMediaAudio media = new InputMediaAudio();
-                            media.setMedia(fileId)
-                            ;
-                            EditMessageMedia editMessageMedia = new EditMessageMedia();
-                            editMessageMedia
+
+                            EditMessageReplyMarkup editMessageReplyMarkup = new EditMessageReplyMarkup();
+                            editMessageReplyMarkup.setMessageId(message.getMessageId())
                                     .setChatId(chatId)
-                                    .setMessageId(message.getMessageId())
-                                    .setMedia(media)
-                                    ;
-                        execute(editMessageMedia);
+                                    .setReplyMarkup(presentSongDeatails());
+
+
+                            execute(editMessageReplyMarkup);
 
 
                             execute(new SendAudio()
-                                            .setChatId(update.getCallbackQuery().getMessage().getChatId())
+                                            .setChatId(chatId)
 //                            .setCaption(update.getCallbackQuery().getFrom().getFirstName())
                                             .setAudio(fileId)
                                             .setReplyMarkup(OptionsSongReply())
-                                            .setCaption(rs.getString(3).replaceAll(" ", "_") + "\n" + rs.getString(8))
+                                            .setCaption(rs.getString(3)
+                                                    .replaceAll(" ", "_")
+                                                    + "\n" + rs.getString(8))
                             );
+
                             break;
                         }
 
@@ -980,6 +981,29 @@ public class MuzicBot extends TelegramLongPollingBot {
                 .setCallbackData(Vals.LOVE_IT);
         InlineKeyboardButton button22 = new InlineKeyboardButton("\uD83E\uDD22")
                 .setCallbackData(Vals.RID_OF_IT);
+
+        row1.add(button);
+        row1.add(button2);
+        row1.add(button22);
+        lists.add(row1);
+        markup.setKeyboard(lists);
+        return markup;
+
+    }
+
+    private InlineKeyboardMarkup presentSongDeatails() {
+
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+
+
+        List<List<InlineKeyboardButton>> lists = new ArrayList<>();
+        List<InlineKeyboardButton> row1 = new ArrayList<>();
+        InlineKeyboardButton button = new InlineKeyboardButton("شعر")
+                .setCallbackData(Vals.POET);
+        InlineKeyboardButton button2 = new InlineKeyboardButton("320")
+                .setCallbackData(Vals.DL320);
+        InlineKeyboardButton button22 = new InlineKeyboardButton("\uD83E\uDD22")
+                .setCallbackData(Vals.DL128);
 
         row1.add(button);
         row1.add(button2);
