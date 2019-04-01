@@ -90,9 +90,10 @@ public class MuzicBot extends TelegramLongPollingBot {
                         while (rs.next()) {
 
                             EditMessageReplyMarkup editMessageReplyMarkup = new EditMessageReplyMarkup();
+
                             editMessageReplyMarkup.setMessageId(message.getMessageId())
                                     .setChatId(chatId)
-                                    .setReplyMarkup(presentSongDeatails());
+                                    .setReplyMarkup(presentSongDeatails(data));
 
 
                             execute(editMessageReplyMarkup);
@@ -926,8 +927,6 @@ public class MuzicBot extends TelegramLongPollingBot {
 
     public static InlineKeyboardMarkup showSongsForSelect(ArrayList<ArrayList<String>> songs) {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
-
-
         List<List<InlineKeyboardButton>> lists = new ArrayList<>();
 
         for (int i = 0; i < songs.size(); i++) {
@@ -991,7 +990,7 @@ public class MuzicBot extends TelegramLongPollingBot {
 
     }
 
-    private InlineKeyboardMarkup presentSongDeatails() {
+    private InlineKeyboardMarkup presentSongDeatails(String fileId) {
 
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
 
@@ -1001,7 +1000,7 @@ public class MuzicBot extends TelegramLongPollingBot {
         InlineKeyboardButton button = new InlineKeyboardButton("شعر")
                 .setCallbackData(Vals.POET);
         InlineKeyboardButton button2 = new InlineKeyboardButton("320")
-                .setCallbackData(Vals.DL320);
+                .setCallbackData(fileId);
         InlineKeyboardButton button22 = new InlineKeyboardButton("\uD83E\uDD22")
                 .setCallbackData(Vals.DL128);
 
