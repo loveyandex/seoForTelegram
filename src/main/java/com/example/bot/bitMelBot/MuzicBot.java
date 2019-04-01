@@ -16,12 +16,14 @@ import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendChatAction;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputContactMessageContent;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResultArticle;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResultAudio;
+import org.telegram.telegrambots.meta.api.objects.media.InputMediaAudio;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
@@ -76,11 +78,27 @@ public class MuzicBot extends TelegramLongPollingBot {
             String substring = data.substring(0, 4);
             if (substring.equalsIgnoreCase("song")) {
                 if (data.length() > 4) {
+                    Message message = update.getCallbackQuery().getMessage();
                     try {
                         String fileId = data.substring(4);
 
-                        ResultSet rs = connection.createStatement().executeQuery("SELECT distinct * FROM music4 where fileId='" + fileId + "'");
+                        ResultSet rs = connection.createStatement()
+                                .executeQuery(
+                                        "SELECT distinct * FROM music4 where fileId='"
+                                                + fileId + "'");
                         while (rs.next()) {
+                            InputMediaAudio media = new InputMediaAudio();
+                            media.setMedia(fileId)
+                            ;
+                            EditMessageMedia editMessageMedia = new EditMessageMedia();
+                            editMessageMedia
+                                    .setChatId(message.getChatId())
+                                    .setMessageId(message.getMessageId())
+                                    .setMedia(media)
+                                    ;
+                        execute(editMessageMedia);
+
+
                             execute(new SendAudio()
                                             .setChatId(update.getCallbackQuery().getMessage().getChatId())
 //                            .setCaption(update.getCallbackQuery().getFrom().getFirstName())
@@ -205,7 +223,6 @@ public class MuzicBot extends TelegramLongPollingBot {
                                         e.printStackTrace();
                                     }
                                 } else {
-//                                    new Thread(() -> datatoMsg(update, persiansearchindb)).start();
                                     SendMessage method = new SendMessage();
                                     method.setChatId(update.getMessage().getChatId());
                                     method.setText("کدوم یکیشه\uD83D\uDC47");
@@ -279,7 +296,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                                             .setInputMessageContent(new InputContactMessageContent().setFirstName("amin").setPhoneNumber("+989351844321"))
                                     ));
                         else {
-                            execute(new SendMessage("145464749","inline has data"));
+                            execute(new SendMessage("145464749", "inline has data"));
 
                             InlineQueryResultAudio[] inlineQueryResults = datatoInline(searchindb1);
                             execute(new AnswerInlineQuery().setInlineQueryId(update.getInlineQuery().getId()).
