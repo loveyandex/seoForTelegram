@@ -79,6 +79,7 @@ public class MuzicBot extends TelegramLongPollingBot {
             if (substring.equalsIgnoreCase("song")) {
                 if (data.length() > 4) {
                     Message message = update.getCallbackQuery().getMessage();
+                    Long chatId = message.getChatId();
                     try {
                         String fileId = data.substring(4);
 
@@ -92,7 +93,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                             ;
                             EditMessageMedia editMessageMedia = new EditMessageMedia();
                             editMessageMedia
-                                    .setChatId(message.getChatId())
+                                    .setChatId(chatId)
                                     .setMessageId(message.getMessageId())
                                     .setMedia(media)
                                     ;
@@ -110,10 +111,12 @@ public class MuzicBot extends TelegramLongPollingBot {
                         }
 
 
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                    } catch (Exception e) {
+                        try {
+                            execute(new SendMessage(chatId, e.toString()));
+                        } catch (TelegramApiException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                 }
             }
