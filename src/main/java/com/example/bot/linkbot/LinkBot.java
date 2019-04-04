@@ -40,11 +40,13 @@ public class LinkBot extends TelegramLongPollingBot {
     @Bean
     public void setDbs() {
         try {
-            connection.createStatement().execute("create table Muser(id serial primary key)");
-            connection.createStatement().execute("insert into Muser (id) values (1121212);");
+            connection.createStatement().execute("create table if not exists Muser(id serial primary key)");
+
+            connection.createStatement().execute("delete  from Muser  where 1=1");
+            connection.createStatement().execute("insert into Muser (id) values (878712);");
 
             ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 Meths.sendToBot(String.valueOf(resultSet.getInt(1)));
             }
 
