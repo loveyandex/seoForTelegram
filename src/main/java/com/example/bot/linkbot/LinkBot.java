@@ -1,6 +1,9 @@
 package com.example.bot.linkbot;//package com.intellij.parisa.linkbot;
 
 import com.example.bot.linkbot.model.Gune;
+import okhttp3.OkHttpClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -12,27 +15,40 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.Meths.post;
 
 /**
  * created By aMIN on 4/4/2019 12:27 PM
  */
 @Component
 public class LinkBot extends TelegramLongPollingBot {
-//
-//
-//    public static void main(String[] args) {
-//        ApiContextInitializer.init();
-//        TelegramBotsApi api = new TelegramBotsApi();
-//        try {
-//            api.registerBot(new LinkBot());
-//        } catch (TelegramApiRequestException e) {
-//            e.printStackTrace();
-//        }
-//    }
+
+
+    @Autowired
+    private Connection connection;
+
+    @Bean
+    public void setDbs() {
+        String token = "bot495402062:AAHyqLaAsQS_BeQNwDU9qTG81RVXWEvwP6s";
+
+        String d = "https://api.telegram.org/"
+                + token
+                + "/sendMessage?chat_id=145464749&text=";
+        try {
+            post(new OkHttpClient(), d + "god is my all power and is most power in the world");
+        } catch (IOException e) {
+            System.out.println(e.toString());
+
+        }
+
+    }
 
 
     @Override

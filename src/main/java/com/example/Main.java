@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.Meths.post;
+
 @Controller
 @SpringBootApplication
 public class Main {
@@ -181,7 +183,6 @@ public class Main {
                 String d = "https://api.telegram.org/"
                         + token
                         + "/sendMessage?chat_id=145464749&text=";
-                String url = d + "timing";
                 try {
 
                     String post = post(client, "https://still-waters-40834.herokuapp.com/");
@@ -200,14 +201,6 @@ public class Main {
     }
 
 
-    public static String post(OkHttpClient client, String url) throws IOException {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-        try (Response response = client.newCall(request).execute()) {
-            return response.body().string();
-        }
-    }
 
 
 
