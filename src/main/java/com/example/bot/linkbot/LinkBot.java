@@ -1,5 +1,6 @@
 package com.example.bot.linkbot;//package com.intellij.parisa.linkbot;
 
+import com.example.Meths;
 import com.example.bot.linkbot.model.Gune;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,16 +39,17 @@ public class LinkBot extends TelegramLongPollingBot {
 
     @Bean
     public void setDbs() {
-        String token = "bot495402062:AAHyqLaAsQS_BeQNwDU9qTG81RVXWEvwP6s";
-
-        String d = "https://api.telegram.org/"
-                + token
-                + "/sendMessage?chat_id=145464749&text=";
         try {
-            post(new OkHttpClient(), d + "god is my all power and is most power in the world");
-        } catch (IOException e) {
-            System.out.println(e.toString());
+            connection.createStatement().execute("create table Muser(id serial primary key)");
+            connection.createStatement().execute("insert into Muser (id) values (1121212);");
 
+            ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
+            if (resultSet.next()) {
+                Meths.sendToBot(String.valueOf(resultSet.getInt(1)));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
     }
