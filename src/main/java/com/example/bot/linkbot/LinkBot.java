@@ -130,6 +130,7 @@ public class LinkBot extends TelegramLongPollingBot {
             }
         }
 
+
         try {
             response.startMsg();
         } catch (TelegramApiException e) {
@@ -217,7 +218,7 @@ public class LinkBot extends TelegramLongPollingBot {
                             || dscrpt == null
                             || photo_id == null
                             || link_src == null) {
-                        Meths.sendToBot(String.valueOf(anInt) +":"+
+                        Meths.sendToBot(String.valueOf(anInt) + ":" +
                                 user_id +
                                 name +
                                 dscrpt +
@@ -243,6 +244,57 @@ public class LinkBot extends TelegramLongPollingBot {
                             "insert into link (user_id)" + " values (?)");
                     preparedStatement.setInt(1, id);
                     preparedStatement.execute();
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+            return this;
+        }
+
+
+        public Response gune12() throws TelegramApiException {
+            User from = update.getMessage().getFrom();
+            Integer id = from.getId();
+            try {
+
+                ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
+                boolean never = true;
+
+                while (resultSet2.next()) {
+
+                    never = false;
+                    int anInt = resultSet2.getInt(1);
+                    int user_id = resultSet2.getInt(2);
+                    String name = resultSet2.getString(3);
+                    String dscrpt = resultSet2.getString(4);
+                    String photo_id = resultSet2.getString(5);
+                    String link_src = resultSet2.getString(6);
+                    String status = resultSet2.getString(7);
+
+                    if (name == null
+                            || dscrpt == null
+                            || photo_id == null
+                            || link_src == null) {
+                        Meths.sendToBot(String.valueOf(anInt) + ":" +
+                                user_id +
+                                name +
+                                dscrpt +
+                                photo_id +
+                                link_src
+                                + status);
+                        if (StatusOfAdding.ADDINGNAME.name().equals(status)) {
+                            resultSet2.updateString(7, StatusOfAdding.ADDINGDSCRP.name());
+                            resultSet2.updateString(3, update.getMessage().getText());
+                            resultSet2.updateRow();
+                            execute(new SendMessage(update.getMessage().getChatId(), "حالا توضیحات کانال یا گروهتو بنویس"));
+                        }
+
+
+                    }
                 }
 
             } catch (SQLException e) {

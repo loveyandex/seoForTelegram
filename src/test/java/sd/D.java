@@ -1,5 +1,6 @@
 package sd;
 
+import com.example.bot.linkbot.model.StatusOfAdding;
 import com.mpatric.mp3agic.*;
 
 import java.io.IOException;
@@ -7,6 +8,9 @@ import java.io.IOException;
 public class D {
 
     public static void main(String[] args) throws InvalidDataException, IOException, UnsupportedTagException, NotSupportedException {
+        System.out.println(StatusOfAdding.ADDINGNAME.name());
+        System.exit(0);
+
         Mp3File mp3file = new Mp3File("Vahid Nil - In Shahr.mp3");
         ID3v1 id3v1Tag;
         if (mp3file.hasId3v1Tag()) {
