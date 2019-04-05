@@ -450,8 +450,8 @@ public class LinkBot extends TelegramLongPollingBot {
                                 + status);
                         if (StatusOfAdding.ADDINGLINK.name().equals(status)) {
                             resultSet2.updateString(6, update.getMessage().getText());
-                            resultSet2.updateRow();
                             resultSet2.updateString(7, StatusOfAdding.ADDED.name());
+                            resultSet2.updateRow();
                             execute(new SendMessage(update.getMessage().getChatId(), "تمومه"));
                         }
 
