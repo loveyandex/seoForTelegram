@@ -50,15 +50,6 @@ public class LinkBot extends TelegramLongPollingBot {
 
             connection.createStatement().execute("delete  from Muser  where id=878712");
             connection.createStatement().execute("insert into Muser (id) values (878712);");
-            String sql = "INSERT INTO Muser (id)" +
-                    "    SELECT ?" +
-                    "WHERE NOT EXISTS (" +
-                    "    SELECT id FROM Muser WHERE id=? " +
-                    ");";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, 55442233);
-            preparedStatement.setInt(2, 55442233);
-            preparedStatement.execute();
 
             ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
             while (resultSet.next()) {
@@ -68,6 +59,29 @@ public class LinkBot extends TelegramLongPollingBot {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+    }
+
+
+    private boolean addUser(int id)  {
+        String sql = "INSERT INTO Muser (id)" +
+                "    SELECT ?" +
+                "WHERE NOT EXISTS (" +
+                "    SELECT id FROM Muser WHERE id=? " +
+                ");";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, id);
+            boolean execute = preparedStatement.execute();
+            Meths.sendToBot(String.valueOf(id));
+            return execute;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (true);
 
     }
 
@@ -117,6 +131,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        addUser(update.getMessage().getFrom().getId());
         onReplyKey(update);
 
     }
