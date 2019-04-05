@@ -145,6 +145,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
                 System.out.println(name);
                 response.getClass().getMethod(name).invoke(response, null);
+                return;
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -177,6 +178,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     if (statues.contains(status)) {
                         int indexOf = statues.indexOf(status) + 12;
                         String mn = "gune" + indexOf;
+
                         response.getClass().getMethod(mn).invoke(response, null);
 
                     }
