@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 public class MyUsel {
     private int id;
-    private StatusOfAdding statusOfAdding;
 
 
 }

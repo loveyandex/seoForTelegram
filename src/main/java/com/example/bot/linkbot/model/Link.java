@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Setter
 public class Link extends UserDateAudit {
 
-     private Long id;
+    private Long id;
 
     @NotBlank
     @Size(max = 500)
@@ -31,6 +31,8 @@ public class Link extends UserDateAudit {
     private String coverImg;
 
 
-    private RoleLink  roleLink;
+    private RoleLink roleLink;
+
+    private StatusOfAdding statusOfAdding;
 
 }

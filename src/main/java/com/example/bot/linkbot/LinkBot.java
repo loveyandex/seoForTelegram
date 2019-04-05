@@ -3,6 +3,7 @@ package com.example.bot.linkbot;
 
 import com.example.Meths;
 import com.example.bot.linkbot.model.Gune;
+import com.example.bot.linkbot.model.StatusOfAdding;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -47,14 +48,15 @@ public class LinkBot extends TelegramLongPollingBot {
         try {
             connection.createStatement().execute("create table if not exists Muser(id serial primary key)");
             connection.createStatement().execute(
-                    "create table if not exists Links(id serial primary key ,user_id bigint not null, " +
-                            "name varchar(100) null ,dscrpt varchar(1000) null ,photo_id varchar(200) null ,link_src varchar(500) null )");
+                    "create table if not exists Link(id serial primary key ,user_id bigint not null, " +
+                            "name varchar(100) null ,dscrpt varchar(1000) null ,photo_id varchar(200) null ,link_src varchar(500) null ,status varchar(25) null )");
 
             connection.createStatement().execute("delete  from Muser  where id=878712");
+            connection.createStatement().execute("delete  from Link");
             connection.createStatement().execute("insert into Muser (id) values (878712);");
 
             ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
-            ResultSet resultSet2 = connection.createStatement().executeQuery("select * from links;");
+            ResultSet resultSet2 = connection.createStatement().executeQuery("select * from link;");
             while (resultSet2.next()) {
                 Meths.sendToBot(String.valueOf(resultSet2.getInt(1)) + " : " + resultSet2.getInt(2));
             }
@@ -196,7 +198,7 @@ public class LinkBot extends TelegramLongPollingBot {
             Integer id = from.getId();
             try {
 
-                ResultSet resultSet2 = connection.createStatement().executeQuery("select * from links where user_id='" + id + "'");
+                ResultSet resultSet2 = connection.createStatement().executeQuery("select * from link where user_id='" + id + "'");
 
 
                 while (resultSet2.next()) {
@@ -206,21 +208,29 @@ public class LinkBot extends TelegramLongPollingBot {
                     String dscrpt = resultSet2.getString(4);
                     String photo_id = resultSet2.getString(5);
                     String link_src = resultSet2.getString(6);
-                    Meths.sendToBot(anInt +
-                            user_id +
-                            name +
-                            dscrpt +
-                            photo_id +
-                            link_src);
+                    String status = resultSet2.getString(7);
+
                     if (name == null
                             || dscrpt == null
                             || photo_id == null
                             || link_src == null) {
+                        Meths.sendToBot(anInt +
+                                user_id +
+                                name +
+                                dscrpt +
+                                photo_id +
+                                link_src
+                                + status);
+                        if (name == null) {
+                            execute(new SendMessage(update.getMessage().getChatId(), "خب حالا اسم گروه یا کانالی که میخوای اد کنیوارد کن "));
+                            resultSet2.updateString(7, StatusOfAdding.ADDINGNAME.name());
+                            resultSet2.updateRow();
+                        }
 
 
                     } else {
-                        PreparedStatement preparedStatement = connection.prepareStatement("insert into links (user_id)" +
-                                " values (?)");
+                        PreparedStatement preparedStatement = connection.prepareStatement(
+                                "insert into link (user_id)" + " values (?)");
                         preparedStatement.setInt(1, id);
                         preparedStatement.execute();
                     }
@@ -230,9 +240,6 @@ public class LinkBot extends TelegramLongPollingBot {
                 e.printStackTrace();
             }
 
-
-            execute(new SendMessage(update.getMessage().getChatId()
-                    , update.getMessage().getText()));
 
             return this;
         }
