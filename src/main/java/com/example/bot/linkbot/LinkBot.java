@@ -2,7 +2,6 @@ package com.example.bot.linkbot;//package com.intellij.parisa.linkbot;
 
 import com.example.Meths;
 import com.example.bot.linkbot.model.Gune;
-import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,8 +23,6 @@ import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.Meths.post;
 
 /**
  * created By aMIN on 4/4/2019 12:27 PM
@@ -63,7 +59,7 @@ public class LinkBot extends TelegramLongPollingBot {
     }
 
 
-    private boolean addUser(int idj)  {
+    private boolean addUser(int idj) {
         String sql = "INSERT INTO Muser (id)" +
                 "    SELECT ?" +
                 "WHERE NOT EXISTS (" +
@@ -75,11 +71,12 @@ public class LinkBot extends TelegramLongPollingBot {
             preparedStatement.setInt(1, idj);
             preparedStatement.setInt(2, idj);
             boolean execute = preparedStatement.execute();
-            Meths.sendToBot(String.valueOf(idj));
+//            Meths.sendToBot(String.valueOf(idj));
             return execute;
 
         } catch (SQLException e) {
-            Meths.sendToBot(e.toString());        }
+            Meths.sendToBot(e.toString());
+        }
         return (true);
 
     }
@@ -97,12 +94,14 @@ public class LinkBot extends TelegramLongPollingBot {
         Gune[] values = Gune.values();
         List<String> list = new ArrayList<>();
 
-        for (int j = 0; j <= values.length / 3; j++) {
-            for (int i = 0; i < 3 && (3 * (j) + i) < values.length; i++) {
-                String name = values[3 * (j) + i].name;
+        int k = 3;
+        for (int j = 0; j <= values.length / k; j++) {
+            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
+                String name = values[k * (j) + i].name;
                 list.add(name);
             }
         }
+        list.add("اضافه کردن لینک");
         String text1 = update.getMessage().getText();
 
 
@@ -183,6 +182,12 @@ public class LinkBot extends TelegramLongPollingBot {
 
             return this;
         }
+        public Response gune11() throws TelegramApiException {
+            execute(new SendMessage(update.getMessage().getChatId()
+                    , update.getMessage().getText()));
+
+            return this;
+        }
 
 
     }
@@ -194,10 +199,11 @@ public class LinkBot extends TelegramLongPollingBot {
         Gune[] values = Gune.values();
         List<List<InlineKeyboardButton>> lists = new ArrayList<>();
 
-        for (int j = 0; j <= values.length / 3; j++) {
+        int i1 = 3;
+        for (int j = 0; j <= values.length / i1; j++) {
             List<InlineKeyboardButton> list = new ArrayList<>();
-            for (int i = 0; i < 3 && (3 * (j) + i) < values.length; i++) {
-                String name = values[3 * (j) + i].name;
+            for (int i = 0; i < i1 && (i1 * (j) + i) < values.length; i++) {
+                String name = values[i1 * (j) + i].name;
                 InlineKeyboardButton button = new InlineKeyboardButton(name)
                         .setCallbackData(name);
                 list.add(button);
@@ -227,11 +233,13 @@ public class LinkBot extends TelegramLongPollingBot {
                 keyboardRow.add(button);
             }
 
+
             keyboardRows.add(keyboardRow);
 
 
         }
-
+        KeyboardButton button = new KeyboardButton("اضافه کردن لینک");
+        keyboardRows.get(keyboardRows.size() - 1).add(button);
 
         replyKeyboardMarkup.setKeyboard(keyboardRows);
 
