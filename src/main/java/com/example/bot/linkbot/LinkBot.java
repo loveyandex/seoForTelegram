@@ -136,6 +136,7 @@ public class LinkBot extends TelegramLongPollingBot {
             response.gune12();
             response.gune13();
             response.gune14();
+            response.gune15();
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
@@ -418,8 +419,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-
-        public Response gune16() throws TelegramApiException {
+        public Response gune15() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
