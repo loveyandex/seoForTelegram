@@ -52,11 +52,11 @@ public class LinkBot extends TelegramLongPollingBot {
                             "name varchar(100) null ,dscrpt varchar(1000) null ,photo_id varchar(200) null ,link_src varchar(500) null ,status varchar(25) null )");
 
             connection.createStatement().execute("delete  from Muser  where id=878712");
-            connection.createStatement().execute("delete  from Link");
+//            connection.createStatement().execute("delete  from Link");
             connection.createStatement().execute("insert into Muser (id) values (878712);");
 
             ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
-            ResultSet resultSet2 = connection.createStatement().executeQuery("select * from link;");
+            ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Link;");
             while (resultSet2.next()) {
                 Meths.sendToBot(String.valueOf(resultSet2.getInt(1)) + " : " + resultSet2.getInt(2));
             }
@@ -198,10 +198,12 @@ public class LinkBot extends TelegramLongPollingBot {
             Integer id = from.getId();
             try {
 
-                ResultSet resultSet2 = connection.createStatement().executeQuery("select * from link where user_id='" + id + "'");
-
+                ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Link where user_id='" + id + "'");
+                boolean never = true;
 
                 while (resultSet2.next()) {
+
+                    never = false;
                     int anInt = resultSet2.getInt(1);
                     int user_id = resultSet2.getInt(2);
                     String name = resultSet2.getString(3);
@@ -234,6 +236,12 @@ public class LinkBot extends TelegramLongPollingBot {
                         preparedStatement.setInt(1, id);
                         preparedStatement.execute();
                     }
+                }
+                if (never) {
+                    PreparedStatement preparedStatement = connection.prepareStatement(
+                            "insert into link (user_id)" + " values (?)");
+                    preparedStatement.setInt(1, id);
+                    preparedStatement.execute();
                 }
 
             } catch (SQLException e) {
