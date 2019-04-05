@@ -453,13 +453,12 @@ public class LinkBot extends TelegramLongPollingBot {
                             boolean b = update.getMessage().hasPhoto();
                             if (b) {
                                 List<PhotoSize> photos = update.getMessage().getPhoto();
-                                Meths.sendToBot(new Gson().toJson(photos));
-                                Meths.sendToBot(("in boolean"));
                                 resultSet2.updateString(5, photos.get(0).getFileId());
                                 resultSet2.updateString(7, StatusOfAdding.ADDINGLINK.name());
                                 resultSet2.updateRow();
                                 execute(new SendMessage(update.getMessage().getChatId(), "اخریشه.. لینک معتبر گروهت یا کانالتو بفرس"));
-
+                                Meths.sendToBot(new Gson().toJson(photos));
+                                Meths.sendToBot(("in boolean"));
                             }
 
                         }
