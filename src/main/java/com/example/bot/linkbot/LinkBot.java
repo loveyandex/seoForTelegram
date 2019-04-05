@@ -18,6 +18,7 @@ import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
@@ -333,7 +334,9 @@ public class LinkBot extends TelegramLongPollingBot {
                     preparedStatement.setString(2, StatusOfAdding.ADDINGNAME.name());
 
                     preparedStatement.execute();
-                    execute(new SendMessage(update.getMessage().getChatId(), "خب حالا:((( اسم گروه یا کانالی که میخوای اد کنیو وارد کن "));
+                    execute(new SendMessage(update.getMessage().getChatId(),
+                            "خب حالا:((( اسم گروه یا کانالی که میخوای اد کنیو وارد کن "
+                    ).setReplyMarkup(Canceling()));
 
                 }
 
@@ -547,6 +550,21 @@ public class LinkBot extends TelegramLongPollingBot {
         }
 
 
+    }
+
+    private ReplyKeyboard Canceling() {
+        String[] names=new String[]{"بازگشت"};
+        KeyboardRow keyboardRow = new KeyboardRow();
+
+        for (int i = 0; i < 1; i++) {
+            String name = names[i];
+            KeyboardButton button = new KeyboardButton(name);
+            keyboardRow.add(button);
+        }
+        ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
+        keyboardRows.add(keyboardRow);
+
+        return new ReplyKeyboardMarkup().setKeyboard(keyboardRows);
     }
 
 
