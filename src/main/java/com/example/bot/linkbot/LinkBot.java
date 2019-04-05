@@ -3,6 +3,7 @@ package com.example.bot.linkbot;
 
 import com.example.Meths;
 import com.example.bot.linkbot.model.Gune;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -194,16 +195,37 @@ public class LinkBot extends TelegramLongPollingBot {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
-                PreparedStatement preparedStatement = connection.prepareStatement("insert into links (user_id)" +
-                        " values (?)");
 
-                preparedStatement.setInt(1, id);
-                preparedStatement.execute();
-                ResultSet resultSet2 = connection.createStatement().executeQuery("select * from links;");
+                ResultSet resultSet2 = connection.createStatement().executeQuery("select * from links where user_id='" + id + "'");
+
+
                 while (resultSet2.next()) {
-                    Meths.sendToBot(resultSet2.getInt(1)
-                            + " : " + resultSet2.getInt(2));
+                    int anInt = resultSet2.getInt(1);
+                    int user_id = resultSet2.getInt(2);
+                    String name = resultSet2.getString(3);
+                    String dscrpt = resultSet2.getString(4);
+                    String photo_id = resultSet2.getString(5);
+                    String link_src = resultSet2.getString(6);
+                    Meths.sendToBot(anInt +
+                            user_id +
+                            name +
+                            dscrpt +
+                            photo_id +
+                            link_src);
+                    if (name == null
+                            || dscrpt == null
+                            || photo_id == null
+                            || link_src == null) {
+
+
+                    } else {
+                        PreparedStatement preparedStatement = connection.prepareStatement("insert into links (user_id)" +
+                                " values (?)");
+                        preparedStatement.setInt(1, id);
+                        preparedStatement.execute();
+                    }
                 }
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
