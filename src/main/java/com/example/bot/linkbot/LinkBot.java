@@ -217,6 +217,8 @@ public class LinkBot extends TelegramLongPollingBot {
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
                 }
 
             }
