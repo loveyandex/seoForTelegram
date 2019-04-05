@@ -304,9 +304,13 @@ public class LinkBot extends TelegramLongPollingBot {
                 }
                 if (never) {
                     PreparedStatement preparedStatement = connection.prepareStatement(
-                            "insert into link (user_id)" + " values (?)");
+                            "insert into link (user_id,status)" + " values (?,?)");
                     preparedStatement.setInt(1, id);
+                    preparedStatement.setString(2, StatusOfAdding.ADDINGNAME.name());
+
                     preparedStatement.execute();
+                    execute(new SendMessage(update.getMessage().getChatId(), "خب حالا:((( اسم گروه یا کانالی که میخوای اد کنیو وارد کن "));
+
                 }
 
             } catch (SQLException e) {
