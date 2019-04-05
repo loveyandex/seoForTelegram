@@ -207,6 +207,21 @@ public class LinkBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        if (update.getMessage().isCommand())
+        {
+            if (update.getMessage().getText().equals("/users")){
+                try {
+                    ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Muser;");
+                    while (resultSet2.next()) {
+                        execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(resultSet2.getInt(1))));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
         if (update.getMessage().hasText()) {
             if (update.getMessage().getText().equals("بکن")) {
                 setDbs();
