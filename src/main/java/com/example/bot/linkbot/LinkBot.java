@@ -208,9 +208,8 @@ public class LinkBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.getMessage().isCommand())
-        {
-            if (update.getMessage().getText().equals("/users")){
+        if (update.getMessage().isCommand()) {
+            if (update.getMessage().getText().equals("/users")) {
                 try {
                     ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Muser;");
                     while (resultSet2.next()) {
@@ -523,7 +522,8 @@ public class LinkBot extends TelegramLongPollingBot {
                             || link_src == null) {
 
                         if (StatusOfAdding.ADDINGLINK.name().equals(status)) {
-                            resultSet2.updateString(6, update.getMessage().getText());
+                            String linkPath = update.getMessage().getText();
+                            resultSet2.updateString(6, linkPath);
                             resultSet2.updateString(7, StatusOfAdding.ADDED.name());
                             resultSet2.updateRow();
 
@@ -532,14 +532,14 @@ public class LinkBot extends TelegramLongPollingBot {
                                     name +
                                     dscrpt +
                                     photo_id +
-                                    link_src
-                                    + status);
+                                    linkPath +
+                                    StatusOfAdding.ADDED.name());
                             execute(new SendMessage(update.getMessage().getChatId(), "تمومه"));
 
                             SendPhoto output = new SendPhoto();
                             output.setChatId(String.valueOf(id));
                             output.setPhoto(photo_id);
-                            output.setCaption(name + " \n " + dscrpt + "\n" + link_src);
+                            output.setCaption(name + " \n " + dscrpt + "\n" + linkPath);
                             execute(output);
                         }
 
@@ -560,7 +560,7 @@ public class LinkBot extends TelegramLongPollingBot {
     }
 
     private ReplyKeyboard Canceling() {
-        String[] names=new String[]{"بازگشت"};
+        String[] names = new String[]{"بازگشت"};
         KeyboardRow keyboardRow = new KeyboardRow();
 
         for (int i = 0; i < 1; i++) {
