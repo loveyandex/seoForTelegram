@@ -6,6 +6,8 @@ import com.example.bot.bitMelBot.pojos.Status;
 import com.example.bot.linkbot.model.Gune;
 import com.example.bot.linkbot.model.StatusOfAdding;
 import com.google.gson.Gson;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -60,16 +62,32 @@ public class LinkBot extends TelegramLongPollingBot {
 
             ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
             ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Link;");
-            while (resultSet2.next()) {
-                Meths.sendToBot(String.valueOf(resultSet2.getInt(1)) + " : " + resultSet2.getInt(2));
-            }
+
+
+            JSONArray objects = convertToJSON(resultSet2);
+            Meths.sendToBot(new Gson().toJson(objects));
 
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
+    public static JSONArray convertToJSON(ResultSet resultSet)
+            throws Exception {
+        JSONArray jsonArray = new JSONArray();
+        while (resultSet.next()) {
+            int total_columns = resultSet.getMetaData().getColumnCount();
+            JSONObject obj = new JSONObject();
+            for (int i = 0; i < total_columns; i++) {
+                obj.put(resultSet.getMetaData().getColumnLabel(i + 1).toLowerCase(), resultSet.getObject(i + 1));
+            }
+            jsonArray.put(obj);
+        }
+        return jsonArray;
+    }
 
     private boolean addUser(int idj) {
         String sql = "INSERT INTO Muser (id)" +
@@ -123,6 +141,8 @@ public class LinkBot extends TelegramLongPollingBot {
             try {
                 int indexOf = list.indexOf(text1);
                 String name = "gune" + indexOf;
+                Meths.sendToBot(name + " is running...");
+
                 System.out.println(name);
                 response.getClass().getMethod(name).invoke(response, null);
             } catch (NoSuchMethodException e) {
