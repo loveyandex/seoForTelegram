@@ -155,7 +155,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 if (!status.equals(StatusOfAdding.ADDED.name())) {
                     userNeedsNewLinkGenerate = false;
                     if (statues.contains(status)) {
-                        int indexOf = statues.indexOf(status) + 11;
+                        int indexOf = statues.indexOf(status) + 12;
                         String mn = "gune" + indexOf;
                         response.getClass().getMethod(mn).invoke(response, null);
 
