@@ -47,7 +47,7 @@ public class LinkBot extends TelegramLongPollingBot {
             connection.createStatement().execute("INSERT INTO Muser (id)" +
                     "    SELECT '6363636'" +
                     "WHERE NOT EXISTS (" +
-                    "    SELECT 1 FROM keys WHERE id='6363636' " +
+                    "    SELECT id FROM Muser WHERE id='6363636' " +
                     ");");
 
             ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
