@@ -34,6 +34,11 @@ import static com.example.Meths.post;
 public class LinkBot extends TelegramLongPollingBot {
 
 
+    public LinkBot() {
+        Meths.sendToBot("constructor is working .................. ");
+
+    }
+
     @Autowired
     private Connection connection;
 
