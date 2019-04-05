@@ -19,6 +19,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalTime;
@@ -49,11 +50,15 @@ public class LinkBot extends TelegramLongPollingBot {
 
             connection.createStatement().execute("delete  from Muser  where id=878712");
             connection.createStatement().execute("insert into Muser (id) values (878712);");
-            connection.createStatement().execute("INSERT INTO Muser (id)" +
-                    "    SELECT '6363636'" +
+            String sql = "INSERT INTO Muser (id)" +
+                    "    SELECT ?" +
                     "WHERE NOT EXISTS (" +
-                    "    SELECT id FROM Muser WHERE id='6363636' " +
-                    ");");
+                    "    SELECT id FROM Muser WHERE id=? " +
+                    ");";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, 55442233);
+            preparedStatement.setInt(2, 55442233);
+            preparedStatement.execute();
 
             ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
             while (resultSet.next()) {
