@@ -539,7 +539,7 @@ public class LinkBot extends TelegramLongPollingBot {
                             SendPhoto output = new SendPhoto();
                             output.setChatId(String.valueOf(id));
                             output.setPhoto(photo_id);
-                            output.setCaption(name + " \n " + dscrpt + "\n" + linkPath);
+                            output.setCaption(name + " ✔️\n " + dscrpt + "✔️\n✔️" + linkPath);
                             execute(output);
                         }
 
