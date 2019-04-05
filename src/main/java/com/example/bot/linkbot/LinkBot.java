@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -392,10 +393,16 @@ public class LinkBot extends TelegramLongPollingBot {
                                 + status);
                         if (StatusOfAdding.ADDINGPHOTHO.name().equals(status)) {
                             boolean b = update.getMessage().hasPhoto();
-                            if (b){
+                            if (b) {
                                 List<PhotoSize> photos = update.getMessage().getPhoto();
                                 Meths.sendToBot(new Gson().toJson(photos));
                                 Meths.sendToBot(("in boolean"));
+
+                                for (PhotoSize photo : photos) {
+                                    execute(new SendPhoto().setChatId(String.valueOf(id))
+                                            .setPhoto(photo.getFileId()));
+                                }
+
 
 //                                resultSet2.updateString(5, update.getMessage().getText());
 
@@ -405,7 +412,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
                             }
 
-                       }
+                        }
 
 
                     }
