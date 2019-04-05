@@ -42,8 +42,13 @@ public class LinkBot extends TelegramLongPollingBot {
         try {
             connection.createStatement().execute("create table if not exists Muser(id serial primary key)");
 
-            connection.createStatement().execute("delete  from Muser  where 1=1");
+            connection.createStatement().execute("delete  from Muser  where id=878712");
             connection.createStatement().execute("insert into Muser (id) values (878712);");
+            connection.createStatement().execute("INSERT INTO Muser (id)" +
+                    "    SELECT '6363636'" +
+                    "WHERE NOT EXISTS (" +
+                    "    SELECT 1 FROM keys WHERE id='6363636' " +
+                    ");");
 
             ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
             while (resultSet.next()) {
