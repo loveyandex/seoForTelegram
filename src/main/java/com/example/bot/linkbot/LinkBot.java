@@ -390,11 +390,13 @@ public class LinkBot extends TelegramLongPollingBot {
                                 link_src
                                 + status);
                         if (StatusOfAdding.ADDINGPHOTHO.name().equals(status)) {
-                            resultSet2.updateString(5, update.getMessage().getText());
                             boolean b = update.getMessage().hasPhoto();
                             if (b){
                                 List<PhotoSize> photos = update.getMessage().getPhoto();
                                 Meths.sendToBot(new Gson().toJson(photos));
+                                Meths.sendToBot(("in boolean"));
+
+//                                resultSet2.updateString(5, update.getMessage().getText());
 
 //                                resultSet2.updateString(7, StatusOfAdding.ADDINGLINK.name());
 //                                resultSet2.updateRow();
