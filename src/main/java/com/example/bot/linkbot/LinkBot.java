@@ -198,7 +198,8 @@ public class LinkBot extends TelegramLongPollingBot {
             Integer id = from.getId();
             try {
 
-                ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Link where user_id='" + id + "'");
+                ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
                 boolean never = true;
 
                 while (resultSet2.next()) {
@@ -216,7 +217,7 @@ public class LinkBot extends TelegramLongPollingBot {
                             || dscrpt == null
                             || photo_id == null
                             || link_src == null) {
-                        Meths.sendToBot(anInt +
+                        Meths.sendToBot(String.valueOf(anInt) +":"+
                                 user_id +
                                 name +
                                 dscrpt +
