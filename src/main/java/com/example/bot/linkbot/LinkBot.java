@@ -63,7 +63,7 @@ public class LinkBot extends TelegramLongPollingBot {
     }
 
 
-    private boolean addUser(int id)  {
+    private boolean addUser(int idj)  {
         String sql = "INSERT INTO Muser (id)" +
                 "    SELECT ?" +
                 "WHERE NOT EXISTS (" +
@@ -72,15 +72,14 @@ public class LinkBot extends TelegramLongPollingBot {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
-            preparedStatement.setInt(2, id);
+            preparedStatement.setInt(1, idj);
+            preparedStatement.setInt(2, idj);
             boolean execute = preparedStatement.execute();
-            Meths.sendToBot(String.valueOf(id));
+            Meths.sendToBot(String.valueOf(idj));
             return execute;
 
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            Meths.sendToBot(e.toString());        }
         return (true);
 
     }
