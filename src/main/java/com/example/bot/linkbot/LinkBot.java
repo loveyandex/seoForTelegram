@@ -180,7 +180,7 @@ public class LinkBot extends TelegramLongPollingBot {
                         String mn = "gune" + indexOf;
 
                         response.getClass().getMethod(mn).invoke(response, null);
-
+                        return;
                     }
 
 
@@ -491,19 +491,20 @@ public class LinkBot extends TelegramLongPollingBot {
                             || dscrpt == null
                             || photo_id == null
                             || link_src == null) {
-                        Meths.sendToBot(anInt + ":" +
-                                user_id +
-                                name +
-                                dscrpt +
-                                photo_id +
-                                link_src
-                                + status);
+
                         if (StatusOfAdding.ADDINGLINK.name().equals(status)) {
                             resultSet2.updateString(6, update.getMessage().getText());
                             resultSet2.updateString(7, StatusOfAdding.ADDED.name());
                             resultSet2.updateRow();
 
                             execute(new SendMessage(update.getMessage().getChatId(), "تمومه"));
+                            Meths.sendToBot(anInt + ":" +
+                                    user_id +
+                                    name +
+                                    dscrpt +
+                                    photo_id +
+                                    link_src
+                                    + status);
                         }
 
 
