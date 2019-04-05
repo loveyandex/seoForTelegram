@@ -132,6 +132,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
         try {
             response.gune12();
+            response.gune13();
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
