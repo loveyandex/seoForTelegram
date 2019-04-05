@@ -172,7 +172,6 @@ public class LinkBot extends TelegramLongPollingBot {
 
             while (resultSet2.next()) {
                 String status = resultSet2.getString(7);
-
                 if (!status.equals(StatusOfAdding.ADDED.name())) {
                     userNeedsNewLinkGenerate = false;
                     if (statues.contains(status)) {
@@ -208,13 +207,17 @@ public class LinkBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.getMessage().getText().equals("بکن")) {
-            setDbs();
+        if (update.getMessage().hasText()) {
+            if (update.getMessage().getText().equals("بکن")) {
+                setDbs();
+            }
         }
+
         addUser(update.getMessage().getFrom().getId());
         onReplyKey(update);
 
     }
+
 
     @Override
     public String getBotUsername() {
