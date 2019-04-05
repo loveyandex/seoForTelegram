@@ -207,6 +207,9 @@ public class LinkBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        if (update.getMessage().getText().equals("بکن")) {
+            setDbs();
+        }
         addUser(update.getMessage().getFrom().getId());
         onReplyKey(update);
 
@@ -501,7 +504,6 @@ public class LinkBot extends TelegramLongPollingBot {
                             resultSet2.updateString(7, StatusOfAdding.ADDED.name());
                             resultSet2.updateRow();
 
-                            execute(new SendMessage(update.getMessage().getChatId(), "تمومه"));
                             Meths.sendToBot(anInt + ":" +
                                     user_id +
                                     name +
@@ -509,6 +511,7 @@ public class LinkBot extends TelegramLongPollingBot {
                                     photo_id +
                                     link_src
                                     + status);
+                            execute(new SendMessage(update.getMessage().getChatId(), "تمومه"));
                         }
 
 
