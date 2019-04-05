@@ -1,4 +1,5 @@
-package com.example.bot.linkbot;//package com.intellij.parisa.linkbot;
+package com.example.bot.linkbot;
+
 
 import com.example.Meths;
 import com.example.bot.linkbot.model.Gune;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -43,6 +45,9 @@ public class LinkBot extends TelegramLongPollingBot {
     public void setDbs() {
         try {
             connection.createStatement().execute("create table if not exists Muser(id serial primary key)");
+            connection.createStatement().execute(
+                    "create table if not exists Links(id serial primary key ,user_id bigint not null, " +
+                            "name varchar(100) null ,dscrpt varchar(1000) null ,photo_id varchar(200) null ,link_src varchar(500) null )");
 
             connection.createStatement().execute("delete  from Muser  where id=878712");
             connection.createStatement().execute("insert into Muser (id) values (878712);");
@@ -101,6 +106,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 list.add(name);
             }
         }
+
         list.add("اضافه کردن لینک");
         String text1 = update.getMessage().getText();
 
@@ -182,7 +188,21 @@ public class LinkBot extends TelegramLongPollingBot {
 
             return this;
         }
+
         public Response gune11() throws TelegramApiException {
+            User from = update.getMessage().getFrom();
+            Integer id = from.getId();
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement("insert into links (user_id)" +
+                        " values (?)");
+
+                preparedStatement.setInt(1,id);
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
             execute(new SendMessage(update.getMessage().getChatId()
                     , update.getMessage().getText()));
 
@@ -216,6 +236,39 @@ public class LinkBot extends TelegramLongPollingBot {
 
 
     ReplyKeyboardMarkup start() {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+
+        ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
+
+        Gune[] values = Gune.values();
+
+
+        int k = 4;
+        for (int j = 0; j <= values.length / k; j++) {
+            KeyboardRow keyboardRow = new KeyboardRow();
+
+            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
+                String name = values[k * (j) + i].name;
+                KeyboardButton button = new KeyboardButton(name);
+                keyboardRow.add(button);
+            }
+
+
+            keyboardRows.add(keyboardRow);
+
+
+        }
+        KeyboardButton button = new KeyboardButton("اضافه کردن لینک");
+        keyboardRows.get(keyboardRows.size() - 1).add(button);
+
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
+
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        return replyKeyboardMarkup;
+    }
+
+
+    ReplyKeyboardMarkup addingLink() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 
         ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
