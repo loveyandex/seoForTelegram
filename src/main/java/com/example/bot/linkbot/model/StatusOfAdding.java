@@ -5,5 +5,5 @@ package com.example.bot.linkbot.model;
  */
 
 public enum StatusOfAdding {
-    NOT_BEGIN_YET, ADDINGNAME, ADDINGDSCRP, ADDINGPHOTHO, ADDINGLINK, ADDED,
+     ADDINGNAME, ADDINGDSCRP, ADDINGPHOTHO, ADDINGLINK, ADDED,
 }

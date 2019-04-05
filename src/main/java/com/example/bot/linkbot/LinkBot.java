@@ -2,6 +2,7 @@ package com.example.bot.linkbot;
 
 
 import com.example.Meths;
+import com.example.bot.bitMelBot.pojos.Status;
 import com.example.bot.linkbot.model.Gune;
 import com.example.bot.linkbot.model.StatusOfAdding;
 import com.google.gson.Gson;
@@ -54,7 +55,7 @@ public class LinkBot extends TelegramLongPollingBot {
                             "name varchar(100) null ,dscrpt varchar(1000) null ,photo_id varchar(200) null ,link_src varchar(500) null ,status varchar(25) null )");
 
             connection.createStatement().execute("delete  from Muser  where id=878712");
-//            connection.createStatement().execute("delete  from Link");
+            connection.createStatement().execute("delete  from Link");
             connection.createStatement().execute("insert into Muser (id) values (878712);");
 
             ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
@@ -104,6 +105,7 @@ public class LinkBot extends TelegramLongPollingBot {
         System.out.println(LocalTime.now().toString());
         Gune[] values = Gune.values();
         List<String> list = new ArrayList<>();
+        List<String> statues = new ArrayList<>();
 
         int k = 3;
         for (int j = 0; j <= values.length / k; j++) {
@@ -132,12 +134,45 @@ public class LinkBot extends TelegramLongPollingBot {
             }
         }
 
+        StatusOfAdding[] statusOfAddings = StatusOfAdding.values();
+        for (StatusOfAdding statusOfAdding : statusOfAddings) {
+            statues.add(statusOfAdding.name());
+        }
+
+
         try {
-            response.gune12();
-            response.gune13();
-            response.gune14();
-            response.gune15();
-        } catch (TelegramApiException e) {
+
+
+            Integer id = update.getMessage().getFrom().getId();
+            ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
+
+            boolean userNeedsNewLinkGenerate = true;
+
+            while (resultSet2.next()) {
+                String status = resultSet2.getString(7);
+
+                if (!status.equals(StatusOfAdding.ADDED.name())) {
+                    userNeedsNewLinkGenerate = false;
+                    if (statues.contains(status)) {
+                        int indexOf = statues.indexOf(status) + 11;
+                        String mn = "gune" + indexOf;
+                        response.getClass().getMethod(mn).invoke(response, null);
+
+                    }
+
+
+                }
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
 
@@ -215,7 +250,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
                 while (resultSet2.next()) {
 
-                    never = false;
+
                     int anInt = resultSet2.getInt(1);
                     int user_id = resultSet2.getInt(2);
                     String name = resultSet2.getString(3);
@@ -228,6 +263,7 @@ public class LinkBot extends TelegramLongPollingBot {
                             || dscrpt == null
                             || photo_id == null
                             || link_src == null) {
+                        never = false;
                         Meths.sendToBot(String.valueOf(anInt) + ":" +
                                 user_id +
                                 name +
@@ -236,17 +272,12 @@ public class LinkBot extends TelegramLongPollingBot {
                                 link_src
                                 + status);
                         if (name == null) {
-                            execute(new SendMessage(update.getMessage().getChatId(), "خب حالا اسم گروه یا کانالی که میخوای اد کنیوارد کن "));
+                            execute(new SendMessage(update.getMessage().getChatId(), "خب حالا اسم گروه یا کانالی که میخوای اد کنیو وارد کن "));
                             resultSet2.updateString(7, StatusOfAdding.ADDINGNAME.name());
                             resultSet2.updateRow();
                         }
 
 
-                    } else {
-                        PreparedStatement preparedStatement = connection.prepareStatement(
-                                "insert into link (user_id)" + " values (?)");
-                        preparedStatement.setInt(1, id);
-                        preparedStatement.execute();
                     }
                 }
                 if (never) {
@@ -272,11 +303,8 @@ public class LinkBot extends TelegramLongPollingBot {
 
                 ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                         ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
-                boolean never = true;
 
                 while (resultSet2.next()) {
-
-                    never = false;
                     int anInt = resultSet2.getInt(1);
                     int user_id = resultSet2.getInt(2);
                     String name = resultSet2.getString(3);
@@ -385,12 +413,12 @@ public class LinkBot extends TelegramLongPollingBot {
                             || dscrpt == null
                             || photo_id == null
                             || link_src == null) {
-                        Meths.sendToBot(anInt + ":" +
-                                user_id +
-                                name +
-                                dscrpt +
-                                photo_id +
-                                link_src
+                        Meths.sendToBot(anInt + " : " +
+                                user_id + " : " +
+                                name + " : " +
+                                dscrpt + " : " +
+                                photo_id + " : " +
+                                link_src + " : "
                                 + status);
                         if (StatusOfAdding.ADDINGPHOTHO.name().equals(status)) {
                             boolean b = update.getMessage().hasPhoto();
@@ -452,6 +480,7 @@ public class LinkBot extends TelegramLongPollingBot {
                             resultSet2.updateString(6, update.getMessage().getText());
                             resultSet2.updateString(7, StatusOfAdding.ADDED.name());
                             resultSet2.updateRow();
+
                             execute(new SendMessage(update.getMessage().getChatId(), "تمومه"));
                         }
 
