@@ -55,7 +55,7 @@ public class LinkBot extends TelegramLongPollingBot {
                             "name varchar(100) null ,dscrpt varchar(1000) null ,photo_id varchar(200) null ,link_src varchar(500) null ,status varchar(25) null )");
 
             connection.createStatement().execute("delete  from Muser  where id=878712");
-            connection.createStatement().execute("delete  from Link");
+//            connection.createStatement().execute("delete  from Link");
             connection.createStatement().execute("insert into Muser (id) values (878712);");
 
             ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
