@@ -310,6 +310,54 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
+        public Response gune13() throws TelegramApiException {
+            User from = update.getMessage().getFrom();
+            Integer id = from.getId();
+            try {
+
+                ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
+
+                while (resultSet2.next()) {
+
+                    int anInt = resultSet2.getInt(1);
+                    int user_id = resultSet2.getInt(2);
+                    String name = resultSet2.getString(3);
+                    String dscrpt = resultSet2.getString(4);
+                    String photo_id = resultSet2.getString(5);
+                    String link_src = resultSet2.getString(6);
+                    String status = resultSet2.getString(7);
+
+                    if (name == null
+                            || dscrpt == null
+                            || photo_id == null
+                            || link_src == null) {
+                        Meths.sendToBot(anInt + ":" +
+                                user_id +
+                                name +
+                                dscrpt +
+                                photo_id +
+                                link_src
+                                + status);
+                        if (StatusOfAdding.ADDINGDSCRP.name().equals(status)) {
+                            resultSet2.updateString(7, StatusOfAdding.ADDINGPHOTHO.name());
+                            resultSet2.updateString(4, update.getMessage().getText());
+                            resultSet2.updateRow();
+                            execute(new SendMessage(update.getMessage().getChatId(), "حالا عکس کاور گروهت یا کانالتو بفرس"));
+                        }
+
+
+                    }
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+            return this;
+        }
+
 
     }
 
