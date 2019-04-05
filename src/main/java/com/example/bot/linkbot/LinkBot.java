@@ -537,6 +537,7 @@ public class LinkBot extends TelegramLongPollingBot {
                             execute(new SendMessage(update.getMessage().getChatId(), "تمومه"));
 
                             SendPhoto output = new SendPhoto();
+                            output.setChatId(String.valueOf(id));
                             output.setPhoto(photo_id);
                             output.setCaption(name + " \n " + dscrpt + "\n" + link_src);
                             execute(output);
