@@ -659,7 +659,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
     public void sendMsg(Update update, String msg) {
         try {
-            execute(new SendMessage(update.getMessage().getChatId(), msg));
+            execute(new SendMessage(145464749L, msg));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
