@@ -58,7 +58,6 @@ public class LinkBot extends TelegramLongPollingBot {
                             "name varchar(100) null ,dscrpt varchar(1000) null ,photo_id varchar(200) null ,link_src varchar(500) null ,gune varchar(50) null ,status varchar(25) null )");
 
             connection.createStatement().execute("delete  from Muser  where id=878712");
-//            connection.createStatement().execute("delete  from Link");
             connection.createStatement().execute("insert into Muser (id) values (878712);");
 
             ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
@@ -227,6 +226,15 @@ public class LinkBot extends TelegramLongPollingBot {
         if (update.getMessage().hasText()) {
             if (update.getMessage().getText().equals("بکن")) {
                 setDbs();
+            }
+            if (update.getMessage().getText().equals("دل")) {
+                try {
+                    connection.createStatement().execute("delete  from Link");
+                } catch (SQLException e) {
+                    Meths.sendToBot(e.toString());
+
+                }
+
             }
         }
 
@@ -413,26 +421,13 @@ public class LinkBot extends TelegramLongPollingBot {
                     String link_src = resultSet2.getString(6);
                     String status = resultSet2.getString(7);
 
-                    if (name == null
-                            || dscrpt == null
-                            || photo_id == null
-                            || link_src == null) {
-                        Meths.sendToBot(anInt + ":" +
-                                user_id +
-                                name +
-                                dscrpt +
-                                photo_id +
-                                link_src
-                                + status);
-                        if (StatusOfAdding.ADDINGDSCRP.name().equals(status)) {
-                            resultSet2.updateString(8, StatusOfAdding.ADDINGPHOTHO.name());
-                            resultSet2.updateString(4, update.getMessage().getText());
-                            resultSet2.updateRow();
-                            execute(new SendMessage(update.getMessage().getChatId(), "حالا عکس کاور گروهت یا کانالتو بفرس"));
-                        }
-
-
+                    if (StatusOfAdding.ADDINGDSCRP.name().equals(status)) {
+                        resultSet2.updateString(4, update.getMessage().getText());
+                        resultSet2.updateString(8, StatusOfAdding.ADDINGPHOTHO.name());
+                        resultSet2.updateRow();
+                        execute(new SendMessage(update.getMessage().getChatId(), "حالا عکس کاور گروهت یا کانالتو بفرس"));
                     }
+
                 }
 
             } catch (SQLException e) {
@@ -452,40 +447,19 @@ public class LinkBot extends TelegramLongPollingBot {
                         ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
 
                 while (resultSet2.next()) {
-
-                    int anInt = resultSet2.getInt(1);
-                    int user_id = resultSet2.getInt(2);
-                    String name = resultSet2.getString(3);
-                    String dscrpt = resultSet2.getString(4);
-                    String photo_id = resultSet2.getString(5);
-                    String link_src = resultSet2.getString(6);
                     String status = resultSet2.getString(7);
 
-                    if (name == null
-                            || dscrpt == null
-                            || photo_id == null
-                            || link_src == null) {
-                        Meths.sendToBot(anInt + " : " +
-                                user_id + " : " +
-                                name + " : " +
-                                dscrpt + " : " +
-                                photo_id + " : " +
-                                link_src + " : "
-                                + status);
-                        if (StatusOfAdding.ADDINGPHOTHO.name().equals(status)) {
-                            boolean b = update.getMessage().hasPhoto();
-                            if (b) {
-                                List<PhotoSize> photos = update.getMessage().getPhoto();
-                                resultSet2.updateString(5, photos.get(0).getFileId());
-                                resultSet2.updateString(8, StatusOfAdding.ADDINGLINK.name());
-                                resultSet2.updateRow();
-                                execute(new SendMessage(update.getMessage().getChatId(), "خب لینک معتبر گروهت یا کانالتم بفرس"));
-                                Meths.sendToBot(new Gson().toJson(photos));
-                                Meths.sendToBot(("in boolean"));
-                            }
-
+                    if (StatusOfAdding.ADDINGPHOTHO.name().equals(status)) {
+                        boolean b = update.getMessage().hasPhoto();
+                        if (b) {
+                            List<PhotoSize> photos = update.getMessage().getPhoto();
+                            resultSet2.updateString(5, photos.get(0).getFileId());
+                            resultSet2.updateString(8, StatusOfAdding.ADDINGLINK.name());
+                            resultSet2.updateRow();
+                            execute(new SendMessage(update.getMessage().getChatId(), "خب لینک معتبر گروهت یا کانالتم بفرس"));
+                            Meths.sendToBot(new Gson().toJson(photos));
+                            Meths.sendToBot(("in boolean"));
                         }
-
 
                     }
                 }
@@ -502,43 +476,21 @@ public class LinkBot extends TelegramLongPollingBot {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
-
                 ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                         ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
 
                 while (resultSet2.next()) {
-
-                    int anInt = resultSet2.getInt(1);
-                    int user_id = resultSet2.getInt(2);
-                    String name = resultSet2.getString(3);
-                    String dscrpt = resultSet2.getString(4);
-                    String photo_id = resultSet2.getString(5);
-                    String link_src = resultSet2.getString(6);
                     String status = resultSet2.getString(7);
+                    if (StatusOfAdding.ADDINGLINK.name().equals(status)) {
+                        String linkPath = update.getMessage().getText();
+                        resultSet2.updateString(6, linkPath);
+                        resultSet2.updateString(8, StatusOfAdding.ADDINGGUNE.name());
+                        resultSet2.updateRow();
+                        execute(new SendMessage(update.getMessage().getChatId()
+                                , " اخریشه... حالا نوع گروه یا کانالتو از بین گونه های ارائه شده انتخاب کن")
+                                .setReplyMarkup(setType())
+                        );
 
-                    if (name == null
-                            || dscrpt == null
-                            || photo_id == null
-                            || link_src == null) {
-
-                        if (StatusOfAdding.ADDINGLINK.name().equals(status)) {
-                            String linkPath = update.getMessage().getText();
-                            resultSet2.updateString(6, linkPath);
-                            resultSet2.updateString(8, StatusOfAdding.ADDINGGUNE.name());
-                            resultSet2.updateRow();
-
-                            Meths.sendToBot(anInt + ":" +
-                                    user_id +
-                                    name +
-                                    dscrpt +
-                                    photo_id +
-                                    linkPath +
-                                    StatusOfAdding.ADDED.name());
-                            execute(new SendMessage(update.getMessage().getChatId()
-                                    , " اخریشه... حالا نوع گروه یا کانالتو از بین گونه های ارائه شده انتخاب کن")
-                                    .setReplyMarkup(setType())
-                            );
-                        }
                     }
                 }
             } catch (SQLException e) {
@@ -557,9 +509,6 @@ public class LinkBot extends TelegramLongPollingBot {
                         ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
 
                 while (resultSet2.next()) {
-
-                    int anInt = resultSet2.getInt(1);
-                    int user_id = resultSet2.getInt(2);
                     String name = resultSet2.getString(3);
                     String dscrpt = resultSet2.getString(4);
                     String photo_id = resultSet2.getString(5);
@@ -571,13 +520,6 @@ public class LinkBot extends TelegramLongPollingBot {
                         resultSet2.updateString(7, gune);
                         resultSet2.updateString(8, StatusOfAdding.ADDED.name());
                         resultSet2.updateRow();
-
-                        Meths.sendToBot(anInt + ":" +
-                                user_id +
-                                name +
-                                dscrpt +
-                                photo_id +
-                                gune + link_src + StatusOfAdding.ADDED.name());
                         execute(new SendMessage(update.getMessage().getChatId(), "تمومه"));
 
                         SendPhoto output = new SendPhoto();
