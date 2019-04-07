@@ -35,4 +35,6 @@ public class Link extends UserDateAudit {
 
     private StatusOfAdding statusOfAdding;
 
+    private Gune gune;
+
 }

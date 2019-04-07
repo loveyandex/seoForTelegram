@@ -8,9 +8,17 @@ package com.example.bot.linkbot.model;
 //Joining can be conditional by admins of channels and groups
 
 public enum Gune {
-    Scientific("علمی"), Entertainment("سرگرمی"), Newsly("خبر"), Engineerical("فنی- مهندسی"),
-    Sport("ورزشی"), Girlely("دخترونه ها"), FriendShip("دوست یابی"), Financial("مالی"), EconmicalProblems("مسائل اقتصادی"),
-    Politicals("سیاسی"), Fitness("تناسب اندام");
+    Scientific("علمی"),
+    Entertainment("سرگرمی"),
+    Newsly("خبر"),
+    Engineerical("فنی- مهندسی"),
+    Sport("ورزشی"),
+    Girlly("دخترونه ها"),
+    FriendShip("دوست یابی"),
+    Financial("مالی"),
+    EconmicalProblems("مسائل اقتصادی"),
+    Politicals("سیاسی"),
+    Fitness("تناسب اندام");
 
     Gune() {
 

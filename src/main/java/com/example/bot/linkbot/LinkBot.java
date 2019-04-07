@@ -55,7 +55,7 @@ public class LinkBot extends TelegramLongPollingBot {
             connection.createStatement().execute("create table if not exists Muser(id serial primary key)");
             connection.createStatement().execute(
                     "create table if not exists Link(id serial primary key ,user_id bigint not null, " +
-                            "name varchar(100) null ,dscrpt varchar(1000) null ,photo_id varchar(200) null ,link_src varchar(500) null ,status varchar(25) null )");
+                            "name varchar(100) null ,dscrpt varchar(1000) null ,photo_id varchar(200) null ,link_src varchar(500) null ,gune varchar(50) null ,status varchar(25) null )");
 
             connection.createStatement().execute("delete  from Muser  where id=878712");
 //            connection.createStatement().execute("delete  from Link");
@@ -319,7 +319,7 @@ public class LinkBot extends TelegramLongPollingBot {
                                 + status);
                         if (name == null) {
                             execute(new SendMessage(update.getMessage().getChatId(), "خب حالا اسم گروه یا کانالی که میخوای اد کنیو وارد کن "));
-                            resultSet2.updateString(7, StatusOfAdding.ADDINGNAME.name());
+                            resultSet2.updateString(8, StatusOfAdding.ADDINGNAME.name());
                             resultSet2.updateRow();
                         }
 
@@ -335,7 +335,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     preparedStatement.execute();
                     execute(new SendMessage(update.getMessage().getChatId(),
                             "خب حالا:((( اسم گروه یا کانالی که میخوای اد کنیو وارد کن "
-                    ).setReplyMarkup(Canceling()));
+                    ));
 
                 }
 
@@ -377,7 +377,7 @@ public class LinkBot extends TelegramLongPollingBot {
                                 link_src
                                 + status);
                         if (StatusOfAdding.ADDINGNAME.name().equals(status)) {
-                            resultSet2.updateString(7, StatusOfAdding.ADDINGDSCRP.name());
+                            resultSet2.updateString(8, StatusOfAdding.ADDINGDSCRP.name());
                             resultSet2.updateString(3, update.getMessage().getText());
                             resultSet2.updateRow();
                             execute(new SendMessage(update.getMessage().getChatId(), "حالا توضیحات کانال یا گروهتو بنویس"));
@@ -425,7 +425,7 @@ public class LinkBot extends TelegramLongPollingBot {
                                 link_src
                                 + status);
                         if (StatusOfAdding.ADDINGDSCRP.name().equals(status)) {
-                            resultSet2.updateString(7, StatusOfAdding.ADDINGPHOTHO.name());
+                            resultSet2.updateString(8, StatusOfAdding.ADDINGPHOTHO.name());
                             resultSet2.updateString(4, update.getMessage().getText());
                             resultSet2.updateRow();
                             execute(new SendMessage(update.getMessage().getChatId(), "حالا عکس کاور گروهت یا کانالتو بفرس"));
@@ -477,9 +477,9 @@ public class LinkBot extends TelegramLongPollingBot {
                             if (b) {
                                 List<PhotoSize> photos = update.getMessage().getPhoto();
                                 resultSet2.updateString(5, photos.get(0).getFileId());
-                                resultSet2.updateString(7, StatusOfAdding.ADDINGLINK.name());
+                                resultSet2.updateString(8, StatusOfAdding.ADDINGLINK.name());
                                 resultSet2.updateRow();
-                                execute(new SendMessage(update.getMessage().getChatId(), "اخریشه.. لینک معتبر گروهت یا کانالتو بفرس"));
+                                execute(new SendMessage(update.getMessage().getChatId(), "خب لینک معتبر گروهت یا کانالتم بفرس"));
                                 Meths.sendToBot(new Gson().toJson(photos));
                                 Meths.sendToBot(("in boolean"));
                             }
@@ -524,7 +524,57 @@ public class LinkBot extends TelegramLongPollingBot {
                         if (StatusOfAdding.ADDINGLINK.name().equals(status)) {
                             String linkPath = update.getMessage().getText();
                             resultSet2.updateString(6, linkPath);
-                            resultSet2.updateString(7, StatusOfAdding.ADDED.name());
+                            resultSet2.updateString(8, StatusOfAdding.ADDINGGUNE.name());
+                            resultSet2.updateRow();
+
+                            Meths.sendToBot(anInt + ":" +
+                                    user_id +
+                                    name +
+                                    dscrpt +
+                                    photo_id +
+                                    linkPath +
+                                    StatusOfAdding.ADDED.name());
+                            execute(new SendMessage(update.getMessage().getChatId()
+                                    , " اخریشه... حالا نوع گروه یا کانالتو از بین گونه های ارائه شده انتخاب کن")
+                                    .setReplyMarkup(setType())
+                            );
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                execute(new SendMessage(update.getMessage().getChatId(), e.toString()));
+            }
+            return this;
+        }
+
+
+        public Response gune16() throws TelegramApiException {
+            User from = update.getMessage().getFrom();
+            Integer id = from.getId();
+            try {
+
+                ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
+
+                while (resultSet2.next()) {
+
+                    int anInt = resultSet2.getInt(1);
+                    int user_id = resultSet2.getInt(2);
+                    String name = resultSet2.getString(3);
+                    String dscrpt = resultSet2.getString(4);
+                    String photo_id = resultSet2.getString(5);
+                    String link_src = resultSet2.getString(6);
+                    String status = resultSet2.getString(7);
+
+                    if (name == null
+                            || dscrpt == null
+                            || photo_id == null
+                            || link_src == null) {
+
+                        if (StatusOfAdding.ADDINGGUNE.name().equals(status)) {
+                            String linkPath = update.getMessage().getText();
+                            resultSet2.updateString(7, linkPath);
+                            resultSet2.updateString(8, StatusOfAdding.ADDED.name());
                             resultSet2.updateRow();
 
                             Meths.sendToBot(anInt + ":" +
@@ -539,20 +589,14 @@ public class LinkBot extends TelegramLongPollingBot {
                             SendPhoto output = new SendPhoto();
                             output.setChatId(String.valueOf(id));
                             output.setPhoto(photo_id);
-                            output.setCaption(" ✔️ "+name + "\n"+"   ✔️ " + dscrpt + "\n"+"  ✔️ " + linkPath);
+                            output.setCaption(" ✔️ " + name + "\n" + "   ✔️ " + dscrpt + "\n" + "  ✔️ " + linkPath);
                             execute(output);
                         }
-
-
                     }
                 }
-
             } catch (SQLException e) {
                 execute(new SendMessage(update.getMessage().getChatId(), e.toString()));
-
             }
-
-
             return this;
         }
 
@@ -597,6 +641,37 @@ public class LinkBot extends TelegramLongPollingBot {
     }
 
 
+    ReplyKeyboardMarkup setType() {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+
+        ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
+
+        Gune[] values = Gune.values();
+
+
+        int k = 1;
+        r(keyboardRows, values, k);
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
+
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        return replyKeyboardMarkup;
+    }
+
+    private void r(ArrayList<KeyboardRow> keyboardRows, Gune[] values, int k) {
+        for (int j = 0; j <= values.length / k; j++) {
+            KeyboardRow keyboardRow = new KeyboardRow();
+
+            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
+                String name = values[k * (j) + i].name;
+                KeyboardButton button = new KeyboardButton(name);
+                keyboardRow.add(button);
+            }
+            keyboardRows.add(keyboardRow);
+
+        }
+    }
+
+
     ReplyKeyboardMarkup start() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 
@@ -606,20 +681,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
 
         int k = 4;
-        for (int j = 0; j <= values.length / k; j++) {
-            KeyboardRow keyboardRow = new KeyboardRow();
-
-            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
-                String name = values[k * (j) + i].name;
-                KeyboardButton button = new KeyboardButton(name);
-                keyboardRow.add(button);
-            }
-
-
-            keyboardRows.add(keyboardRow);
-
-
-        }
+        r(keyboardRows, values, k);
         KeyboardButton button = new KeyboardButton("اضافه کردن لینک");
         keyboardRows.get(keyboardRows.size() - 1).add(button);
 
@@ -639,20 +701,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
 
         int k = 4;
-        for (int j = 0; j <= values.length / k; j++) {
-            KeyboardRow keyboardRow = new KeyboardRow();
-
-            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
-                String name = values[k * (j) + i].name;
-                KeyboardButton button = new KeyboardButton(name);
-                keyboardRow.add(button);
-            }
-
-
-            keyboardRows.add(keyboardRow);
-
-
-        }
+        r(keyboardRows, values, k);
         KeyboardButton button = new KeyboardButton("اضافه کردن لینک");
         keyboardRows.get(keyboardRows.size() - 1).add(button);
 
