@@ -566,32 +566,26 @@ public class LinkBot extends TelegramLongPollingBot {
                     String link_src = resultSet2.getString(6);
                     String status = resultSet2.getString(7);
 
-                    if (name == null
-                            || dscrpt == null
-                            || photo_id == null
-                            || link_src == null) {
+                    if (StatusOfAdding.ADDINGGUNE.name().equals(status)) {
+                        String gune = update.getMessage().getText();
+                        resultSet2.updateString(7, gune);
+                        resultSet2.updateString(8, StatusOfAdding.ADDED.name());
+                        resultSet2.updateRow();
 
-                        if (StatusOfAdding.ADDINGGUNE.name().equals(status)) {
-                            String linkPath = update.getMessage().getText();
-                            resultSet2.updateString(7, linkPath);
-                            resultSet2.updateString(8, StatusOfAdding.ADDED.name());
-                            resultSet2.updateRow();
+                        Meths.sendToBot(anInt + ":" +
+                                user_id +
+                                name +
+                                dscrpt +
+                                photo_id +
+                                gune + link_src + StatusOfAdding.ADDED.name());
+                        execute(new SendMessage(update.getMessage().getChatId(), "تمومه"));
 
-                            Meths.sendToBot(anInt + ":" +
-                                    user_id +
-                                    name +
-                                    dscrpt +
-                                    photo_id +
-                                    linkPath +
-                                    StatusOfAdding.ADDED.name());
-                            execute(new SendMessage(update.getMessage().getChatId(), "تمومه"));
+                        SendPhoto output = new SendPhoto();
+                        output.setChatId(String.valueOf(id));
+                        output.setPhoto(photo_id);
+                        output.setCaption(" ✔️ " + name + "\n" + "   ✔️ " + dscrpt + "\n" + "  ✔️ " + link_src);
+                        execute(output);
 
-                            SendPhoto output = new SendPhoto();
-                            output.setChatId(String.valueOf(id));
-                            output.setPhoto(photo_id);
-                            output.setCaption(" ✔️ " + name + "\n" + "   ✔️ " + dscrpt + "\n" + "  ✔️ " + linkPath);
-                            execute(output);
-                        }
                     }
                 }
             } catch (SQLException e) {
