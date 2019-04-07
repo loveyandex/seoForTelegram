@@ -54,8 +54,15 @@ public class LinkBot extends TelegramLongPollingBot {
         try {
             connection.createStatement().execute("create table if not exists Muser(id serial primary key)");
             connection.createStatement().execute(
-                    "create table if not exists Link(id serial primary key ,user_id bigint not null, " +
-                            "name varchar(100) null ,dscrpt varchar(1000) null ,photo_id varchar(200) null ,link_src varchar(500) null ,gune varchar(50) null ,status varchar(25) null )");
+                    "create table if not exists Link(" +
+                            "id serial primary key" +
+                            " ,user_id bigint not null, " +
+                            "name varchar(100) null ," +
+                            "dscrpt varchar(1000) null ," +
+                            "photo_id varchar(200) null ," +
+                            "link_src varchar(500) null ," +
+                            "gune varchar(50) null ," +
+                            "status varchar(25) null )");
 
             connection.createStatement().execute("delete  from Muser  where id=878712");
             connection.createStatement().execute("insert into Muser (id) values (878712);");
@@ -226,6 +233,14 @@ public class LinkBot extends TelegramLongPollingBot {
         if (update.getMessage().hasText()) {
             if (update.getMessage().getText().equals("بکن")) {
                 setDbs();
+            }
+            if (update.getMessage().getText().equals("drop")) {
+                try {
+                    connection.createStatement().execute("drop table if exists Link");
+                } catch (SQLException e) {
+                    sendMsg(update, e.toString());
+
+                }
             }
             if (update.getMessage().getText().equals("دل")) {
                 try {
@@ -413,13 +428,6 @@ public class LinkBot extends TelegramLongPollingBot {
                         ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
 
                 while (resultSet2.next()) {
-
-                    int anInt = resultSet2.getInt(1);
-                    int user_id = resultSet2.getInt(2);
-                    String name = resultSet2.getString(3);
-                    String dscrpt = resultSet2.getString(4);
-                    String photo_id = resultSet2.getString(5);
-                    String link_src = resultSet2.getString(6);
                     String status = resultSet2.getString(7);
 
                     if (StatusOfAdding.ADDINGDSCRP.name().equals(status)) {
