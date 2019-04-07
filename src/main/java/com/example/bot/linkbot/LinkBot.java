@@ -175,12 +175,9 @@ public class LinkBot extends TelegramLongPollingBot {
             ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
 
-            boolean userNeedsNewLinkGenerate = true;
-
             while (resultSet2.next()) {
                 String status = resultSet2.getString(7);
                 if (!status.equals(StatusOfAdding.ADDED.name())) {
-                    userNeedsNewLinkGenerate = false;
                     if (statues.contains(status)) {
                         int indexOf = statues.indexOf(status) + 12;
                         String mn = "gune" + indexOf;
@@ -238,7 +235,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 try {
                     connection.createStatement().execute("drop table if exists Link");
                 } catch (SQLException e) {
-                    sendMsg(update, e.toString());
+                    sendMsg( e.toString());
 
                 }
             }
@@ -333,7 +330,7 @@ public class LinkBot extends TelegramLongPollingBot {
                             || photo_id == null
                             || link_src == null) {
                         never = false;
-                        Meths.sendToBot(String.valueOf(anInt) + ":" +
+                        Meths.sendToBot("gune 11 " + ":" +
                                 user_id +
                                 name +
                                 dscrpt +
@@ -351,7 +348,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 }
                 if (never) {
                     PreparedStatement preparedStatement = connection.prepareStatement(
-                            "insert into link (user_id,status)" + " values (?,?)");
+                            "insert into Link (user_id,status)" + " values (?,?)");
                     preparedStatement.setInt(1, id);
                     preparedStatement.setString(2, StatusOfAdding.ADDINGNAME.name());
 
@@ -363,7 +360,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 }
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                sendMsg(e.toString());
             }
 
 
@@ -412,7 +409,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 }
 
             } catch (SQLException e) {
-                sendMsg(update, e.toString());
+                sendMsg( e.toString());
             }
 
 
@@ -657,7 +654,7 @@ public class LinkBot extends TelegramLongPollingBot {
     }
 
 
-    public void sendMsg(Update update, String msg) {
+    public void sendMsg( String msg) {
         try {
             execute(new SendMessage(145464749L, msg));
         } catch (TelegramApiException e) {
