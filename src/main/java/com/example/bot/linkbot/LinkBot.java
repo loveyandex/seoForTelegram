@@ -148,7 +148,7 @@ public class LinkBot extends TelegramLongPollingBot {
             try {
                 int indexOf = list.indexOf(text1);
                 String name = "gune" + indexOf;
-                Meths.sendToBot(name + " is running...");
+                sendMsg(name + " is running...");
 
                 System.out.println(name);
                 response.getClass().getMethod(name).invoke(response, null);
@@ -181,7 +181,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     if (statues.contains(status)) {
                         int indexOf = statues.indexOf(status) + 12;
                         String mn = "gune" + indexOf;
-                        Meths.sendToBot(mn + " is running...");
+                       sendMsg(mn + " is running...");
 
                         response.getClass().getMethod(mn).invoke(response, null);
                         return;
