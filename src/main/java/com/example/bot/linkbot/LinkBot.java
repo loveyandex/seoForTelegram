@@ -63,9 +63,9 @@ public class LinkBot extends TelegramLongPollingBot {
                             "link_src varchar(500) null ," +
                             "gune varchar(50) null ," +
                             "status varchar(25) null )");
-
-            connection.createStatement().execute("delete  from Muser  where id=878712");
-            connection.createStatement().execute("insert into Muser (id) values (878712);");
+//
+//            connection.createStatement().execute("delete  from Muser  where id=878712");
+//            connection.createStatement().execute("insert into Muser (id) values (878712);");
 
             ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
             ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Link;");
@@ -176,7 +176,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
 
             while (resultSet2.next()) {
-                String status = resultSet2.getString(7);
+                String status = resultSet2.getString(8);
                 if (!status.equals(StatusOfAdding.ADDED.name())) {
                     if (statues.contains(status)) {
                         int indexOf = statues.indexOf(status) + 12;
@@ -323,7 +323,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     String dscrpt = resultSet2.getString(4);
                     String photo_id = resultSet2.getString(5);
                     String link_src = resultSet2.getString(6);
-                    String status = resultSet2.getString(7);
+                    String status = resultSet2.getString(8);
 
                     if (name == null
                             || dscrpt == null
@@ -383,7 +383,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     String dscrpt = resultSet2.getString(4);
                     String photo_id = resultSet2.getString(5);
                     String link_src = resultSet2.getString(6);
-                    String status = resultSet2.getString(7);
+                    String status = resultSet2.getString(8);
 
                     if (name == null
                             || dscrpt == null
@@ -425,7 +425,7 @@ public class LinkBot extends TelegramLongPollingBot {
                         ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
 
                 while (resultSet2.next()) {
-                    String status = resultSet2.getString(7);
+                    String status = resultSet2.getString(8);
 
                     if (StatusOfAdding.ADDINGDSCRP.name().equals(status)) {
                         resultSet2.updateString(4, update.getMessage().getText());
@@ -453,7 +453,7 @@ public class LinkBot extends TelegramLongPollingBot {
                         ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
 
                 while (resultSet2.next()) {
-                    String status = resultSet2.getString(7);
+                    String status = resultSet2.getString(8);
 
                     if (StatusOfAdding.ADDINGPHOTHO.name().equals(status)) {
                         boolean b = update.getMessage().hasPhoto();
@@ -486,7 +486,7 @@ public class LinkBot extends TelegramLongPollingBot {
                         ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
 
                 while (resultSet2.next()) {
-                    String status = resultSet2.getString(7);
+                    String status = resultSet2.getString(8);
                     if (StatusOfAdding.ADDINGLINK.name().equals(status)) {
                         String linkPath = update.getMessage().getText();
                         resultSet2.updateString(6, linkPath);
@@ -519,7 +519,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     String dscrpt = resultSet2.getString(4);
                     String photo_id = resultSet2.getString(5);
                     String link_src = resultSet2.getString(6);
-                    String status = resultSet2.getString(7);
+                    String status = resultSet2.getString(8);
 
                     if (StatusOfAdding.ADDINGGUNE.name().equals(status)) {
                         String gune = update.getMessage().getText();
