@@ -385,9 +385,10 @@ public class LinkBot extends TelegramLongPollingBot {
                                 link_src
                                 + status);
                         if (StatusOfAdding.ADDINGNAME.name().equals(status)) {
-                            resultSet2.updateString(8, StatusOfAdding.ADDINGDSCRP.name());
                             resultSet2.updateString(3, update.getMessage().getText());
+                            resultSet2.updateString(8, StatusOfAdding.ADDINGDSCRP.name());
                             resultSet2.updateRow();
+
                             execute(new SendMessage(update.getMessage().getChatId(), "حالا توضیحات کانال یا گروهتو بنویس"));
                         }
 
@@ -396,7 +397,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 }
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                sendMsg(update, e.toString());
             }
 
 
@@ -645,6 +646,17 @@ public class LinkBot extends TelegramLongPollingBot {
 
         replyKeyboardMarkup.setResizeKeyboard(true);
         return replyKeyboardMarkup;
+    }
+
+
+    public void sendMsg(Update update, String msg) {
+        try {
+            execute(new SendMessage(update.getMessage().getChatId(), msg));
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 
