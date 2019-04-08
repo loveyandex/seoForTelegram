@@ -480,7 +480,7 @@ public class LinkBot extends TelegramLongPollingBot {
                         resultSet2.updateString(7, gune);
                         resultSet2.updateString(8, StatusOfAdding.ADDED.name());
                         resultSet2.updateRow();
-                        execute(new SendMessage(update.getMessage().getChatId(), "تمومه"));
+                        execute(new SendMessage(update.getMessage().getChatId(), "تمومه").setReplyMarkup(start()));
 
                         SendPhoto output = new SendPhoto();
                         output.setChatId(String.valueOf(id));
