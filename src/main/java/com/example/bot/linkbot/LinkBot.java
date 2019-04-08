@@ -43,6 +43,54 @@ public class LinkBot extends TelegramLongPollingBot {
 
     }
 
+
+    @Bean
+    public List<String> routes() {
+        List<String> list = new ArrayList<>();
+        Routes[] values = Routes.values();
+        int k = 3;
+        for (int j = 0; j <= values.length / k; j++) {
+            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
+                String name = values[k * (j) + i].name;
+                list.add(name);
+            }
+        }
+        return list;
+    }
+
+
+    @Bean
+    public void setDbs() {
+        try {
+            connection.createStatement().execute("create table if not exists Muser(id serial primary key)");
+            connection.createStatement().execute(
+                    "create table if not exists Link(" +
+                            "id serial primary key" +
+                            " ,user_id bigint not null, " +
+                            "name varchar(100) null ," +
+                            "dscrpt varchar(1000) null ," +
+                            "photo_id varchar(200) null ," +
+                            "link_src varchar(500) null ," +
+                            "gune varchar(50) null ," +
+                            "status varchar(25) null )");
+            ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Link;");
+            JSONArray objects = convertToJSON(resultSet2);
+            Meths.sendToBot(new Gson().toJson(objects));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+
+
+
     @Autowired
     private List<String> routes;
 
@@ -564,48 +612,6 @@ public class LinkBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
 
-
-    }
-
-
-    @Bean
-    public List<String> routes() {
-        List<String> list = new ArrayList<>();
-        Routes[] values = Routes.values();
-        int k = 3;
-        for (int j = 0; j <= values.length / k; j++) {
-            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
-                String name = values[k * (j) + i].name;
-                list.add(name);
-            }
-        }
-        return list;
-    }
-
-
-    @Bean
-    public void setDbs() {
-        try {
-            connection.createStatement().execute("create table if not exists Muser(id serial primary key)");
-            connection.createStatement().execute(
-                    "create table if not exists Link(" +
-                            "id serial primary key" +
-                            " ,user_id bigint not null, " +
-                            "name varchar(100) null ," +
-                            "dscrpt varchar(1000) null ," +
-                            "photo_id varchar(200) null ," +
-                            "link_src varchar(500) null ," +
-                            "gune varchar(50) null ," +
-                            "status varchar(25) null )");
-            ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Link;");
-            JSONArray objects = convertToJSON(resultSet2);
-            Meths.sendToBot(new Gson().toJson(objects));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 
