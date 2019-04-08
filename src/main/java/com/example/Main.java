@@ -174,22 +174,15 @@ public class Main {
     }
 
 
-
     @Bean
     public List<String> routes() {
         List<String> list = new ArrayList<>();
         Routes[] values = Routes.values();
-        int k = 3;
-        for (int j = 0; j <= values.length / k; j++) {
-            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
-                String name = values[k * (j) + i].name;
-                list.add(name);
-            }
+        for (Routes value : values) {
+            list.add(value.name);
         }
         return list;
     }
-
-
 
 
     @Bean
@@ -218,9 +211,6 @@ public class Main {
         }).start();
 
     }
-
-
-
 
 
 }
