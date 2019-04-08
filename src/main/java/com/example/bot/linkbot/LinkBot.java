@@ -282,6 +282,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     preparedStatement.setLong(1, resultSet2.getLong(2));
                     long aLong = resultSet2.getLong(1);
                     preparedStatement.setLong(2, aLong);
+                    preparedStatement.execute();
                     sendMsg("deleted by id " + aLong);
                 }
 
