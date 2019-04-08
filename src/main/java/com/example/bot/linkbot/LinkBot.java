@@ -99,7 +99,9 @@ public class LinkBot extends TelegramLongPollingBot {
 
     public void onReplyKey(@MyAnnotation("df") Update update) {
 
-        routes.forEach(this::sendMsg);
+        routes.forEach(s -> {
+            sendMsg("god is great " + s);
+        });
 
         Response response = new Response(update);
         System.out.println(LocalTime.now().toString());
