@@ -2,7 +2,6 @@ package com.example.bot.linkbot;
 
 
 import com.example.Meths;
-import com.example.bot.bitMelBot.pojos.Status;
 import com.example.bot.linkbot.model.Gune;
 import com.example.bot.linkbot.model.StatusOfAdding;
 import com.google.gson.Gson;
@@ -17,10 +16,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -550,7 +546,7 @@ public class LinkBot extends TelegramLongPollingBot {
     }
 
 
-    ReplyKeyboardMarkup start() {
+    ReplyKeyboardMarkup rr() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 
         ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
@@ -563,6 +559,27 @@ public class LinkBot extends TelegramLongPollingBot {
         KeyboardButton button = new KeyboardButton("اضافه کردن لینک");
         keyboardRows.get(keyboardRows.size() - 1).add(button);
 
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
+
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        return replyKeyboardMarkup;
+    }
+
+
+    ReplyKeyboardMarkup start() {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+
+        ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
+
+        KeyboardButton button = new KeyboardButton(Vars.GROUPSANDCHANNELS);
+        KeyboardButton button2 = new KeyboardButton(Vars.ADDINGLINKTO);
+
+        KeyboardRow k1 = new KeyboardRow();
+        KeyboardRow k2 = new KeyboardRow();
+        k1.add(button);
+        k2.add(button2);
+        keyboardRows.add(k1);
+        keyboardRows.add(k2);
         replyKeyboardMarkup.setKeyboard(keyboardRows);
 
         replyKeyboardMarkup.setResizeKeyboard(true);
