@@ -77,6 +77,8 @@ public class LinkBot extends TelegramLongPollingBot {
     @Autowired
     private List<String> routes;
 
+    @Autowired
+    private int routeNumber;
 
     public void onReplyKey(@MyAnnotation("df") Update update) {
 
@@ -122,7 +124,8 @@ public class LinkBot extends TelegramLongPollingBot {
                 String status = resultSet2.getString(8);
                 if (!status.equals(StatusOfAdding.ADDED.name())) {
                     if (statues.contains(status)) {
-                        int indexOf = statues.indexOf(status) + 14;
+                        int indexOf = statues.indexOf(status) + routeNumber;
+
                         String mn = "gune" + indexOf;
                         sendMsg(mn + " is running...");
 

@@ -173,6 +173,11 @@ public class Main {
         return dataSource.getConnection();
     }
 
+    @Bean
+    public int routeNumber() throws SQLException {
+        return Routes.values().length;
+    }
+
 
     @Bean
     public List<String> routes() {
