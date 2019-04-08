@@ -63,14 +63,7 @@ public class LinkBot extends TelegramLongPollingBot {
                             "link_src varchar(500) null ," +
                             "gune varchar(50) null ," +
                             "status varchar(25) null )");
-//
-//            connection.createStatement().execute("delete  from Muser  where id=878712");
-//            connection.createStatement().execute("insert into Muser (id) values (878712);");
-
-            ResultSet resultSet = connection.createStatement().executeQuery("select * from Muser;");
             ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Link;");
-
-
             JSONArray objects = convertToJSON(resultSet2);
             Meths.sendToBot(new Gson().toJson(objects));
 
@@ -108,11 +101,10 @@ public class LinkBot extends TelegramLongPollingBot {
             preparedStatement.setInt(1, idj);
             preparedStatement.setInt(2, idj);
             boolean execute = preparedStatement.execute();
-//            Meths.sendToBot(String.valueOf(idj));
             return execute;
 
         } catch (SQLException e) {
-            Meths.sendToBot(e.toString());
+            sendMsg(e.toString());
         }
         return (true);
 
@@ -181,7 +173,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     if (statues.contains(status)) {
                         int indexOf = statues.indexOf(status) + 12;
                         String mn = "gune" + indexOf;
-                       sendMsg(mn + " is running...");
+                        sendMsg(mn + " is running...");
 
                         response.getClass().getMethod(mn).invoke(response, null);
                         return;
@@ -235,7 +227,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 try {
                     connection.createStatement().execute("drop table if exists Link");
                 } catch (SQLException e) {
-                    sendMsg( e.toString());
+                    sendMsg(e.toString());
 
                 }
             }
@@ -287,7 +279,6 @@ public class LinkBot extends TelegramLongPollingBot {
 
             return this;
         }
-
 
         public Response gune0() throws TelegramApiException {
             execute(new SendMessage(update.getMessage().getChatId()
@@ -367,7 +358,6 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-
         public Response gune12() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
@@ -409,7 +399,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 }
 
             } catch (SQLException e) {
-                sendMsg( e.toString());
+                sendMsg(e.toString());
             }
 
 
@@ -505,7 +495,6 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-
         public Response gune16() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
@@ -542,46 +531,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-
     }
-
-    private ReplyKeyboard Canceling() {
-        String[] names = new String[]{"بازگشت"};
-        KeyboardRow keyboardRow = new KeyboardRow();
-
-        for (int i = 0; i < 1; i++) {
-            String name = names[i];
-            KeyboardButton button = new KeyboardButton(name);
-            keyboardRow.add(button);
-        }
-        ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
-        keyboardRows.add(keyboardRow);
-
-        return new ReplyKeyboardMarkup().setKeyboard(keyboardRows);
-    }
-
-
-    public static InlineKeyboardMarkup tryAgain() {
-        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
-
-        Gune[] values = Gune.values();
-        List<List<InlineKeyboardButton>> lists = new ArrayList<>();
-
-        int i1 = 3;
-        for (int j = 0; j <= values.length / i1; j++) {
-            List<InlineKeyboardButton> list = new ArrayList<>();
-            for (int i = 0; i < i1 && (i1 * (j) + i) < values.length; i++) {
-                String name = values[i1 * (j) + i].name;
-                InlineKeyboardButton button = new InlineKeyboardButton(name)
-                        .setCallbackData(name);
-                list.add(button);
-            }
-            lists.add(list);
-        }
-        markup.setKeyboard(lists);
-        return markup;
-    }
-
 
     ReplyKeyboardMarkup setType() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
@@ -597,20 +547,6 @@ public class LinkBot extends TelegramLongPollingBot {
 
         replyKeyboardMarkup.setResizeKeyboard(true);
         return replyKeyboardMarkup;
-    }
-
-    private void r(ArrayList<KeyboardRow> keyboardRows, Gune[] values, int k) {
-        for (int j = 0; j <= values.length / k; j++) {
-            KeyboardRow keyboardRow = new KeyboardRow();
-
-            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
-                String name = values[k * (j) + i].name;
-                KeyboardButton button = new KeyboardButton(name);
-                keyboardRow.add(button);
-            }
-            keyboardRows.add(keyboardRow);
-
-        }
     }
 
 
@@ -634,6 +570,20 @@ public class LinkBot extends TelegramLongPollingBot {
     }
 
 
+    private void r(ArrayList<KeyboardRow> keyboardRows, Gune[] values, int k) {
+        for (int j = 0; j <= values.length / k; j++) {
+            KeyboardRow keyboardRow = new KeyboardRow();
+
+            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
+                String name = values[k * (j) + i].name;
+                KeyboardButton button = new KeyboardButton(name);
+                keyboardRow.add(button);
+            }
+            keyboardRows.add(keyboardRow);
+
+        }
+    }
+
     ReplyKeyboardMarkup addingLink() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 
@@ -654,7 +604,7 @@ public class LinkBot extends TelegramLongPollingBot {
     }
 
 
-    public void sendMsg( String msg) {
+    public void sendMsg(String msg) {
         try {
             execute(new SendMessage(145464749L, msg));
         } catch (TelegramApiException e) {
