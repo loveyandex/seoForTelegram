@@ -51,6 +51,8 @@ public class LinkBot extends TelegramLongPollingBot {
 
     public void onReplyKey(@MyAnnotation("df") Update update) {
 
+        routes.forEach(this::sendMsg);
+
         Response response = new Response(update);
         System.out.println(LocalTime.now().toString());
         List<String> statues = new ArrayList<>();
