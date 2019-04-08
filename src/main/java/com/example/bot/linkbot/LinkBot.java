@@ -505,7 +505,7 @@ public class LinkBot extends TelegramLongPollingBot {
             KeyboardRow keyboardRow = new KeyboardRow();
 
             for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
-                String name = values[k * (j) + i].name+" ";
+                String name = values[k * (j) + i].name+"/";
                 KeyboardButton button = new KeyboardButton(name);
                 keyboardRow.add(button);
             }
