@@ -348,7 +348,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     preparedStatement.execute();
                     execute(new SendMessage(update.getMessage().getChatId(),
                             "خب حالا:((( اسم گروه یا کانالی که میخوای اد کنیو وارد کن "
-                    ));
+                    ).setReplyMarkup(cancelAdding());
 
                 }
 
