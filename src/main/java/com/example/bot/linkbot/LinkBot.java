@@ -246,7 +246,6 @@ public class LinkBot extends TelegramLongPollingBot {
             try {
                 ResultSet re = connection.createStatement().executeQuery("select * from Link where gune like '%" + update.getMessage().getText() + "%';");
                 while (re.next()) {
-                    ;
                     execute(new SendMessage(update.getMessage().getChatId()
                             , re.getString("link_src")));
 
@@ -277,22 +276,19 @@ public class LinkBot extends TelegramLongPollingBot {
                 ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                         ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where status!='ADDED' and user_id='" + id + "'");
 
-                while (resultSet2.next())
+                while (resultSet2.next()) {
                     sendMsg(resultSet2.getString(3));
+                    PreparedStatement preparedStatement = connection.prepareStatement("delete  from Link where  user_id=? and id=?");
+                    preparedStatement.setLong(1, resultSet2.getLong(2));
+                    long aLong = resultSet2.getLong(1);
+                    preparedStatement.setLong(2, aLong);
+                    sendMsg("deleted by id " + aLong);
+                }
 
-//
-//                PreparedStatement preparedStatement = connection.prepareStatement("delete  from Link where  user_id=? and id=?");
-//                preparedStatement.setString(1, userId);
-//                preparedStatement.setString(2, );
 
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-
-            execute(new SendMessage(update.getMessage().getChatId()
-                    , update.getMessage().getText()));
-
 
             return this;
         }
