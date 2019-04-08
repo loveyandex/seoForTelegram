@@ -3,6 +3,7 @@ package com.example.bot.linkbot;
 
 import com.example.Meths;
 import com.example.bot.linkbot.model.Gune;
+import com.example.bot.linkbot.model.Routes;
 import com.example.bot.linkbot.model.StatusOfAdding;
 import com.google.gson.Gson;
 import org.json.JSONArray;
@@ -43,98 +44,23 @@ public class LinkBot extends TelegramLongPollingBot {
     }
 
     @Autowired
+    private List<String> routes;
+
+    @Autowired
     private Connection connection;
-
-    @Bean
-    public void setDbs() {
-        try {
-            connection.createStatement().execute("create table if not exists Muser(id serial primary key)");
-            connection.createStatement().execute(
-                    "create table if not exists Link(" +
-                            "id serial primary key" +
-                            " ,user_id bigint not null, " +
-                            "name varchar(100) null ," +
-                            "dscrpt varchar(1000) null ," +
-                            "photo_id varchar(200) null ," +
-                            "link_src varchar(500) null ," +
-                            "gune varchar(50) null ," +
-                            "status varchar(25) null )");
-            ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Link;");
-            JSONArray objects = convertToJSON(resultSet2);
-            Meths.sendToBot(new Gson().toJson(objects));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static JSONArray convertToJSON(ResultSet resultSet)
-            throws Exception {
-        JSONArray jsonArray = new JSONArray();
-        while (resultSet.next()) {
-            int total_columns = resultSet.getMetaData().getColumnCount();
-            JSONObject obj = new JSONObject();
-            for (int i = 0; i < total_columns; i++) {
-                obj.put(resultSet.getMetaData().getColumnLabel(i + 1).toLowerCase(), resultSet.getObject(i + 1));
-            }
-            jsonArray.put(obj);
-        }
-        return jsonArray;
-    }
-
-    private boolean addUser(int idj) {
-        String sql = "INSERT INTO Muser (id)" +
-                "    SELECT ?" +
-                "WHERE NOT EXISTS (" +
-                "    SELECT id FROM Muser WHERE id=? " +
-                ");";
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, idj);
-            preparedStatement.setInt(2, idj);
-            boolean execute = preparedStatement.execute();
-            return execute;
-
-        } catch (SQLException e) {
-            sendMsg(e.toString());
-        }
-        return (true);
-
-    }
-
-
-    @Override
-    public void onClosing() {
-        super.onClosing();
-    }
 
     public void onReplyKey(@MyAnnotation("df") Update update) {
 
         Response response = new Response(update);
         System.out.println(LocalTime.now().toString());
-        Gune[] values = Gune.values();
-        List<String> list = new ArrayList<>();
         List<String> statues = new ArrayList<>();
 
-        int k = 3;
-        for (int j = 0; j <= values.length / k; j++) {
-            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
-                String name = values[k * (j) + i].name;
-                list.add(name);
-            }
-        }
-
-        list.add("اضافه کردن لینک");
         String text1 = update.getMessage().getText();
 
 
-        if (list.contains(text1)) {
+        if (routes.contains(text1)) {
             try {
-                int indexOf = list.indexOf(text1);
+                int indexOf = routes.indexOf(text1);
                 String name = "gune" + indexOf;
                 sendMsg(name + " is running...");
 
@@ -167,7 +93,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 String status = resultSet2.getString(8);
                 if (!status.equals(StatusOfAdding.ADDED.name())) {
                     if (statues.contains(status)) {
-                        int indexOf = statues.indexOf(status) + 13;
+                        int indexOf = statues.indexOf(status) + 14;
                         String mn = "gune" + indexOf;
                         sendMsg(mn + " is running...");
 
@@ -276,6 +202,14 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
+        public Response gune() throws TelegramApiException {
+            execute(new SendMessage(update.getMessage().getChatId()
+                    , update.getMessage().getText()));
+
+
+            return this;
+        }
+
         public Response gune0() throws TelegramApiException {
             execute(new SendMessage(update.getMessage().getChatId()
                     , update.getMessage().getText()));
@@ -284,7 +218,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune1() throws TelegramApiException {
+        public Response gune12() throws TelegramApiException {
             execute(new SendMessage(update.getMessage().getChatId()
                     , update.getMessage().getText()));
 
@@ -292,7 +226,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune12() throws TelegramApiException {
+        public Response gune13() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -354,7 +288,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune13() throws TelegramApiException {
+        public Response gune14() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -402,7 +336,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune14() throws TelegramApiException {
+        public Response gune15() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -430,7 +364,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune15() throws TelegramApiException {
+        public Response gune16() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -464,7 +398,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune16() throws TelegramApiException {
+        public Response gune17() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -491,7 +425,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune17() throws TelegramApiException {
+        public Response gune18() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -629,6 +563,89 @@ public class LinkBot extends TelegramLongPollingBot {
         }
 
 
+    }
+
+
+    @Bean
+    public List<String> routes() {
+        List<String> list = new ArrayList<>();
+        Routes[] values = Routes.values();
+        int k = 3;
+        for (int j = 0; j <= values.length / k; j++) {
+            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
+                String name = values[k * (j) + i].name;
+                list.add(name);
+            }
+        }
+        return list;
+    }
+
+
+    @Bean
+    public void setDbs() {
+        try {
+            connection.createStatement().execute("create table if not exists Muser(id serial primary key)");
+            connection.createStatement().execute(
+                    "create table if not exists Link(" +
+                            "id serial primary key" +
+                            " ,user_id bigint not null, " +
+                            "name varchar(100) null ," +
+                            "dscrpt varchar(1000) null ," +
+                            "photo_id varchar(200) null ," +
+                            "link_src varchar(500) null ," +
+                            "gune varchar(50) null ," +
+                            "status varchar(25) null )");
+            ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Link;");
+            JSONArray objects = convertToJSON(resultSet2);
+            Meths.sendToBot(new Gson().toJson(objects));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static JSONArray convertToJSON(ResultSet resultSet)
+            throws Exception {
+        JSONArray jsonArray = new JSONArray();
+        while (resultSet.next()) {
+            int total_columns = resultSet.getMetaData().getColumnCount();
+            JSONObject obj = new JSONObject();
+            for (int i = 0; i < total_columns; i++) {
+                obj.put(resultSet.getMetaData().getColumnLabel(i + 1).toLowerCase(), resultSet.getObject(i + 1));
+            }
+            jsonArray.put(obj);
+        }
+        return jsonArray;
+    }
+
+    private boolean addUser(int idj) {
+        String sql = "INSERT INTO Muser (id)" +
+                "    SELECT ?" +
+                "WHERE NOT EXISTS (" +
+                "    SELECT id FROM Muser WHERE id=? " +
+                ");";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idj);
+            preparedStatement.setInt(2, idj);
+            boolean execute = preparedStatement.execute();
+            return execute;
+
+        } catch (SQLException e) {
+            sendMsg(e.toString());
+        }
+        return (true);
+
+    }
+
+
+    @Override
+    public void onClosing() {
+        super.onClosing();
     }
 
 

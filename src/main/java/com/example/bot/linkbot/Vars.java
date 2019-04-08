@@ -6,7 +6,7 @@ package com.example.bot.linkbot;
 
 public class Vars {
 
-    public static String GROUPSANDCHANNELS = "گروه ها و کانان ها";
+    public static String GROUPSANDCHANNELS = "گروه ها و کانال ها";
     public static String ADDINGLINKTO = "اضافه کردن لینک";
 
 
