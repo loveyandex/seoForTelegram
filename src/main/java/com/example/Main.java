@@ -186,7 +186,6 @@ public class Main {
                 list.add(name);
             }
         }
-        list.forEach(s -> Meths.sendToBot("in bean " + s));
         return list;
     }
 

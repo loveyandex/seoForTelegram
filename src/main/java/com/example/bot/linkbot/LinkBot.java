@@ -3,7 +3,6 @@ package com.example.bot.linkbot;
 
 import com.example.Meths;
 import com.example.bot.linkbot.model.Gune;
-import com.example.bot.linkbot.model.Routes;
 import com.example.bot.linkbot.model.StatusOfAdding;
 import com.google.gson.Gson;
 import org.json.JSONArray;
@@ -80,10 +79,6 @@ public class LinkBot extends TelegramLongPollingBot {
 
 
     public void onReplyKey(@MyAnnotation("df") Update update) {
-
-        routes.forEach(s -> {
-            sendMsg("god is great " + s);
-        });
 
         Response response = new Response(update);
         System.out.println(LocalTime.now().toString());
@@ -506,8 +501,17 @@ public class LinkBot extends TelegramLongPollingBot {
 
 
         int k = 1;
-        r(keyboardRows, values, k);
-        replyKeyboardMarkup.setKeyboard(keyboardRows);
+        for (int j = 0; j <= values.length / k; j++) {
+            KeyboardRow keyboardRow = new KeyboardRow();
+
+            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
+                String name = values[k * (j) + i].name+" ";
+                KeyboardButton button = new KeyboardButton(name);
+                keyboardRow.add(button);
+            }
+            keyboardRows.add(keyboardRow);
+
+        }        replyKeyboardMarkup.setKeyboard(keyboardRows);
 
         replyKeyboardMarkup.setResizeKeyboard(true);
         return replyKeyboardMarkup;
