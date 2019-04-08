@@ -55,6 +55,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 list.add(name);
             }
         }
+        list.forEach(s -> sendMsg("in bean " + s));
         return list;
     }
 
@@ -85,18 +86,11 @@ public class LinkBot extends TelegramLongPollingBot {
 
     }
 
-
-
-
-
-
-
-    @Autowired
-    private List<String> routes;
-
     @Autowired
     private Connection connection;
 
+    @Autowired
+    private List<String> routes;
     public void onReplyKey(@MyAnnotation("df") Update update) {
 
         routes.forEach(s -> {
