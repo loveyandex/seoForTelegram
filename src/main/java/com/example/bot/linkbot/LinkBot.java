@@ -93,7 +93,7 @@ public class LinkBot extends TelegramLongPollingBot {
             try {
                 int indexOf = routes.indexOf(text1);
                 String name = "gune" + indexOf;
-                sendMsg(name + " is running...");
+                sendMsg(name + " first running...");
 
                 System.out.println(name);
                 response.getClass().getMethod(name).invoke(response, null);
