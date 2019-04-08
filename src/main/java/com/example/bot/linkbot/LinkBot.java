@@ -273,8 +273,6 @@ public class LinkBot extends TelegramLongPollingBot {
                 boolean never = true;
 
                 while (resultSet2.next()) {
-
-
                     int anInt = resultSet2.getInt(1);
                     int user_id = resultSet2.getInt(2);
                     String name = resultSet2.getString(3);
