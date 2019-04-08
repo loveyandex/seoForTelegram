@@ -19,7 +19,7 @@ public enum Gune {
     EconmicalProblems("مسائل اقتصادی"),
     Politicals("سیاسی"),
     Fitness("تناسب اندام"),
-    Unknown("سایر موارد(در این لیست نیست)");
+    Unknown("سایر موارد(اگر در این لیست نیست)");
 
     Gune() {
 

@@ -43,8 +43,6 @@ public class LinkBot extends TelegramLongPollingBot {
     }
 
 
-
-
     @Bean
     public void setDbs() {
         try {
@@ -240,8 +238,18 @@ public class LinkBot extends TelegramLongPollingBot {
         }
 
         public Response gune0() throws TelegramApiException {
-            execute(new SendMessage(update.getMessage().getChatId()
-                    , update.getMessage().getText()));
+            try {
+                ResultSet re = connection.createStatement().executeQuery("select * from Link where gune like '%" + update.getMessage().getText() + "%';");
+                while (re.next()) {
+                    ;
+                    execute(new SendMessage(update.getMessage().getChatId()
+                            , re.getString("link_src")));
+
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
 
             return this;
@@ -505,13 +513,14 @@ public class LinkBot extends TelegramLongPollingBot {
             KeyboardRow keyboardRow = new KeyboardRow();
 
             for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
-                String name = values[k * (j) + i].name+"/";
+                String name = values[k * (j) + i].name + "/";
                 KeyboardButton button = new KeyboardButton(name);
                 keyboardRow.add(button);
             }
             keyboardRows.add(keyboardRow);
 
-        }        replyKeyboardMarkup.setKeyboard(keyboardRows);
+        }
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
 
         replyKeyboardMarkup.setResizeKeyboard(true);
         return replyKeyboardMarkup;
