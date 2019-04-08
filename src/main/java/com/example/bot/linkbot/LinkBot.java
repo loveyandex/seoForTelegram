@@ -3,6 +3,7 @@ package com.example.bot.linkbot;
 
 import com.example.Meths;
 import com.example.bot.linkbot.model.Gune;
+import com.example.bot.linkbot.model.Routes;
 import com.example.bot.linkbot.model.StatusOfAdding;
 import com.google.gson.Gson;
 import org.json.JSONArray;
@@ -16,6 +17,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
@@ -264,6 +266,35 @@ public class LinkBot extends TelegramLongPollingBot {
         }
 
         public Response gune13() throws TelegramApiException {
+
+            try {
+
+
+                Integer id = update.getMessage().getFrom().getId();
+                ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where status!='ADDED' and user_id='" + id + "'");
+
+                while (resultSet2.next())
+                    sendMsg(resultSet2.getString(3));
+
+//
+//                PreparedStatement preparedStatement = connection.prepareStatement("delete  from Link where  user_id=? and id=?");
+//                preparedStatement.setString(1, userId);
+//                preparedStatement.setString(2, );
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+            execute(new SendMessage(update.getMessage().getChatId()
+                    , update.getMessage().getText()));
+
+
+            return this;
+        }
+
+        public Response gune14() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -294,7 +325,10 @@ public class LinkBot extends TelegramLongPollingBot {
                                 link_src
                                 + status);
                         if (name == null) {
-                            execute(new SendMessage(update.getMessage().getChatId(), "خب حالا اسم گروه یا کانالی که میخوای اد کنیو وارد کن "));
+                            execute(new SendMessage(update.getMessage().getChatId(),
+                                    "خب حالا اسم گروه یا کانالی که میخوای اد کنیو وارد کن ")
+                                    .setReplyMarkup(cancelAdding())
+                            );
                             resultSet2.updateString(8, StatusOfAdding.ADDINGNAME.name());
                             resultSet2.updateRow();
                         }
@@ -323,7 +357,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune14() throws TelegramApiException {
+        public Response gune15() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -371,7 +405,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune15() throws TelegramApiException {
+        public Response gune16() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -399,7 +433,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune16() throws TelegramApiException {
+        public Response gune17() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -433,7 +467,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune17() throws TelegramApiException {
+        public Response gune18() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -460,11 +494,10 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune18() throws TelegramApiException {
+        public Response gune19() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
-
                 ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                         ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
 
@@ -496,6 +529,19 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
+    }
+
+    private ReplyKeyboard cancelAdding() {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
+        KeyboardButton button = new KeyboardButton(Routes.CANCELMAKEINGLINK.name);
+
+        KeyboardRow k1 = new KeyboardRow();
+        k1.add(button);
+        keyboardRows.add(k1);
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        return replyKeyboardMarkup;
     }
 
     ReplyKeyboardMarkup setType() {

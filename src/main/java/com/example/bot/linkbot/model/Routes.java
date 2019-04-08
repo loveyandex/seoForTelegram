@@ -1,15 +1,14 @@
 package com.example.bot.linkbot.model;
 
+import com.example.bot.linkbot.Vars;
+
 /**
  * created By aMIN on 4/4/2019 12:53 PM
  */
-
-
 //Joining can be conditional by admins of channels and groups
-
 public enum Routes {
-    Scientific("علمی"),
-    Entertainment("سرگرمی"),
+    Scientific("علمی"),//0
+    Entertainment("سرگرمی"),//1
     Newsly("خبر"),
     Engineerical("فنی- مهندسی"),
     Sport("ورزشی"),
@@ -20,9 +19,9 @@ public enum Routes {
     Politicals("سیاسی"),
     Fitness("تناسب اندام"),
     Unknown("سایر موارد(در این لیست نیست)"),
-    GROUPSANDCHANNELS("گروه ها و کانال ها"),
-    ADDINGLINKTO("اضافه کردن لینک"),
-
+    GROUPSANDCHANNELS(Vars.GROUPSANDCHANNELS),//12
+    CANCELMAKEINGLINK("بی خیال"),//13
+    ADDINGLINKTO("اضافه کردن لینک"),//14
     ;
 
     Routes() {
