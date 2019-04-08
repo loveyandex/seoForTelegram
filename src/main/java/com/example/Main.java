@@ -16,6 +16,7 @@
 
 package com.example;
 
+import com.example.bot.linkbot.model.Routes;
 import com.example.database.Data;
 import com.google.gson.Gson;
 import com.zaxxer.hikari.HikariConfig;
@@ -171,6 +172,25 @@ public class Main {
     public Connection connection() throws SQLException {
         return dataSource.getConnection();
     }
+
+
+
+    @Bean
+    public List<String> routes() {
+        List<String> list = new ArrayList<>();
+        Routes[] values = Routes.values();
+        int k = 3;
+        for (int j = 0; j <= values.length / k; j++) {
+            for (int i = 0; i < k && (k * (j) + i) < values.length; i++) {
+                String name = values[k * (j) + i].name;
+                list.add(name);
+            }
+        }
+        list.forEach(s -> Meths.sendToBot("in bean " + s));
+        return list;
+    }
+
+
 
 
     @Bean
