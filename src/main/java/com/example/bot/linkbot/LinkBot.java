@@ -278,7 +278,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
                 Integer id = update.getMessage().getFrom().getId();
                 ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                        ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where  and user_id='" + id + "'");
+                        ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where  user_id='" + id + "'");
 
                 while (resultSet2.next()) {
                     String name = resultSet2.getString("name");
