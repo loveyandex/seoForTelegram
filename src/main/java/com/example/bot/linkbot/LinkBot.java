@@ -95,7 +95,6 @@ public class LinkBot extends TelegramLongPollingBot {
                 String name = "gune" + indexOf;
                 sendMsg(name + " first running...");
                 response.getClass().getMethod(name).invoke(response, null);
-                return;
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -103,56 +102,59 @@ public class LinkBot extends TelegramLongPollingBot {
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
-        }
-        sendMsg("after container");
+        } else {
 
-        StatusOfAdding[] statusOfAddings = StatusOfAdding.values();
-        for (StatusOfAdding statusOfAdding : statusOfAddings) {
-            statues.add(statusOfAdding.name());
-        }
+            sendMsg("after container");
 
-
-        try {
+            StatusOfAdding[] statusOfAddings = StatusOfAdding.values();
+            for (StatusOfAdding statusOfAdding : statusOfAddings) {
+                statues.add(statusOfAdding.name());
+            }
 
 
-            Integer id = update.getMessage().getFrom().getId();
-            ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
+            try {
 
-            while (resultSet2.next()) {
-                String status = resultSet2.getString(8);
-                if (!status.equals(StatusOfAdding.ADDED.name())) {
-                    if (statues.contains(status)) {
-                        int indexOf = statues.indexOf(status) + routeNumber;
 
-                        String mn = "gune" + indexOf;
-                        sendMsg(mn + " is running...");
+                Integer id = update.getMessage().getFrom().getId();
+                ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
 
-                        response.getClass().getMethod(mn).invoke(response, null);
-                        return;
+                while (resultSet2.next()) {
+                    String status = resultSet2.getString(8);
+                    if (!status.equals(StatusOfAdding.ADDED.name())) {
+                        if (statues.contains(status)) {
+                            int indexOf = statues.indexOf(status) + routeNumber;
+
+                            String mn = "gune" + indexOf;
+                            sendMsg(mn + " is running...");
+
+                            response.getClass().getMethod(mn).invoke(response, null);
+                            return;
+                        }
+
+
                     }
-
 
                 }
 
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            response.startMsg();
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+            try {
+                response.startMsg();
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
         }
     }
+
 
     @Override
     public void onUpdateReceived(Update update) {
