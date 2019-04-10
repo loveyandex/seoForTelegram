@@ -280,7 +280,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 while (resultSet2.next()) {
                     sendMsg("in next()");
 
-                    sendMsg(resultSet2.getString(3));
+                    sendMsg(resultSet2.getString(1));
                     PreparedStatement preparedStatement = connection.prepareStatement("delete  from Link where  user_id=? and id=?");
                     preparedStatement.setLong(1, resultSet2.getLong(2));
                     long aLong = resultSet2.getLong(1);
