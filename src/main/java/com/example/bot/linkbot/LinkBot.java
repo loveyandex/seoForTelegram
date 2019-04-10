@@ -269,7 +269,6 @@ public class LinkBot extends TelegramLongPollingBot {
         }
 
         public Response gune13() throws TelegramApiException {
-            sendMsg("e.gune13()");
 
             try {
 
@@ -279,6 +278,8 @@ public class LinkBot extends TelegramLongPollingBot {
                         ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where status!='ADDED' and user_id='" + id + "'");
 
                 while (resultSet2.next()) {
+                    sendMsg("in next()");
+
                     sendMsg(resultSet2.getString(3));
                     PreparedStatement preparedStatement = connection.prepareStatement("delete  from Link where  user_id=? and id=?");
                     preparedStatement.setLong(1, resultSet2.getLong(2));
