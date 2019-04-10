@@ -434,6 +434,15 @@ public class LinkBot extends TelegramLongPollingBot {
         }
 
         public Response gune17() throws TelegramApiException {
+            boolean b = update.getMessage().hasPhoto();
+            if (!b) {
+
+                execute(new SendMessage(update.getMessage().getChatId(),
+                        "معتبر نیستش...لظفا عکس بفرتستید"));
+
+                return this;
+
+            }
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -445,19 +454,15 @@ public class LinkBot extends TelegramLongPollingBot {
                     String status = resultSet2.getString(8);
 
                     if (StatusOfAdding.ADDINGPHOTHO.name().equals(status)) {
-                        boolean b = update.getMessage().hasPhoto();
-                        if (b) {
-                            List<PhotoSize> photos = update.getMessage().getPhoto();
-                            resultSet2.updateString(5, photos.get(0).getFileId());
-                            resultSet2.updateString(8, StatusOfAdding.ADDINGLINK.name());
-                            resultSet2.updateRow();
-                            execute(new SendMessage(update.getMessage().getChatId(), "خب لینک معتبر گروهت یا کانالتم بفرس"));
-                            Meths.sendToBot(new Gson().toJson(photos));
-                            Meths.sendToBot(("in boolean"));
-                        }
+                        List<PhotoSize> photos = update.getMessage().getPhoto();
+                        resultSet2.updateString(5, photos.get(0).getFileId());
+                        resultSet2.updateString(8, StatusOfAdding.ADDINGLINK.name());
+                        resultSet2.updateRow();
+                        execute(new SendMessage(update.getMessage().getChatId(), "خب لینک معتبر گروهت یا کانالتم بفرس"));
 
                     }
                 }
+
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -624,25 +629,6 @@ public class LinkBot extends TelegramLongPollingBot {
             keyboardRows.add(keyboardRow);
 
         }
-    }
-
-    ReplyKeyboardMarkup addingLink() {
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-
-        ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
-
-        Gune[] values = Gune.values();
-
-
-        int k = 4;
-        r(keyboardRows, values, k);
-        KeyboardButton button = new KeyboardButton("اضافه کردن لینک");
-        keyboardRows.get(keyboardRows.size() - 1).add(button);
-
-        replyKeyboardMarkup.setKeyboard(keyboardRows);
-
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        return replyKeyboardMarkup;
     }
 
 
