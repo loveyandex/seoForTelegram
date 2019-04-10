@@ -284,6 +284,9 @@ public class LinkBot extends TelegramLongPollingBot {
                     preparedStatement.setLong(2, aLong);
                     preparedStatement.execute();
                     sendMsg("deleted by id " + aLong);
+                    execute(new SendMessage(update.getMessage().getChatId(),
+                            "اوکی...")
+                            .setReplyMarkup(start()));
                 }
 
 
