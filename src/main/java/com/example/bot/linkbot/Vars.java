@@ -8,7 +8,7 @@ public class Vars {
 
     public static String GROUPSANDCHANNELS = "گروه ها و کانال ها، افراد";
     public static String ADDINGLINKTO = "اضافه کردن لینک";
-
+    public static String MYLINKS = "لینک های من";
 
 
 }

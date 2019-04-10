@@ -20,8 +20,9 @@ public enum Routes {
     Fitness("تناسب اندام"),
     Unknown("سایر موارد(در این لیست نیست)"),
     GROUPSANDCHANNELS(Vars.GROUPSANDCHANNELS),//12
-    CANCELMAKEINGLINK("بی خیال"),//13
-    ADDINGLINKTO("اضافه کردن لینک"),//14
+    MYLINKS("لینک های من"),//13
+    CANCELMAKEINGLINK("بی خیال"),//14
+    ADDINGLINKTO("اضافه کردن لینک"),//15
     ;
 
     Routes() {
