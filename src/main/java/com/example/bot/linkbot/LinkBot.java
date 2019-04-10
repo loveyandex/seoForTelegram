@@ -271,9 +271,29 @@ public class LinkBot extends TelegramLongPollingBot {
 
             return this;
         }
+
         public Response gune13() throws TelegramApiException {
-            execute(new SendMessage(update.getMessage().getChatId()
-                    , update.getMessage().getText()));
+            try {
+
+
+                Integer id = update.getMessage().getFrom().getId();
+                ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where  and user_id='" + id + "'");
+
+                while (resultSet2.next()) {
+                    String name = resultSet2.getString("name");
+                    String link = resultSet2.getString("link_src");
+
+                    execute(new SendMessage(update.getMessage().getChatId()
+                            , name + link));
+
+
+                }
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
 
             return this;
@@ -633,8 +653,8 @@ public class LinkBot extends TelegramLongPollingBot {
         k2.add(button2);
         k3.add(button3);
         keyboardRows.add(k1);
-        keyboardRows.add(k2);
         keyboardRows.add(k3);
+        keyboardRows.add(k2);
         replyKeyboardMarkup.setKeyboard(keyboardRows);
 
         replyKeyboardMarkup.setResizeKeyboard(true);
