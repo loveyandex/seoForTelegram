@@ -94,8 +94,6 @@ public class LinkBot extends TelegramLongPollingBot {
                 int indexOf = routes.indexOf(text1);
                 String name = "gune" + indexOf;
                 sendMsg(name + " first running...");
-
-                System.out.println(name);
                 response.getClass().getMethod(name).invoke(response, null);
                 return;
             } catch (NoSuchMethodException e) {
@@ -106,6 +104,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 e.printStackTrace();
             }
         }
+        sendMsg("after container");
 
         StatusOfAdding[] statusOfAddings = StatusOfAdding.values();
         for (StatusOfAdding statusOfAdding : statusOfAddings) {
@@ -320,7 +319,7 @@ public class LinkBot extends TelegramLongPollingBot {
                             || photo_id == null
                             || link_src == null) {
                         never = false;
-                        Meths.sendToBot("gune 11 " + ":" +
+                        Meths.sendToBot("gune 14 " + ":" +
                                 user_id +
                                 name +
                                 dscrpt +
