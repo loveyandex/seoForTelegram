@@ -17,8 +17,10 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -283,9 +285,16 @@ public class LinkBot extends TelegramLongPollingBot {
                 while (resultSet2.next()) {
                     String name = resultSet2.getString("name");
                     String link = resultSet2.getString("link_src");
+                    String idOfLink = resultSet2.getString("id");
 
-                    execute(new SendMessage(update.getMessage().getChatId()
-                            , name + link));
+                    execute(new SendPhoto()
+                            .setPhoto(resultSet2
+                                    .getString("photo_id"))
+                            .setChatId(String.valueOf(id))
+                            .setCaption(name + "\n" + link)
+                            .setReplyMarkup(candeleteMyLink(idOfLink))
+
+                    );
 
 
                 }
@@ -575,6 +584,21 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
+    }
+
+    private ReplyKeyboard candeleteMyLink(String idOfLink) {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+
+        List<InlineKeyboardButton> list = new ArrayList<>();
+
+        InlineKeyboardButton button = new InlineKeyboardButton("delete")
+                .setCallbackData(idOfLink);
+        list.add(button);
+
+        List<List<InlineKeyboardButton>> lists = new ArrayList<>();
+        lists.add(list);
+        markup.setKeyboard(lists);
+        return markup;
     }
 
     private ReplyKeyboard cancelAdding() {
