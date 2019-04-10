@@ -165,6 +165,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     while (resultSet2.next()) {
                         execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(resultSet2.getInt(1))));
                     }
+                    return;
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } catch (TelegramApiException e) {
@@ -181,6 +182,7 @@ public class LinkBot extends TelegramLongPollingBot {
             if (update.getMessage().getText().equals("drop")) {
                 try {
                     connection.createStatement().execute("drop table if exists Link");
+                    return;
                 } catch (SQLException e) {
                     sendMsg(e.toString());
 
@@ -189,12 +191,14 @@ public class LinkBot extends TelegramLongPollingBot {
             if (update.getMessage().getText().equals("دل")) {
                 try {
                     connection.createStatement().execute("delete  from Link");
+                    return;
                 } catch (SQLException e) {
                     Meths.sendToBot(e.toString());
 
                 }
 
             }
+
         }
 
         addUser(update.getMessage().getFrom().getId());
@@ -268,7 +272,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune13() throws TelegramApiException {
+        public Response gune13() {
 
             try {
 
@@ -295,6 +299,8 @@ public class LinkBot extends TelegramLongPollingBot {
 
 
             } catch (SQLException e) {
+
+            } catch (TelegramApiException e) {
                 sendMsg(e.toString());
             }
 
@@ -644,7 +650,6 @@ public class LinkBot extends TelegramLongPollingBot {
         try {
             execute(new SendMessage(145464749L, msg));
         } catch (TelegramApiException e) {
-            e.printStackTrace();
         }
 
 
