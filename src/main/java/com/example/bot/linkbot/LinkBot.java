@@ -283,6 +283,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     preparedStatement.setLong(1, resultSet2.getLong(2));
                     long aLong = resultSet2.getLong(1);
                     preparedStatement.setLong(2, aLong);
+
                     preparedStatement.execute();
                     sendMsg("deleted by id " + aLong);
                     execute(new SendMessage(update.getMessage().getChatId(),
@@ -292,7 +293,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                sendMsg(e.toString());
             }
 
             return this;
@@ -341,12 +342,13 @@ public class LinkBot extends TelegramLongPollingBot {
                     }
                 }
                 if (never) {
+                    sendMsg("in never");
                     PreparedStatement preparedStatement = connection.prepareStatement(
                             "insert into Link (user_id,status)" + " values (?,?)");
                     preparedStatement.setInt(1, id);
                     preparedStatement.setString(2, StatusOfAdding.ADDINGNAME.name());
-
                     preparedStatement.execute();
+
                     execute(new SendMessage(update.getMessage().getChatId(),
                             "خب حالا:((( اسم گروه یا کانالی که میخوای اد کنیو وارد کن "
                     ).setReplyMarkup(cancelAdding()));
