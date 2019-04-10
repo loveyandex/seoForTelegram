@@ -269,6 +269,7 @@ public class LinkBot extends TelegramLongPollingBot {
         }
 
         public Response gune13() throws TelegramApiException {
+            sendMsg("e.gune13()");
 
             try {
 
