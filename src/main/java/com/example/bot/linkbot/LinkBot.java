@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -160,6 +162,27 @@ public class LinkBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        if (update.hasCallbackQuery()){
+            String data = update.getCallbackQuery().getData();
+            if (data.contains("delete")){
+                String delete = data.replaceAll("delete", "");
+                int idOfLink = Integer.parseInt(delete);
+                try {
+                    connection.createStatement().execute("delete from link where id=" + idOfLink);
+                    Message message = update.getCallbackQuery().getMessage();
+                    execute(new DeleteMessage(message.getChatId(), message.getMessageId()));
+
+                } catch (SQLException e) {
+                    sendMsg(e.toString());
+
+                } catch (TelegramApiException e) {
+                    sendMsg(e.toString());
+                }
+
+            }
+        }
+
+
         if (update.getMessage().isCommand()) {
             if (update.getMessage().getText().equals("/users")) {
                 try {
@@ -591,8 +614,8 @@ public class LinkBot extends TelegramLongPollingBot {
 
         List<InlineKeyboardButton> list = new ArrayList<>();
 
-        InlineKeyboardButton button = new InlineKeyboardButton("حذف لینگ")
-                .setCallbackData("delete"+idOfLink);
+        InlineKeyboardButton button = new InlineKeyboardButton("حذف لینک")
+                .setCallbackData("delete" + idOfLink);
         InlineKeyboardButton button2 = new InlineKeyboardButton("ویرایش")
                 .setCallbackData("edit" + idOfLink);
         list.add(button);
