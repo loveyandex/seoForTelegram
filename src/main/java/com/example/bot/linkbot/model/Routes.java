@@ -22,6 +22,7 @@ public enum Routes {
     GROUPSANDCHANNELS(Vars.GROUPSANDCHANNELS),//12
     MYLINKS("لینک های من"),//13
     CANCELMAKEINGLINK("بی خیال"),//14
+    //    CALLBACHQUERY("بی خیال"),//14
     ADDINGLINKTO("اضافه کردن لینک"),//15
     ;
 

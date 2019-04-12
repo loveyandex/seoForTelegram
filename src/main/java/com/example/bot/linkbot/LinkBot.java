@@ -591,9 +591,12 @@ public class LinkBot extends TelegramLongPollingBot {
 
         List<InlineKeyboardButton> list = new ArrayList<>();
 
-        InlineKeyboardButton button = new InlineKeyboardButton("delete")
-                .setCallbackData(idOfLink);
+        InlineKeyboardButton button = new InlineKeyboardButton("حذف لینگ")
+                .setCallbackData("delete"+idOfLink);
+        InlineKeyboardButton button2 = new InlineKeyboardButton("ویرایش")
+                .setCallbackData("edit" + idOfLink);
         list.add(button);
+        list.add(button2);
 
         List<List<InlineKeyboardButton>> lists = new ArrayList<>();
         lists.add(list);
