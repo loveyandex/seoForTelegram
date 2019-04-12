@@ -15,6 +15,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -35,6 +36,9 @@ import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.bot.linkbot.Vars.bikhialDeleteNakon;
+import static com.example.bot.linkbot.Vars.yesIamSure;
 
 /**
  * created By aMIN on 4/4/2019 12:27 PM
@@ -162,18 +166,47 @@ public class LinkBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasCallbackQuery()){
+        if (update.hasCallbackQuery()) {
+            Message message = update.getCallbackQuery().getMessage();
             String data = update.getCallbackQuery().getData();
-            if (data.contains("delete")){
+            if (data.contains("delete")) {
+
                 String delete = data.replaceAll("delete", "");
                 int idOfLink = Integer.parseInt(delete);
+
+                try {
+                    execute(new EditMessageReplyMarkup()
+                            .setChatId(message.getChatId())
+                            .setMessageId(message.getMessageId())
+                            .setReplyMarkup(confirmDeleteLink(delete))
+                    );
+                } catch (TelegramApiException e) {
+                    sendMsg(e.toString());
+                }
+
+            }else if (data.contains(yesIamSure)){
+
+                String delete = data.replaceAll(yesIamSure, "");
+                int idOfLink = Integer.parseInt(delete);
+
                 try {
                     connection.createStatement().execute("delete from link where id=" + idOfLink);
-                    Message message = update.getCallbackQuery().getMessage();
                     execute(new DeleteMessage(message.getChatId(), message.getMessageId()));
 
                 } catch (SQLException e) {
                     sendMsg(e.toString());
+
+                } catch (TelegramApiException e) {
+                    sendMsg(e.toString());
+                }
+            }else if (data.contains(bikhialDeleteNakon)){
+                String delete = data.replaceAll(bikhialDeleteNakon, "");
+                try {
+                    execute(new EditMessageReplyMarkup()
+                            .setChatId(message.getChatId())
+                            .setMessageId(message.getMessageId())
+                            .setReplyMarkup(candeleteMyLink(delete))
+                    );
 
                 } catch (TelegramApiException e) {
                     sendMsg(e.toString());
@@ -609,7 +642,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
     }
 
-    private ReplyKeyboard candeleteMyLink(String idOfLink) {
+    private InlineKeyboardMarkup candeleteMyLink(String idOfLink) {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
 
         List<InlineKeyboardButton> list = new ArrayList<>();
@@ -618,6 +651,23 @@ public class LinkBot extends TelegramLongPollingBot {
                 .setCallbackData("delete" + idOfLink);
         InlineKeyboardButton button2 = new InlineKeyboardButton("ویرایش")
                 .setCallbackData("edit" + idOfLink);
+        list.add(button);
+        list.add(button2);
+
+        List<List<InlineKeyboardButton>> lists = new ArrayList<>();
+        lists.add(list);
+        markup.setKeyboard(lists);
+        return markup;
+    }
+
+    private InlineKeyboardMarkup confirmDeleteLink(String idOfLink) {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+
+        List<InlineKeyboardButton> list = new ArrayList<>();
+        InlineKeyboardButton button = new InlineKeyboardButton("100% مطمئنم")
+                .setCallbackData(yesIamSure + idOfLink);
+        InlineKeyboardButton button2 = new InlineKeyboardButton("نه بی خیال")
+                .setCallbackData(bikhialDeleteNakon + idOfLink);
         list.add(button);
         list.add(button2);
 

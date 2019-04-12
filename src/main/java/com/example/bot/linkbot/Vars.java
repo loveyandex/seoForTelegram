@@ -10,5 +10,8 @@ public class Vars {
     public static String ADDINGLINKTO = "اضافه کردن لینک";
     public static String MYLINKS = "لینک های من";
 
+    public static String yesIamSure = "yesIamSure";
+    public static String bikhialDeleteNakon = "bikhialDeleteNakon";
+
 
 }
