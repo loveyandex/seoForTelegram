@@ -381,6 +381,9 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
+
+
+        @RoutesMapping(Routes.CANCELMAKEINGLINK)
         public Response gune14() {
 
             try {
@@ -415,6 +418,15 @@ public class LinkBot extends TelegramLongPollingBot {
 
             return this;
         }
+
+
+
+        @RoutesMapping(Routes.BACKTOSTART)
+        public Response gune15() throws TelegramApiException {
+            execute(new SendMessage().setReplyMarkup(start()).setChatId(update.getMessage().getChatId()).setText(update.getMessage().getText()));
+            return this;
+        }
+
 
         public Response gune16() throws TelegramApiException {
             User from = update.getMessage().getFrom();
