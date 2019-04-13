@@ -416,7 +416,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune15() throws TelegramApiException {
+        public Response gune16() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -439,13 +439,6 @@ public class LinkBot extends TelegramLongPollingBot {
                             || photo_id == null
                             || link_src == null) {
                         never = false;
-                        Meths.sendToBot("gune 14 " + ":" +
-                                user_id +
-                                name +
-                                dscrpt +
-                                photo_id +
-                                link_src
-                                + status);
                         if (name == null) {
                             execute(new SendMessage(update.getMessage().getChatId(),
                                     "خب حالا اسم گروه یا کانالی که میخوای اد کنیو وارد کن ")
@@ -480,7 +473,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune16() throws TelegramApiException {
+        public Response gune17() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -528,7 +521,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune17() throws TelegramApiException {
+        public Response gune18() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -556,7 +549,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune18() throws TelegramApiException {
+        public Response gune19() throws TelegramApiException {
             boolean b = update.getMessage().hasPhoto();
             if (!b) {
 
@@ -595,7 +588,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune19() throws TelegramApiException {
+        public Response gune20() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
@@ -622,7 +615,8 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        public Response gune20() throws TelegramApiException {
+
+        public Response gune21() throws TelegramApiException {
             User from = update.getMessage().getFrom();
             Integer id = from.getId();
             try {
