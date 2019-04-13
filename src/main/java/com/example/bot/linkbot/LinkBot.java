@@ -702,7 +702,10 @@ public class LinkBot extends TelegramLongPollingBot {
     private InlineKeyboardMarkup editWhich(String idOfLink) {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
 
-        List<InlineKeyboardButton> list = new ArrayList<>();
+        List<InlineKeyboardButton> list0 = new ArrayList<>();
+        List<InlineKeyboardButton> list1 = new ArrayList<>();
+        List<InlineKeyboardButton> list2 = new ArrayList<>();
+        List<InlineKeyboardButton> list3 = new ArrayList<>();
 
         InlineKeyboardButton button = new InlineKeyboardButton("ویرایش لینک")
                 .setCallbackData("editLink_src" + idOfLink);
@@ -713,13 +716,16 @@ public class LinkBot extends TelegramLongPollingBot {
         InlineKeyboardButton button3 = new InlineKeyboardButton("ویرایش کاور")
                 .setCallbackData("editCover"+ idOfLink);
 
-        list.add(button);
-        list.add(button2);
-        list.add(button3);
-        list.add(button1);
+        list0.add(button);
+        list1.add(button2);
+        list2.add(button3);
+        list3.add(button1);
 
         List<List<InlineKeyboardButton>> lists = new ArrayList<>();
-        lists.add(list);
+        lists.add(list0);
+        lists.add(list1);
+        lists.add(list2);
+        lists.add(list3);
         markup.setKeyboard(lists);
         return markup;
 
