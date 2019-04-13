@@ -305,13 +305,26 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
+        @RoutesMapping(Routes.Scientific)
         public Response gune0() throws TelegramApiException {
+            return getResponse();
+        }
+
+        @RoutesMapping(Routes.Entertainment)
+        public Response gune1() throws TelegramApiException {
+            return getResponse();
+        }
+        @RoutesMapping(Routes.Newsly)
+        public Response gune2() throws TelegramApiException {
+            return getResponse();
+        }
+
+        private Response getResponse() throws TelegramApiException {
             try {
                 ResultSet re = connection.createStatement().executeQuery("select * from Link where gune like '%" + update.getMessage().getText() + "%';");
                 while (re.next()) {
                     execute(new SendMessage(update.getMessage().getChatId()
                             , re.getString("link_src")));
-
                 }
 
             } catch (SQLException e) {
