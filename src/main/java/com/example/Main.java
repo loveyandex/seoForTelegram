@@ -200,10 +200,6 @@ public class Main {
         Class<?> classType = LinkBot.Response.class;
         Class<? extends Annotation> annotationClass = RoutesMapping.class;
 
-        if (classType == null) throw new NullPointerException("classType must not be null");
-
-        if (annotationClass == null) throw new NullPointerException("annotationClass must not be null");
-
         for (Method method : classType.getMethods()) {
             if (method.isAnnotationPresent(annotationClass)) {
                 RoutesMapping annotation = ((RoutesMapping) method.getAnnotation(annotationClass));

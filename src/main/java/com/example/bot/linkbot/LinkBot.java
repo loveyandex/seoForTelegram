@@ -63,9 +63,17 @@ public class LinkBot extends TelegramLongPollingBot {
         return result;
     }
 
+//  for (Map.Entry<Method, RoutesMapping> methodAnnotationEntry : methodWithAnnotation.entrySet()) {
+//        RoutesMapping annotationEntryValue = methodAnnotationEntry.getValue();
+//        Routes value = annotationEntryValue.value();
+//        System.out.println(value);
+//        sendMsg(value.name + " " + methodAnnotationEntry.getKey().getName());
+//    }
+
 
     public LinkBot() {
         Meths.sendToBot("constructor is working .................. ");
+
 
     }
 
@@ -82,14 +90,6 @@ public class LinkBot extends TelegramLongPollingBot {
     private HashMap<Method, RoutesMapping> methodWithAnnotation;
 
     public void onReplyKey(Update update) {
-
-
-        for (Map.Entry<Method, RoutesMapping> methodAnnotationEntry : methodWithAnnotation.entrySet()) {
-            RoutesMapping annotationEntryValue = methodAnnotationEntry.getValue();
-            Routes value = annotationEntryValue.value();
-            System.out.println(value);
-            sendMsg(value.name + " " + methodAnnotationEntry.getKey().getName());
-        }
 
 
         Response response = new Response(update);
@@ -113,22 +113,15 @@ public class LinkBot extends TelegramLongPollingBot {
                 e.printStackTrace();
             }
         } else {
-
             sendMsg("after container");
-
             StatusOfAdding[] statusOfAddings = StatusOfAdding.values();
             for (StatusOfAdding statusOfAdding : statusOfAddings) {
                 statues.add(statusOfAdding.name());
             }
-
-
             try {
-
-
                 Integer id = update.getMessage().getFrom().getId();
                 ResultSet resultSet2 = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                         ResultSet.CONCUR_UPDATABLE).executeQuery("select * from Link where user_id='" + id + "'");
-
                 while (resultSet2.next()) {
                     String status = resultSet2.getString(8);
                     if (!status.equals(StatusOfAdding.ADDED.name())) {
@@ -156,6 +149,10 @@ public class LinkBot extends TelegramLongPollingBot {
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             }
+
+
+
+
 
             try {
                 response.startMsg();
