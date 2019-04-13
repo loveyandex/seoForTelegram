@@ -16,6 +16,8 @@
 
 package com.example;
 
+import com.example.bot.linkbot.LinkBot;
+import com.example.bot.linkbot.RoutesMapping;
 import com.example.bot.linkbot.model.Routes;
 import com.example.database.Data;
 import com.google.gson.Gson;
@@ -35,11 +37,14 @@ import org.telegram.telegrambots.ApiContextInitializer;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -187,6 +192,26 @@ public class Main {
             list.add(value.name);
         }
         return list;
+    }
+
+    @Bean
+    public HashMap<Method, RoutesMapping> methodWithAnnotation() {
+        HashMap<Method, RoutesMapping> hashMap = new HashMap<>();
+        Class<?> classType = LinkBot.Response.class;
+        Class<? extends Annotation> annotationClass = RoutesMapping.class;
+
+        if (classType == null) throw new NullPointerException("classType must not be null");
+
+        if (annotationClass == null) throw new NullPointerException("annotationClass must not be null");
+
+        for (Method method : classType.getMethods()) {
+            if (method.isAnnotationPresent(annotationClass)) {
+                RoutesMapping annotation = ((RoutesMapping) method.getAnnotation(annotationClass));
+                hashMap.put(method, annotation);
+
+            }
+        }
+        return hashMap;
     }
 
 

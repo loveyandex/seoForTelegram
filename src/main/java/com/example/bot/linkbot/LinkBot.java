@@ -36,9 +36,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import static com.example.bot.linkbot.Vars.bikhialDeleteNakon;
 import static com.example.bot.linkbot.Vars.yesIamSure;
@@ -49,7 +47,7 @@ import static com.example.bot.linkbot.Vars.yesIamSure;
 @Component
 public class LinkBot extends TelegramLongPollingBot {
 
-    public static Collection<Method> methodWithAnnotation(Class<?> classType, Class<? extends Annotation> annotationClass) {
+    public static Collection<Method> methodinAnnotation(Class<?> classType, Class<? extends Annotation> annotationClass) {
 
         if (classType == null) throw new NullPointerException("classType must not be null");
 
@@ -58,23 +56,11 @@ public class LinkBot extends TelegramLongPollingBot {
         Collection<Method> result = new ArrayList<Method>();
         for (Method method : classType.getMethods()) {
             if (method.isAnnotationPresent(annotationClass)) {
+                Annotation annotation = method.getAnnotation(annotationClass);
                 result.add(method);
             }
         }
         return result;
-    }
-
-    public static void main(String[] args) {
-        Collection<Method> methods = methodWithAnnotation(Response.class, RoutesMapping.class);
-        methods.forEach(method -> {
-            System.out.println(method.getName());
-            RoutesMapping annotation = method.getAnnotation(RoutesMapping.class);
-            Routes ro = annotation.value();
-            System.out.println(ro.name);
-            System.err.println(ro);
-
-        });
-
     }
 
 
@@ -84,32 +70,6 @@ public class LinkBot extends TelegramLongPollingBot {
     }
 
 
-    @Bean
-    public void setDbs() {
-        try {
-            connection.createStatement().execute("create table if not exists Muser(id serial primary key)");
-            connection.createStatement().execute(
-                    "create table if not exists Link(" +
-                            "id serial primary key" +
-                            " ,user_id bigint not null, " +
-                            "name varchar(100) null ," +
-                            "dscrpt varchar(1000) null ," +
-                            "photo_id varchar(200) null ," +
-                            "link_src varchar(500) null ," +
-                            "gune varchar(50) null ," +
-                            "status varchar(25) null )");
-            ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Link;");
-            JSONArray objects = convertToJSON(resultSet2);
-            Meths.sendToBot(new Gson().toJson(objects));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
     @Autowired
     private Connection connection;
 
@@ -118,8 +78,19 @@ public class LinkBot extends TelegramLongPollingBot {
 
     @Autowired
     private int routeNumber;
+    @Autowired
+    private HashMap<Method, RoutesMapping> methodWithAnnotation;
 
     public void onReplyKey(Update update) {
+
+
+        for (Map.Entry<Method, RoutesMapping> methodAnnotationEntry : methodWithAnnotation.entrySet()) {
+            RoutesMapping annotationEntryValue = methodAnnotationEntry.getValue();
+            Routes value = annotationEntryValue.value();
+            System.out.println(value);
+            sendMsg(value.name + " " + methodAnnotationEntry.getKey().getName());
+        }
+
 
         Response response = new Response(update);
         System.out.println(LocalTime.now().toString());
@@ -880,5 +851,31 @@ public class LinkBot extends TelegramLongPollingBot {
         super.onClosing();
     }
 
+
+    @Bean
+    public void setDbs() {
+        try {
+            connection.createStatement().execute("create table if not exists Muser(id serial primary key)");
+            connection.createStatement().execute(
+                    "create table if not exists Link(" +
+                            "id serial primary key" +
+                            " ,user_id bigint not null, " +
+                            "name varchar(100) null ," +
+                            "dscrpt varchar(1000) null ," +
+                            "photo_id varchar(200) null ," +
+                            "link_src varchar(500) null ," +
+                            "gune varchar(50) null ," +
+                            "status varchar(25) null )");
+            ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Link;");
+            JSONArray objects = convertToJSON(resultSet2);
+            Meths.sendToBot(new Gson().toJson(objects));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }
