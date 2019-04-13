@@ -151,9 +151,6 @@ public class LinkBot extends TelegramLongPollingBot {
             }
 
 
-
-
-
             try {
                 response.startMsg();
             } catch (TelegramApiException e) {
@@ -168,7 +165,24 @@ public class LinkBot extends TelegramLongPollingBot {
         if (update.hasCallbackQuery()) {
             Message message = update.getCallbackQuery().getMessage();
             String data = update.getCallbackQuery().getData();
-            if (data.contains("delete")) {
+
+            if (data.contains(Vars.EDITID)) {
+
+
+                String delete = data.replaceAll(Vars.EDITID, "");
+                int idOfLink = Integer.parseInt(delete);
+
+                try {
+                    execute(new EditMessageReplyMarkup()
+                            .setChatId(message.getChatId())
+                            .setMessageId(message.getMessageId())
+                            .setReplyMarkup(editWhich(delete))
+                    );
+                } catch (TelegramApiException e) {
+                    sendMsg(e.toString());
+                }
+            }
+            else if (data.contains("delete")) {
 
                 String delete = data.replaceAll("delete", "");
                 int idOfLink = Integer.parseInt(delete);
@@ -198,7 +212,9 @@ public class LinkBot extends TelegramLongPollingBot {
                 } catch (TelegramApiException e) {
                     sendMsg(e.toString());
                 }
-            } else if (data.contains(bikhialDeleteNakon)) {
+            }
+
+            else if (data.contains(bikhialDeleteNakon)) {
                 String delete = data.replaceAll(bikhialDeleteNakon, "");
                 try {
                     execute(new EditMessageReplyMarkup()
@@ -670,8 +686,9 @@ public class LinkBot extends TelegramLongPollingBot {
 
         InlineKeyboardButton button = new InlineKeyboardButton("حذف لینک")
                 .setCallbackData("delete" + idOfLink);
-        InlineKeyboardButton button2 = new InlineKeyboardButton("ویرایش")
-                .setCallbackData("edit" + idOfLink);
+        InlineKeyboardButton button2 = new InlineKeyboardButton(Vars.EDIT)
+                .setCallbackData(Vars.EDITID+ idOfLink);
+
         list.add(button);
         list.add(button2);
 
@@ -680,6 +697,36 @@ public class LinkBot extends TelegramLongPollingBot {
         markup.setKeyboard(lists);
         return markup;
     }
+
+
+    private InlineKeyboardMarkup editWhich(String idOfLink) {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+
+        List<InlineKeyboardButton> list = new ArrayList<>();
+
+        InlineKeyboardButton button = new InlineKeyboardButton("ویرایش لینک")
+                .setCallbackData("editLink_src" + idOfLink);
+        InlineKeyboardButton button2 = new InlineKeyboardButton("ویرایش نام")
+                .setCallbackData("editname"+ idOfLink);
+        InlineKeyboardButton button1 = new InlineKeyboardButton("ویرایش توضیحات")
+                .setCallbackData("editDescrp"+ idOfLink);
+        InlineKeyboardButton button3 = new InlineKeyboardButton("ویرایش کاور")
+                .setCallbackData("editCover"+ idOfLink);
+
+        list.add(button);
+        list.add(button2);
+        list.add(button3);
+        list.add(button1);
+
+        List<List<InlineKeyboardButton>> lists = new ArrayList<>();
+        lists.add(list);
+        markup.setKeyboard(lists);
+        return markup;
+
+    }
+
+
+
 
     private InlineKeyboardMarkup confirmDeleteLink(String idOfLink) {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();

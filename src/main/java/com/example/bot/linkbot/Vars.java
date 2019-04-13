@@ -12,6 +12,8 @@ public class Vars {
     public static String StartMsg = "می تونی موضوعی رو که میخوای تایپ کنی برامون یا از تنوع ما استفاده کنین";
     public static String yesIamSure = "yesIamSure";
     public static String bikhialDeleteNakon = "bikhialDeleteNakon";
+    public static String EDIT = "ویرایش";
+    public static String EDITID = "edit";
 
 
 }
