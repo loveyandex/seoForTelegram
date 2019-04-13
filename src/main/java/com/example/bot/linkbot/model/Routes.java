@@ -19,7 +19,7 @@ public enum Routes {
     Politicals("سیاسی"),
     Fitness("تناسب اندام"),
     Unknown("سایر موارد(در این لیست نیست)"),
-    GROUPSANDCHANNELS(Vars.GROUPSANDCHANNELS),//12
+    GROUPSANDCHANNELSPEOPLE(Vars.GROUPSANDCHANNELSPEOPLE),//12
     MYLINKS("لینک های من"),//13
     CANCELMAKEINGLINK("بی خیال"),//14
     BACKTOSTART("back"),//15

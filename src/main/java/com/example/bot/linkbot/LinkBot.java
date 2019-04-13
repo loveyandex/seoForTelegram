@@ -28,13 +28,16 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static com.example.bot.linkbot.Vars.bikhialDeleteNakon;
@@ -45,6 +48,34 @@ import static com.example.bot.linkbot.Vars.yesIamSure;
  */
 @Component
 public class LinkBot extends TelegramLongPollingBot {
+
+    public static Collection<Method> methodWithAnnotation(Class<?> classType, Class<? extends Annotation> annotationClass) {
+
+        if (classType == null) throw new NullPointerException("classType must not be null");
+
+        if (annotationClass == null) throw new NullPointerException("annotationClass must not be null");
+
+        Collection<Method> result = new ArrayList<Method>();
+        for (Method method : classType.getMethods()) {
+            if (method.isAnnotationPresent(annotationClass)) {
+                result.add(method);
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Collection<Method> methods = methodWithAnnotation(Response.class, RoutesMapping.class);
+        methods.forEach(method -> {
+            System.out.println(method.getName());
+            RoutesMapping annotation = method.getAnnotation(RoutesMapping.class);
+            Routes ro = annotation.value();
+            System.out.println(ro.name);
+            System.err.println(ro);
+
+        });
+
+    }
 
 
     public LinkBot() {
@@ -314,6 +345,7 @@ public class LinkBot extends TelegramLongPollingBot {
         public Response gune1() throws TelegramApiException {
             return getResponse();
         }
+
         @RoutesMapping(Routes.Newsly)
         public Response gune2() throws TelegramApiException {
             return getResponse();
@@ -335,7 +367,7 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
-        @RoutesMapping(Routes.GROUPSANDCHANNELS)
+        @RoutesMapping(Routes.GROUPSANDCHANNELSPEOPLE)
         public Response gune12() throws TelegramApiException {
             execute(new SendMessage(
                     update.getMessage().getChatId()
@@ -382,7 +414,6 @@ public class LinkBot extends TelegramLongPollingBot {
         }
 
 
-
         @RoutesMapping(Routes.CANCELMAKEINGLINK)
         public Response gune14() {
 
@@ -418,7 +449,6 @@ public class LinkBot extends TelegramLongPollingBot {
 
             return this;
         }
-
 
 
         @RoutesMapping(Routes.BACKTOSTART)
@@ -765,7 +795,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
         ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
 
-        KeyboardButton button = new KeyboardButton(Vars.GROUPSANDCHANNELS);
+        KeyboardButton button = new KeyboardButton(Vars.GROUPSANDCHANNELSPEOPLE);
         KeyboardRow k1 = new KeyboardRow();
         k1.add(button);
         KeyboardButton button2 = new KeyboardButton(Vars.ADDINGLINKTO);
