@@ -88,7 +88,7 @@ public class LinkBot extends TelegramLongPollingBot {
     @Autowired
     private int routeNumber;
 
-    public void onReplyKey(@MyAnnotation("df") Update update) {
+    public void onReplyKey(Update update) {
 
         Response response = new Response(update);
         System.out.println(LocalTime.now().toString());
@@ -184,7 +184,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     sendMsg(e.toString());
                 }
 
-            }else if (data.contains(yesIamSure)){
+            } else if (data.contains(yesIamSure)) {
 
                 String delete = data.replaceAll(yesIamSure, "");
                 int idOfLink = Integer.parseInt(delete);
@@ -199,7 +199,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 } catch (TelegramApiException e) {
                     sendMsg(e.toString());
                 }
-            }else if (data.contains(bikhialDeleteNakon)){
+            } else if (data.contains(bikhialDeleteNakon)) {
                 String delete = data.replaceAll(bikhialDeleteNakon, "");
                 try {
                     execute(new EditMessageReplyMarkup()
@@ -322,10 +322,14 @@ public class LinkBot extends TelegramLongPollingBot {
             return this;
         }
 
+        @RoutesMapping(Routes.GROUPSANDCHANNELS)
         public Response gune12() throws TelegramApiException {
-            execute(new SendMessage(update.getMessage().getChatId()
-                    , update.getMessage().getText()));
+            execute(new SendMessage(
+                    update.getMessage().getChatId()
+                    , update.getMessage().getText())
+                    .setReplyMarkup(rr())
 
+            );
 
             return this;
         }
@@ -680,7 +684,7 @@ public class LinkBot extends TelegramLongPollingBot {
     private ReplyKeyboard cancelAdding() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
-        KeyboardButton button = new KeyboardButton(Routes.CANCELMAKEINGLINK.name);
+        KeyboardButton button = new KeyboardButton(com.example.bot.linkbot.model.Routes.CANCELMAKEINGLINK.name);
 
         KeyboardRow k1 = new KeyboardRow();
         k1.add(button);
@@ -723,13 +727,8 @@ public class LinkBot extends TelegramLongPollingBot {
         ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
 
         Gune[] values = Gune.values();
-
-
-        int k = 4;
+        int k = 1;
         r(keyboardRows, values, k);
-        KeyboardButton button = new KeyboardButton("اضافه کردن لینک");
-        keyboardRows.get(keyboardRows.size() - 1).add(button);
-
         replyKeyboardMarkup.setKeyboard(keyboardRows);
 
         replyKeyboardMarkup.setResizeKeyboard(true);
