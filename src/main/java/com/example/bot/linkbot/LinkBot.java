@@ -287,7 +287,7 @@ public class LinkBot extends TelegramLongPollingBot {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 if (update.getMessage().getText().equals("/start")) {
                     SendMessage method = new SendMessage(update.getMessage().getChatId()
-                            , "می تونی موضوعی رو که میخوای تایپ کنی برامون یا از تنوع ما استفاده کنین");
+                            , Vars.StartMsg);
                     method.setReplyMarkup(start());
                     execute(method);
                 }
@@ -423,7 +423,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
         @RoutesMapping(Routes.BACKTOSTART)
         public Response gune15() throws TelegramApiException {
-            execute(new SendMessage().setReplyMarkup(start()).setChatId(update.getMessage().getChatId()).setText(update.getMessage().getText()));
+            execute(new SendMessage().setReplyMarkup(start()).setChatId(update.getMessage().getChatId()).setText(Vars.StartMsg));
             return this;
         }
 
