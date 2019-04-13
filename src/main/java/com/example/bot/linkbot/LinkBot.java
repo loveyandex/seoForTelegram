@@ -746,6 +746,11 @@ public class LinkBot extends TelegramLongPollingBot {
         ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
 
         Gune[] values = Gune.values();
+
+        KeyboardButton button = new KeyboardButton(Routes.BACKTOSTART.name);
+        KeyboardRow k1 = new KeyboardRow();
+        k1.add(button);
+        keyboardRows.add(k1);
         int k = 1;
         r(keyboardRows, values, k);
         replyKeyboardMarkup.setKeyboard(keyboardRows);
@@ -761,13 +766,13 @@ public class LinkBot extends TelegramLongPollingBot {
         ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
 
         KeyboardButton button = new KeyboardButton(Vars.GROUPSANDCHANNELS);
+        KeyboardRow k1 = new KeyboardRow();
+        k1.add(button);
         KeyboardButton button2 = new KeyboardButton(Vars.ADDINGLINKTO);
         KeyboardButton button3 = new KeyboardButton(Vars.MYLINKS);
 
-        KeyboardRow k1 = new KeyboardRow();
         KeyboardRow k2 = new KeyboardRow();
         KeyboardRow k3 = new KeyboardRow();
-        k1.add(button);
         k2.add(button2);
         k3.add(button3);
         keyboardRows.add(k1);
