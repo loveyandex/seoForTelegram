@@ -246,34 +246,34 @@ public class LinkBot extends TelegramLongPollingBot {
         }
 
         if (update.getMessage().hasText()) {
-            text = update.getMessage().getText();
-            try {
-                ResultSet resultSet = connection.createStatement().executeQuery("select * from link where dscrpt like '%" +
-                        text + "%' or name like '%" + text + "%'");
-
-                while (resultSet.next()) {
-
-                    String linksrc = resultSet.getString(6);
-                    String name = resultSet.getString(3);
-                    String desc = resultSet.getString(4);
-                    String photoid = resultSet.getString(5);
-                    String gune = resultSet.getString(7);
-
-                    new SendPhoto().setChatId(update.getMessage().getChatId())
-                            .setPhoto(photoid)
-                            .setCaption(toCaption(name, desc, linksrc));
-
-                    execute(new SendMessage(update.getMessage().getChatId(), linksrc));
-                }
-
-
-                return;
-            } catch (SQLException e) {
-                sendMsg(e.toString());
-
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+//            text = update.getMessage().getText();
+//            try {
+//                ResultSet resultSet = connection.createStatement().executeQuery("select * from link where dscrpt like '%" +
+//                        text + "%' or name like '%" + text + "%'");
+//
+//                while (resultSet.next()) {
+//
+//                    String linksrc = resultSet.getString(6);
+//                    String name = resultSet.getString(3);
+//                    String desc = resultSet.getString(4);
+//                    String photoid = resultSet.getString(5);
+//                    String gune = resultSet.getString(7);
+//
+//                    new SendPhoto().setChatId(update.getMessage().getChatId())
+//                            .setPhoto(photoid)
+//                            .setCaption(toCaption(name, desc, linksrc));
+//
+//                    execute(new SendMessage(update.getMessage().getChatId(), linksrc));
+//                }
+//
+//
+//                return;
+//            } catch (SQLException e) {
+//                sendMsg(e.toString());
+//
+//            } catch (TelegramApiException e) {
+//                e.printStackTrace();
+//            }
 
 
             if (text.equals("fd")) {
