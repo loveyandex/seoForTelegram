@@ -179,8 +179,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 } catch (TelegramApiException e) {
                     sendMsg(e.toString());
                 }
-            }
-            else if (data.contains("delete")) {
+            } else if (data.contains("delete")) {
 
                 String delete = data.replaceAll("delete", "");
                 int idOfLink = Integer.parseInt(delete);
@@ -210,9 +209,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 } catch (TelegramApiException e) {
                     sendMsg(e.toString());
                 }
-            }
-
-            else if (data.contains(bikhialDeleteNakon)) {
+            } else if (data.contains(bikhialDeleteNakon)) {
                 String delete = data.replaceAll(bikhialDeleteNakon, "");
                 try {
                     execute(new EditMessageReplyMarkup()
@@ -255,7 +252,17 @@ public class LinkBot extends TelegramLongPollingBot {
                         text + "%' or name like '%" + text + "%'");
 
                 while (resultSet.next()) {
+
                     String linksrc = resultSet.getString(6);
+                    String name = resultSet.getString(3);
+                    String desc = resultSet.getString(4);
+                    String photoid = resultSet.getString(5);
+                    String gune = resultSet.getString(7);
+
+                    new SendPhoto().setChatId(update.getMessage().getChatId())
+                            .setPhoto(photoid)
+                            .setCaption(toCaption(name, desc, linksrc));
+
                     execute(new SendMessage(update.getMessage().getChatId(), linksrc));
                 }
 
@@ -297,6 +304,10 @@ public class LinkBot extends TelegramLongPollingBot {
         addUser(update.getMessage().getFrom().getId());
         onReplyKey(update);
 
+    }
+
+    private String toCaption(String name, String desc, String linksrc) {
+        return name + "\n" + desc + "\n" + linksrc;
     }
 
 
@@ -707,7 +718,7 @@ public class LinkBot extends TelegramLongPollingBot {
         InlineKeyboardButton button = new InlineKeyboardButton("حذف لینک")
                 .setCallbackData("delete" + idOfLink);
         InlineKeyboardButton button2 = new InlineKeyboardButton(Vars.EDIT)
-                .setCallbackData(Vars.EDITID+ idOfLink);
+                .setCallbackData(Vars.EDITID + idOfLink);
 
         list.add(button);
         list.add(button2);
@@ -726,18 +737,18 @@ public class LinkBot extends TelegramLongPollingBot {
         List<InlineKeyboardButton> list1 = new ArrayList<>();
         List<InlineKeyboardButton> list2 = new ArrayList<>();
         List<InlineKeyboardButton> list3 = new ArrayList<>();
-        List<InlineKeyboardButton> list4= new ArrayList<>();
+        List<InlineKeyboardButton> list4 = new ArrayList<>();
 
         InlineKeyboardButton button = new InlineKeyboardButton("ویرایش لینک")
                 .setCallbackData("editLink_src" + idOfLink);
         InlineKeyboardButton button2 = new InlineKeyboardButton("ویرایش نام")
-                .setCallbackData("editname"+ idOfLink);
+                .setCallbackData("editname" + idOfLink);
         InlineKeyboardButton button1 = new InlineKeyboardButton("ویرایش توضیحات")
-                .setCallbackData("editDescrp"+ idOfLink);
+                .setCallbackData("editDescrp" + idOfLink);
         InlineKeyboardButton button3 = new InlineKeyboardButton("ویرایش کاور")
-                .setCallbackData("editCover"+ idOfLink);
+                .setCallbackData("editCover" + idOfLink);
         InlineKeyboardButton button4 = new InlineKeyboardButton("برگرد")
-                .setCallbackData("editback"+ idOfLink);
+                .setCallbackData("editback" + idOfLink);
 
         list0.add(button);
         list1.add(button2);
@@ -755,8 +766,6 @@ public class LinkBot extends TelegramLongPollingBot {
         return markup;
 
     }
-
-
 
 
     private InlineKeyboardMarkup confirmDeleteLink(String idOfLink) {
