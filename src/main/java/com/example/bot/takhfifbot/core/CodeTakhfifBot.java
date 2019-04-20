@@ -45,7 +45,7 @@ public class CodeTakhfifBot extends TelegramLongPollingBot {
     }
 
     public String getBotToken() {
-        return "700687388:AAHagXfLRpcRV0U8bnoH91Ig3mB2boMXqh4";
+        return "700687388:AAE6e-dHraCo8G0AmdRAAaNUJXb1zHu1xes";
     }
 
 
