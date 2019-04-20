@@ -24,18 +24,6 @@ import java.util.List;
 @Component
 public class BitmElBotTes extends TelegramLongPollingBot {
 
-    public static void main(String[] args) {
-
-        ApiContextInitializer.init();
-        TelegramBotsApi api = new TelegramBotsApi();
-        try {
-            api.registerBot(new BitmElBotTes());
-        } catch (TelegramApiRequestException e) {
-            e.printStackTrace();
-        }
-
-
-    }
 
     @Override
     public void onUpdateReceived(Update update) {
