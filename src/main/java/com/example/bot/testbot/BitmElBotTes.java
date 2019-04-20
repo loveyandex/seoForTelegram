@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * created By aMIN on 3/23/2019 4:37 PM
  */
-@Component
+//@Component
 public class BitmElBotTes extends TelegramLongPollingBot {
 
 
