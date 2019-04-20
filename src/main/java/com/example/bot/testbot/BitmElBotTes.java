@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * created By aMIN on 3/23/2019 4:37 PM
  */
-//@Component
+@Component
 public class BitmElBotTes extends TelegramLongPollingBot {
 
 
@@ -85,6 +85,6 @@ public class BitmElBotTes extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "858001251:AAGIgPCmRaHjZlFsdxIH7IMCcNH67RTYT_Y";
+        return "858001251:AAHN2aSt00ttRzUOsXX4_Mq5jKugLBI8ndQ";
     }
 }
