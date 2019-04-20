@@ -438,7 +438,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                         sendMessage
                                 .setText("چزاییی که داریم")
                                 .setChatId(update.getMessage().getChatId())
-                                .setReplyMarkup(startReply());
+                        ;
                         sendApiMethodAsync(sendMessage, new SentCallback<Message>() {
                             @Override
                             public void onResult(BotApiMethod<Message> method, Message response) {
