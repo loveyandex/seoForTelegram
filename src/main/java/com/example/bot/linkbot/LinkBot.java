@@ -73,8 +73,6 @@ public class LinkBot extends TelegramLongPollingBot {
 
     public LinkBot() {
         Meths.sendToBot("constructor is working .................. ");
-
-
     }
 
 
@@ -231,8 +229,10 @@ public class LinkBot extends TelegramLongPollingBot {
         }
 
 
+        String text = "";
         if (update.getMessage().isCommand()) {
-            if (update.getMessage().getText().equals("/users")) {
+            text = update.getMessage().getText();
+            if (text.equals("/users")) {
                 try {
                     ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Muser;");
                     while (resultSet2.next()) {
@@ -249,10 +249,30 @@ public class LinkBot extends TelegramLongPollingBot {
         }
 
         if (update.getMessage().hasText()) {
-            if (update.getMessage().getText().equals("بکن")) {
+            text = update.getMessage().getText();
+            try {
+                ResultSet resultSet = connection.createStatement().executeQuery("select * from link where dscrpt like '%" +
+                        text + "%' or name like '%" + text + "%'");
+
+                while (resultSet.next()) {
+                    String linksrc = resultSet.getString(6);
+                    execute(new SendMessage(update.getMessage().getChatId(), linksrc));
+                }
+
+
+                return;
+            } catch (SQLException e) {
+                sendMsg(e.toString());
+
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+
+
+            if (text.equals("fd")) {
                 setDbs();
             }
-            if (update.getMessage().getText().equals("drop")) {
+            if (text.equals("df")) {
                 try {
                     connection.createStatement().execute("drop table if exists Link");
                     return;
@@ -261,7 +281,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
                 }
             }
-            if (update.getMessage().getText().equals("دل")) {
+            if (text.equals("ds")) {
                 try {
                     connection.createStatement().execute("delete  from Link");
                     return;
