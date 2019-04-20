@@ -374,36 +374,8 @@ public class MuzicBot extends TelegramLongPollingBot {
 
             if (update.hasMessage())
                 if (update.getMessage().hasText())
-                    if (update.getMessage().getText().equalsIgnoreCase("/start2")
-                            && userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId())) == null) {
-                        System.out.println("start2");
-                        final User from = update.getMessage().getFrom();
-                        System.err.println(new Gson().toJson(from));
-                        final SendMessage sendMessage = new SendMessage();
-                        sendMessage
-                                .setText("god is great")
-                                .setChatId(update.getMessage().getChatId());
-                        sendMessage.setReplyMarkup(fullOptions());
-                        sendApiMethodAsync(sendMessage, new SentCallback<Message>() {
-                            @Override
-                            public void onResult(BotApiMethod<Message> method, Message response) {
-
-                            }
-
-                            @Override
-                            public void onError(BotApiMethod<Message> method, TelegramApiRequestException apiException) {
-
-                            }
-
-                            @Override
-                            public void onException(BotApiMethod<Message> method, Exception exception) {
-
-                            }
-                        });
-
-
-                    } else if (update.getMessage().getText().equalsIgnoreCase("/search")
-                            && userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId())) == null) {
+                    if (update.getMessage().getText()
+                            .equalsIgnoreCase("/start")) {
 
                         System.out.println("start");
                         final User from = update.getMessage().getFrom();
@@ -429,35 +401,7 @@ public class MuzicBot extends TelegramLongPollingBot {
                             }
                         });
 
-                    } else if (update.getMessage().getText().equalsIgnoreCase("/start")
-                            && userMusicForSave.get(Math.toIntExact(update.getMessage().getChatId())) == null) {
-
-                        final User from = update.getMessage().getFrom();
-                        System.err.println(new Gson().toJson(from));
-                        final SendMessage sendMessage = new SendMessage();
-                        sendMessage
-                                .setText("چزاییی که داریم")
-                                .setChatId(update.getMessage().getChatId())
-                        ;
-                        sendApiMethodAsync(sendMessage, new SentCallback<Message>() {
-                            @Override
-                            public void onResult(BotApiMethod<Message> method, Message response) {
-
-                            }
-
-                            @Override
-                            public void onError(BotApiMethod<Message> method, TelegramApiRequestException apiException) {
-
-                            }
-
-                            @Override
-                            public void onException(BotApiMethod<Message> method, Exception exception) {
-
-                            }
-                        });
-
                     }
-
             return this;
         }
 
