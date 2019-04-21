@@ -41,6 +41,15 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
             Long chatId = update.getMessage().getChatId();
             Message message = update.getMessage();
             User from = message.getFrom();
+
+
+            User forwardFrom = message.getForwardFrom();
+            if (forwardFrom != null) {
+                sendMsg(new Gson().toJson(forwardFrom));
+            }
+
+
+
             if (message.getText().equals("del")) {
                 try {
                     connection.createStatement()
