@@ -125,6 +125,7 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
             preparedStatement.setInt(1, idj);
             preparedStatement.setInt(2, idj);
             boolean execute = preparedStatement.execute();
+            sendMsg("added..............");
             return execute;
 
         } catch (SQLException e) {
