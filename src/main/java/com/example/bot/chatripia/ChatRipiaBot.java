@@ -64,7 +64,6 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
                     sendMsg(e.toString());
                 } catch (TelegramApiException e) {
                     sendMsg(e.toString());
-]
                 }
             }
 
