@@ -24,7 +24,6 @@ import java.util.List;
 @Component
 public class BitmElBotTes extends TelegramLongPollingBot {
 
-
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
