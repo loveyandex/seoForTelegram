@@ -66,7 +66,6 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
 
             addUser(chatId.intValue());
             ResultSet resultSet2 = null;
-
             try {
                 resultSet2 = connection.createStatement().executeQuery("select * from chatuser;");
                 while (resultSet2.next()) {
