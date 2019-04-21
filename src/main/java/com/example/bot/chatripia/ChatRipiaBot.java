@@ -88,12 +88,6 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
                 }
             }
 
-            try {
-                execute(new SendMessage(chatId
-                        , message.getText()));
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -129,7 +123,6 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
             preparedStatement.setInt(1, idj);
             preparedStatement.setInt(2, idj);
             boolean execute = preparedStatement.execute();
-            sendMsg("added..............");
             return execute;
 
         } catch (SQLException e) {
