@@ -71,7 +71,7 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
             addUser(chatId.intValue());
             ResultSet resultSet2 = null;
             try {
-                resultSet2 = connection.createStatement().executeQuery("select * from chatuser;");
+                resultSet2 = connection.createStatement().executeQuery("select * from chatuser where id<>" + chatId);
                 while (resultSet2.next()) {
                     String idofsend = String.valueOf(resultSet2.getInt(1));
                     execute(new SendMessage(idofsend
