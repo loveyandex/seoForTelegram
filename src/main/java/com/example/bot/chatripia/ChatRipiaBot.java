@@ -52,7 +52,7 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
             }
             if (message.getText().contains("users")) {
                 try {
-                    ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Muser;");
+                    ResultSet resultSet2 = connection.createStatement().executeQuery("select * from chatuser;");
                     while (resultSet2.next()) {
                         execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(resultSet2.getInt(1))));
                     }
@@ -100,7 +100,8 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
     @Bean
     public void dbs() {
         try {
-            connection.createStatement().execute("create table if not exists ChatUser(id serial primary key )");
+            connection.createStatement().execute("create table if not exists chatuser(id serial primary key )");
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
