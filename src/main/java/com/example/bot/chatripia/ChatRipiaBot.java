@@ -53,7 +53,8 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
             if (message.getText().equals("users")) {
                 sendMsg("in if of users");
                 try {
-                    ResultSet resultSet2 = connection.createStatement().executeQuery("select * from chatuser;");
+                    ResultSet resultSet2 = connection.createStatement()
+                            .executeQuery("select * from chatuser;");
                     while (resultSet2.next()) {
                         sendMsg("in whil of users");
                         execute(new SendMessage(update.getMessage().getChatId(),
@@ -63,7 +64,7 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
                     sendMsg(e.toString());
                 } catch (TelegramApiException e) {
                     sendMsg(e.toString());
-
+]
                 }
             }
 
@@ -121,7 +122,7 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
         String sql = "INSERT INTO chatuser (id)" +
                 "    SELECT ?" +
                 "WHERE NOT EXISTS (" +
-                "    SELECT id FROM Muser WHERE id=? " +
+                "    SELECT id FROM chatuser WHERE id=? " +
                 ");";
         PreparedStatement preparedStatement = null;
         try {
