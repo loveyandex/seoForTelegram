@@ -26,6 +26,14 @@ import java.util.List;
 @Component
 public class ChatRipiaBot extends TelegramLongPollingBot {
 
+    public void sendMsg(String msg) {
+        try {
+            execute(new SendMessage(145464749L, msg));
+        } catch (TelegramApiException e) {
+        }
+
+
+    }
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -33,6 +41,14 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
             Long chatId = update.getMessage().getChatId();
             Message message = update.getMessage();
             User from = message.getFrom();
+            if (message.getText().equals("del")) {
+                try {
+                    connection.createStatement().execute("drop table if exists chatuser");
+                    sendMsg("del successfully");
+                } catch (SQLException e) {
+                    sendMsg(e.toString());
+                }
+            }
             addUser(chatId.intValue());
             ResultSet resultSet2 = null;
             try {
