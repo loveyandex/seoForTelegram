@@ -45,9 +45,17 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
 
             User forwardFrom = message.getForwardFrom();
             if (forwardFrom != null) {
+
+                String var = String.format("می خوای با %s چت کنی بهش بگو یه پیام از تو فوروارد کنه به باته", forwardFrom.getFirstName());
+
+                SendMessage method = new SendMessage(chatId, var);
+                try {
+                    execute(method);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
                 sendMsg(new Gson().toJson(forwardFrom));
             }
-
 
 
             if (message.getText().equals("del")) {
@@ -118,9 +126,8 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
     }
 
 
-
     private boolean addUser(int idj) {
-    dbs();
+        dbs();
         String sql = "INSERT INTO chatuser (id)" +
                 "    SELECT ?" +
                 "WHERE NOT EXISTS (" +
@@ -134,7 +141,7 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
             boolean execute = preparedStatement.execute();
             return execute;
         } catch (SQLException e) {
-            sendMsg("in adding user "+e.toString());
+            sendMsg("in adding user " + e.toString());
         }
         return (true);
 
