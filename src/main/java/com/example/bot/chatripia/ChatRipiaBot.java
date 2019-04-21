@@ -50,7 +50,8 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
                     sendMsg(e.toString());
                 }
             }
-            if (message.getText().contains("users")) {
+            if (message.getText().equals("users")) {
+                sendMsg("in if of users");
                 try {
                     ResultSet resultSet2 = connection.createStatement().executeQuery("select * from chatuser;");
                     while (resultSet2.next()) {
