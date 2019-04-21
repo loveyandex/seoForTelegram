@@ -33,9 +33,10 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
             Long chatId = update.getMessage().getChatId();
             Message message = update.getMessage();
             User from = message.getFrom();
+            addUser(chatId.intValue());
             ResultSet resultSet2 = null;
             try {
-                resultSet2 = connection.createStatement().executeQuery("select * from Muser;");
+                resultSet2 = connection.createStatement().executeQuery("select * from chatuser;");
                 while (resultSet2.next()) {
                     String idofsend = String.valueOf(resultSet2.getInt(1));
                     execute(new SendMessage(idofsend
@@ -68,7 +69,7 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
     @Bean
     public void dbs() {
         try {
-            connection.createStatement().execute("create table if not exists ChatUser(id serial primary key,name varchar(30) )");
+            connection.createStatement().execute("create table if not exists ChatUser(id serial primary key )");
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
