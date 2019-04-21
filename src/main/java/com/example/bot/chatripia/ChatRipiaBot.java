@@ -105,15 +105,17 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
             connection.createStatement().execute("create table if not exists chatuser(id serial primary key )");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            sendMsg(e.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            sendMsg(e.toString());
         }
 
     }
 
 
+
     private boolean addUser(int idj) {
+    dbs();
         String sql = "INSERT INTO chatuser (id)" +
                 "    SELECT ?" +
                 "WHERE NOT EXISTS (" +
