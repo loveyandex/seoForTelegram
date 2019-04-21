@@ -43,14 +43,30 @@ public class ChatRipiaBot extends TelegramLongPollingBot {
             User from = message.getFrom();
             if (message.getText().equals("del")) {
                 try {
-                    connection.createStatement().execute("drop table if exists chatuser");
+                    connection.createStatement()
+                            .execute("drop table if exists chatuser");
                     sendMsg("del successfully");
                 } catch (SQLException e) {
                     sendMsg(e.toString());
                 }
             }
+            if (message.getText().contains("users")) {
+                try {
+                    ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Muser;");
+                    while (resultSet2.next()) {
+                        execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(resultSet2.getInt(1))));
+                    }
+                } catch (SQLException e) {
+                    sendMsg(e.toString());
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
             addUser(chatId.intValue());
             ResultSet resultSet2 = null;
+
             try {
                 resultSet2 = connection.createStatement().executeQuery("select * from chatuser;");
                 while (resultSet2.next()) {
