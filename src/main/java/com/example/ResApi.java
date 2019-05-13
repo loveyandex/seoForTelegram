@@ -29,7 +29,7 @@ public class ResApi {
                        HttpServletResponse response) throws IOException {
         String token = "495402062:AAHyqLaAsQS_BeQNwDU9qTG81RVXWEvwP6s";
 
-        String url = "https://api.telegram.org/"
+        String url = "https://api.telegram.org/bot"
                 + token
                 + "/sendMessage?chat_id=145464749&text="
                 + text;
