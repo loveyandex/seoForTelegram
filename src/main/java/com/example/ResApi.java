@@ -16,6 +16,7 @@ import java.time.LocalDate;
 public class ResApi {
 
 
+
     @GetMapping("/s")
     public String s() {
         return "kirshodi" + LocalDate.now().toString();
@@ -26,7 +27,7 @@ public class ResApi {
             , method = RequestMethod.GET)
     public String gett(@PathVariable String text, HttpServletRequest request,
                        HttpServletResponse response) throws IOException {
-        String token = "bot700687388:AAHagXfLRpcRV0U8bnoH91Ig3mB2boMXqh4";
+        String token = "495402062:AAHyqLaAsQS_BeQNwDU9qTG81RVXWEvwP6s";
 
         String url = "https://api.telegram.org/"
                 + token
