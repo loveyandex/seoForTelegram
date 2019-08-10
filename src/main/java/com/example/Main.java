@@ -225,7 +225,7 @@ public class Main {
 
                     String post = post(client, "https://still-waters-40834.herokuapp.com/");
                     post(client, d + post.substring(0, 164));
-                    Thread.sleep(60000);
+                    Thread.sleep(120000);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
