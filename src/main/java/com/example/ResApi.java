@@ -27,7 +27,7 @@ public class ResApi {
             , method = RequestMethod.GET)
     public String gett(@PathVariable String text, HttpServletRequest request,
                        HttpServletResponse response) throws IOException {
-        String token = "495402062:AAHyqLaAsQS_BeQNwDU9qTG81RVXWEvwP6s";
+        String token = "858288629:AAEpT32pWgpkTHuWlwZ-42ugnCWlXoBmKNM";
 
         String url = "https://api.telegram.org/bot"
                 + token
