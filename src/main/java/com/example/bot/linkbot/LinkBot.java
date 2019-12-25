@@ -243,6 +243,20 @@ public class LinkBot extends TelegramLongPollingBot {
                 }
 
             }
+            if (text.equals("/links")) {
+                try {
+                    ResultSet resultSet2 = connection.createStatement().executeQuery("select * from link;");
+                    while (resultSet2.next()) {
+                        execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(resultSet2.getString("link_src"))));
+                    }
+                    return;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
 
         if (update.getMessage().hasText()) {
