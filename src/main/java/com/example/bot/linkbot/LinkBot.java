@@ -249,7 +249,12 @@ public class LinkBot extends TelegramLongPollingBot {
                     while (resultSet2.next()) {
                         execute(new SendMessage(update.getMessage().getChatId(), (resultSet2.getString("link_src"))
                                 +"\n describ: "+
-                                resultSet2.getString("dscrpt")));
+                                resultSet2.getString("dscrpt")
+                                +"\n gune: "+
+                                resultSet2.getString("gune")
+
+
+                        ));
                     }
 
                     return;
