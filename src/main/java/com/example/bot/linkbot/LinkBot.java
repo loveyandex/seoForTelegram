@@ -387,6 +387,10 @@ public class LinkBot extends TelegramLongPollingBot {
         public Response gune2() throws TelegramApiException {
             return getResponse();
         }
+        @RoutesMapping(Routes.Fitness)
+        public Response gune10() throws TelegramApiException {
+            return getResponse();
+        }
 
         private Response getResponse() throws TelegramApiException {
             try {
