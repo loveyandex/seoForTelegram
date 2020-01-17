@@ -233,7 +233,7 @@ public class LinkBot extends TelegramLongPollingBot {
                 try {
                     ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Muser;");
                     while (resultSet2.next()) {
-                        execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(resultSet2.getInt(1)+"+++0++"+resultSet2.getInt(0))));
+                        execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(resultSet2.getInt(1)+"+++0++"+resultSet2.getInt(1))));
                     }
                     return;
                 } catch (SQLException e) {
@@ -944,7 +944,7 @@ public class LinkBot extends TelegramLongPollingBot {
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, idj);
-            preparedStatement.setInt(2, idj);
+//            preparedStatement.setInt(2, idj);
             boolean execute = preparedStatement.execute();
             return execute;
 
