@@ -12,14 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.GetUserProfilePhotos;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.PhotoSize;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -233,7 +231,39 @@ public class LinkBot extends TelegramLongPollingBot {
                 try {
                     ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Muser;");
                     while (resultSet2.next()) {
-                        execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(resultSet2.getInt(1)+"+++0++"+resultSet2.getInt(1))));
+                        execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(resultSet2.getInt(1) + "+++0++" + resultSet2.getInt(1))));
+                    }
+                    return;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            if (text.equals("/good")) {
+                try {
+                    ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Muser;");
+                    while (resultSet2.next()) {
+                        int id = resultSet2.getInt(1);
+
+                        GetUserProfilePhotos getUserProfilePhotos = new GetUserProfilePhotos()
+                                .setUserId(id)
+                                .setLimit(1);
+
+                        UserProfilePhotos userProfilePhotos = execute(getUserProfilePhotos);
+
+                        PhotoSize photoSize = userProfilePhotos.getPhotos().get(0).get(0);
+
+                        SendPhoto sendPhoto = new SendPhoto()
+                                .setChatId(update.getMessage().getChatId())
+                                .setPhoto(photoSize.getFileId())
+                                .setCaption("id of user " + id);
+
+                        execute(sendPhoto);
+
+
+//                        execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(id)));
                     }
                     return;
                 } catch (SQLException e) {
@@ -248,9 +278,9 @@ public class LinkBot extends TelegramLongPollingBot {
                     ResultSet resultSet2 = connection.createStatement().executeQuery("select * from link;");
                     while (resultSet2.next()) {
                         execute(new SendMessage(update.getMessage().getChatId(), (resultSet2.getString("link_src"))
-                                +"\n describ: "+
+                                + "\n describ: " +
                                 resultSet2.getString("dscrpt")
-                                +"\n gune: "+
+                                + "\n gune: " +
                                 resultSet2.getString("gune")
 
 
@@ -387,6 +417,7 @@ public class LinkBot extends TelegramLongPollingBot {
         public Response gune2() throws TelegramApiException {
             return getResponse();
         }
+
         @RoutesMapping(Routes.Fitness)
         public Response gune10() throws TelegramApiException {
             return getResponse();
