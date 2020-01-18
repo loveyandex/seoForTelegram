@@ -273,7 +273,7 @@ public class LinkBot extends TelegramLongPollingBot {
                         int id = resultSet2.getInt(1);
                         execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(id)));
 
-                        int[] ints = new int[]{6363636, 55442233, 878712};
+                        int[] ints = new int[]{6363636, 55442233, 878712,839298893};
                         for (int anInt : ints) {
                             if (id != anInt) {
                                 GetUserProfilePhotos getUserProfilePhotos = new GetUserProfilePhotos()
