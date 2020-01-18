@@ -247,7 +247,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
                     int[] ints = new int[]{6363636,55442233,878712};
                     for (int id : ints) {
-                        connection.createStatement().execute("delete from Muser where id=" +id);
+                        connection.createStatement().executeQuery("delete from Muser where id=" +id);
                     }
 
 
@@ -265,7 +265,8 @@ public class LinkBot extends TelegramLongPollingBot {
 
                         GetUserProfilePhotos getUserProfilePhotos = new GetUserProfilePhotos()
                                 .setUserId(id)
-                                .setLimit(1);
+                                .setOffset(0)
+                                .setLimit(0);
 
                         UserProfilePhotos userProfilePhotos = execute(getUserProfilePhotos);
                         execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(id)));
