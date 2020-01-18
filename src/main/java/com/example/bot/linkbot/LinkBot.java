@@ -241,6 +241,22 @@ public class LinkBot extends TelegramLongPollingBot {
                 }
 
             }
+            if (text.equals("/delete")) {
+
+                try {
+
+                    int[] ints = new int[]{6363636,55442233,878712};
+                    for (int id : ints) {
+                        connection.createStatement().execute("delete from Muser where id=" +id);
+                    }
+
+
+                } catch (SQLException e) {
+                    sendMsg(e.toString());
+
+                }
+
+            }
             if (text.equals("/good")) {
                 try {
                     ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Muser;");
