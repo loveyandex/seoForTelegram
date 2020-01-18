@@ -232,7 +232,7 @@ public class LinkBot extends TelegramLongPollingBot {
                     ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Muser;");
                     while (resultSet2.next()) {
                         execute(new SendMessage(update.getMessage().getChatId(), String.
-                                valueOf(resultSet2.getInt(0) + "+++0++" + resultSet2.getInt(1))));
+                                valueOf(resultSet2.getInt(0) + "+++0++" + resultSet2.getInt(0))));
                     }
                     return;
                 } catch (SQLException e) {
@@ -254,9 +254,9 @@ public class LinkBot extends TelegramLongPollingBot {
 
                     }
 
-                    int[] ints = new int[]{6363636,55442233,878712};
+                    int[] ints = new int[]{6363636, 55442233, 878712};
                     for (int id : ints) {
-                        connection.createStatement().executeQuery("delete from Muser where id=" +id+" and ");
+                        connection.createStatement().executeQuery("delete from Muser where id=" + id + " and ");
                     }
 
 
@@ -271,24 +271,27 @@ public class LinkBot extends TelegramLongPollingBot {
                     ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Muser;");
                     while (resultSet2.next()) {
                         int id = resultSet2.getInt(1);
-
-                        GetUserProfilePhotos getUserProfilePhotos = new GetUserProfilePhotos()
-                                .setUserId(id)
-                                .setOffset(0)
-                                .setLimit(0);
-
-                        UserProfilePhotos userProfilePhotos = execute(getUserProfilePhotos);
                         execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(id)));
 
-                        PhotoSize photoSize = userProfilePhotos.getPhotos().get(0).get(0);
+                        int[] ints = new int[]{6363636, 55442233, 878712};
+                        for (int anInt : ints) {
+                            if (id != anInt) {
+                                GetUserProfilePhotos getUserProfilePhotos = new GetUserProfilePhotos()
+                                        .setUserId(id)
+                                        .setOffset(0)
+                                        .setLimit(0);
 
-                        SendPhoto sendPhoto = new SendPhoto()
-                                .setChatId(update.getMessage().getChatId())
-                                .setPhoto(photoSize.getFileId())
-                                .setCaption("id of user " + id);
+                                UserProfilePhotos userProfilePhotos = execute(getUserProfilePhotos);
 
-                        execute(sendPhoto);
+                                PhotoSize photoSize = userProfilePhotos.getPhotos().get(0).get(0);
 
+                                SendPhoto sendPhoto = new SendPhoto()
+                                        .setChatId(update.getMessage().getChatId())
+                                        .setPhoto(photoSize.getFileId())
+                                        .setCaption("id of user " + id);
+                                execute(sendPhoto);
+                            }
+                        }
 
 
                     }
