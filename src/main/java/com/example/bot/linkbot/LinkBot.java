@@ -247,6 +247,8 @@ public class LinkBot extends TelegramLongPollingBot {
                     while (resultSet2.next()) {
                         int id = resultSet2.getInt(1);
 
+                        execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(id)));
+
                         GetUserProfilePhotos getUserProfilePhotos = new GetUserProfilePhotos()
                                 .setUserId(id)
                                 .setLimit(1);
@@ -263,7 +265,6 @@ public class LinkBot extends TelegramLongPollingBot {
                         execute(sendPhoto);
 
 
-//                        execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(id)));
                     }
                     return;
                 } catch (SQLException e) {
