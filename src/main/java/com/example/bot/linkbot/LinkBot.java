@@ -231,7 +231,8 @@ public class LinkBot extends TelegramLongPollingBot {
                 try {
                     ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Muser;");
                     while (resultSet2.next()) {
-                        execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(resultSet2.getInt(1) + "+++0++" + resultSet2.getInt(1))));
+                        execute(new SendMessage(update.getMessage().getChatId(), String.
+                                valueOf(resultSet2.getInt(0) + "+++0++" + resultSet2.getInt(1))));
                     }
                     return;
                 } catch (SQLException e) {
@@ -245,9 +246,17 @@ public class LinkBot extends TelegramLongPollingBot {
 
                 try {
 
+                    ResultSet resultSet = connection.createStatement().executeQuery("select column_name from information_schema.columns where\n" +
+                            "table_name='Muser';");
+
+                    while (resultSet.next()) {
+
+
+                    }
+
                     int[] ints = new int[]{6363636,55442233,878712};
                     for (int id : ints) {
-                        connection.createStatement().executeQuery("delete from Muser where id=" +id);
+                        connection.createStatement().executeQuery("delete from Muser where id=" +id+" and ");
                     }
 
 
