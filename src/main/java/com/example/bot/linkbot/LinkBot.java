@@ -268,6 +268,7 @@ public class LinkBot extends TelegramLongPollingBot {
                                 .setLimit(1);
 
                         UserProfilePhotos userProfilePhotos = execute(getUserProfilePhotos);
+                        execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(id)));
 
                         PhotoSize photoSize = userProfilePhotos.getPhotos().get(0).get(0);
 
@@ -278,7 +279,6 @@ public class LinkBot extends TelegramLongPollingBot {
 
                         execute(sendPhoto);
 
-                        execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(id)));
 
 
                     }
