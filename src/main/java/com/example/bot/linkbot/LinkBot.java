@@ -283,13 +283,23 @@ public class LinkBot extends TelegramLongPollingBot {
 
                                 UserProfilePhotos userProfilePhotos = execute(getUserProfilePhotos);
 
-                                PhotoSize photoSize = userProfilePhotos.getPhotos().get(0).get(0);
+                                if (userProfilePhotos.getPhotos().size()>0)
+                                {
 
-                                SendPhoto sendPhoto = new SendPhoto()
-                                        .setChatId(update.getMessage().getChatId())
-                                        .setPhoto(photoSize.getFileId())
-                                        .setCaption("id of user " + id);
-                                execute(sendPhoto);
+                                    PhotoSize photoSize = userProfilePhotos.getPhotos().get(0).get(0);
+
+                                    SendPhoto sendPhoto = new SendPhoto()
+                                            .setChatId(update.getMessage().getChatId())
+                                            .setPhoto(photoSize.getFileId())
+                                            .setCaption("id of user " + id);
+                                    execute(sendPhoto);
+                                }
+                                else {
+                                    execute(new SendMessage(update.getMessage().getChatId(), String.valueOf("no photo for")+id
+                                    ));
+
+                                }
+
                             }
                         }
 
