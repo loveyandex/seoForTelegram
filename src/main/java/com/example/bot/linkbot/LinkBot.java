@@ -242,6 +242,24 @@ public class LinkBot extends TelegramLongPollingBot {
                 }
 
             }
+            if (text.equals("/tusers")) {
+                try {
+                    ResultSet resultSet2 = connection.createStatement().executeQuery("select * from Tuser;");
+                    while (resultSet2.next()) {
+                        execute(new SendMessage(update.getMessage().getChatId(), String.
+                                valueOf(resultSet2.getInt(1) + "+" + resultSet2.getString(2)+
+                                        "+" + resultSet2.getString(3)+
+                                        "+" + resultSet2.getString(4)
+                                )));
+                    }
+                    return;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+
+            }
             if (text.equals("/delete")) {
 
                 try {
