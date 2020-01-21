@@ -273,7 +273,7 @@ public class LinkBot extends TelegramLongPollingBot {
                         int id = resultSet2.getInt(1);
                         execute(new SendMessage(update.getMessage().getChatId(), String.valueOf(id)));
 
-                        int[] ints = new int[]{6363636, 55442233, 878712,839298893};
+                        int[] ints = new int[]{6363636, 55442233, 878712, 839298893};
                         for (int anInt : ints) {
                             if (id != anInt) {
                                 GetUserProfilePhotos getUserProfilePhotos = new GetUserProfilePhotos()
@@ -283,8 +283,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
                                 UserProfilePhotos userProfilePhotos = execute(getUserProfilePhotos);
 
-                                if (userProfilePhotos.getPhotos().size()>0)
-                                {
+                                if (userProfilePhotos.getPhotos().size() > 0) {
 
                                     PhotoSize photoSize = userProfilePhotos.getPhotos().get(0).get(0);
 
@@ -293,9 +292,8 @@ public class LinkBot extends TelegramLongPollingBot {
                                             .setPhoto(photoSize.getFileId())
                                             .setCaption("id of user " + id);
                                     execute(sendPhoto);
-                                }
-                                else {
-                                    execute(new SendMessage(update.getMessage().getChatId(), String.valueOf("no photo for")+id
+                                } else {
+                                    execute(new SendMessage(update.getMessage().getChatId(), String.valueOf("no photo for") + id
                                     ));
 
                                 }
@@ -368,9 +366,6 @@ public class LinkBot extends TelegramLongPollingBot {
 //            }
 
 
-            if (text.equals("fd")) {
-                setDbs();
-            }
             if (text.equals("df")) {
                 try {
                     connection.createStatement().execute("drop table if exists Link");
@@ -393,7 +388,7 @@ public class LinkBot extends TelegramLongPollingBot {
 
         }
 
-        addUser(update.getMessage().getFrom().getId());
+        addUser(update.getMessage().getFrom());
         onReplyKey(update);
 
     }
@@ -1026,6 +1021,33 @@ public class LinkBot extends TelegramLongPollingBot {
 
     }
 
+    private boolean addUser(User user) {
+        String sql = "INSERT INTO Tuser (id ,firstname, lastname, username) " +
+                "    SELECT ? as id, ? as firstname,? as lastname,? as username from Tuser " +
+                "WHERE NOT EXISTS (" +
+                "    SELECT id FROM Tuser WHERE id=? " +
+                ");";
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, user.getId());
+            preparedStatement.setString(2, user.getFirstName());
+            preparedStatement.setString(3, user.getLastName());
+            preparedStatement.setString(4, user.getUserName());
+            preparedStatement.setInt(5, user.getId());
+//            preparedStatement.setInt(2, idj);
+            boolean execute = preparedStatement.execute();
+            sendMsg("tuser added user ");
+
+            return execute;
+
+        } catch (SQLException e) {
+            sendMsg(e.toString());
+        }
+        return (true);
+
+    }
+
 
     @Override
     public void onClosing() {
@@ -1037,6 +1059,8 @@ public class LinkBot extends TelegramLongPollingBot {
     public void setDbs() {
         try {
             connection.createStatement().execute("create table if not exists Muser(id serial primary key)");
+            connection.createStatement().execute("create table if not exists Tuser(id serial primary key" +
+                    ",firstname varchar(100) null ,lastname varchar(100) null,username varchar(330) null )");
             connection.createStatement().execute(
                     "create table if not exists Link(" +
                             "id serial primary key" +
